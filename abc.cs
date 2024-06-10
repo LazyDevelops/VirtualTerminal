@@ -152,12 +152,10 @@ class VirtualTerminal
     {
         if (dir == "." || dir == "./")
         {
-            // Current directory, do nothing
             return;
         }
         else if (dir == ".." || dir == "../")
         {
-            // Move to parent directory
             if (currentDirectory != "/")
             {
                 int lastSlashIndex = currentDirectory.LastIndexOf('/');
@@ -173,7 +171,6 @@ class VirtualTerminal
         }
         else
         {
-            // Move to specified directory
             string newDir = currentDirectory == "/" ? $"/{dir}" : $"{currentDirectory}/{dir}";
             if (fileSystem.Exists(entry => entry.Path == newDir && entry.IsDirectory))
             {
@@ -188,18 +185,21 @@ class VirtualTerminal
 
     private void ExecuteCat(string file)
     {
-        string filePath = currentDirectory == "/" ? $"/{file}" : $"{currentDirectory}/{file}";
-        var fileEntry = fileSystem.Find(entry => entry.Path == filePath && !entry.IsDirectory);
+        string path = currentDirectory == "/" ? $"/{file}" : $"{currentDirectory}/{file}";
+        var entry = fileSystem.Find(entry => entry.Path == path); //  && !entry.IsDirectory
 
-        if (fileEntry.Path != null)
+        if(entry.IsDirectory){
+            Console.WriteLine($"Not a file: {file}");
+        }
+        else if (entry.Path != null)
         {
-            Console.WriteLine(fileEntry.Content);
+            Console.WriteLine(entry.Content);
         }
         else
         {
             Console.WriteLine($"File not found: {file}. Creating new file. Enter content (end with a single dot on a line):");
             string content = ReadMultiLineInput();
-            fileSystem.Add(new FileSystemEntry(filePath, false, content));
+            fileSystem.Add(new FileSystemEntry(path, false, content));
             Console.WriteLine("File created.");
         }
     }
@@ -225,14 +225,18 @@ class VirtualTerminal
 
     private void ExecuteRmdir(string dir)
     {
-        string dirPath = currentDirectory == "/" ? $"/{dir}" : $"{currentDirectory}/{dir}";
-        var dirEntry = fileSystem.Find(entry => entry.Path == dirPath && entry.IsDirectory);
+        string path = currentDirectory == "/" ? $"/{dir}" : $"{currentDirectory}/{dir}";
+        var entry = fileSystem.Find(entry => entry.Path == path); // && entry.IsDirectory
 
-        if (dirEntry.Path != null)
+        if(!entry.IsDirectory)
         {
-            if (IsDirectoryEmpty(dirPath))
+            Console.WriteLine($"Not a directory: {dir}");
+        }
+        else if (entry.Path != null)
+        {
+            if (IsDirectoryEmpty(path))
             {
-                fileSystem.RemoveAll(entry => entry.Path == dirPath);
+                fileSystem.RemoveAll(entry => entry.Path == path);
                 Console.WriteLine($"Directory removed: {dir}");
             }
             else
@@ -248,12 +252,15 @@ class VirtualTerminal
 
     private void ExecuteRm(string file)
     {
-        string filePath = currentDirectory == "/" ? $"/{file}" : $"{currentDirectory}/{file}";
-        var fileEntry = fileSystem.Find(entry => entry.Path == filePath && !entry.IsDirectory);
+        string path = currentDirectory == "/" ? $"/{file}" : $"{currentDirectory}/{file}";
+        var entry = fileSystem.Find(entry => entry.Path == path); // && !entry.IsDirectoryr
 
-        if (fileEntry.Path != null)
+        if(entry.IsDirectory){
+            Console.WriteLine($"Not a file: {file}");
+        }
+        else if (entry.Path != null)
         {
-            fileSystem.RemoveAll(entry => entry.Path == filePath);
+            fileSystem.RemoveAll(entry => entry.Path == path);
             Console.WriteLine($"File removed: {file}");
         }
         else

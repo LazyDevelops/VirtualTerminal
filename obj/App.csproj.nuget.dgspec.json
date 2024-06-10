@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/workspaces/VirtualTerminal/App/App.csproj": {}
+    "/workspaces/VirtualTerminal/App.csproj": {}
   },
   "projects": {
-    "/workspaces/VirtualTerminal/App/App.csproj": {
+    "/workspaces/VirtualTerminal/App.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/workspaces/VirtualTerminal/App/App.csproj",
+        "projectUniqueName": "/workspaces/VirtualTerminal/App.csproj",
         "projectName": "App",
-        "projectPath": "/workspaces/VirtualTerminal/App/App.csproj",
+        "projectPath": "/workspaces/VirtualTerminal/App.csproj",
         "packagesPath": "/home/codespace/.nuget/packages/",
-        "outputPath": "/workspaces/VirtualTerminal/App/obj/",
+        "outputPath": "/workspaces/VirtualTerminal/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/codespace/.nuget/NuGet/NuGet.Config"
