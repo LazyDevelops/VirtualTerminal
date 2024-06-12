@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/workspaces/VirtualTerminal/App.csproj": {}
+    "/home/code/VirtualTerminal/App.csproj": {}
   },
   "projects": {
-    "/workspaces/VirtualTerminal/App.csproj": {
+    "/home/code/VirtualTerminal/App.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/workspaces/VirtualTerminal/App.csproj",
+        "projectUniqueName": "/home/code/VirtualTerminal/App.csproj",
         "projectName": "App",
-        "projectPath": "/workspaces/VirtualTerminal/App.csproj",
-        "packagesPath": "/home/codespace/.nuget/packages/",
-        "outputPath": "/workspaces/VirtualTerminal/obj/",
+        "projectPath": "/home/code/VirtualTerminal/App.csproj",
+        "packagesPath": "/home/code/.nuget/packages/",
+        "outputPath": "/home/code/VirtualTerminal/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/codespace/.nuget/NuGet/NuGet.Config"
+          "/home/code/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -58,7 +58,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.204/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.301/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

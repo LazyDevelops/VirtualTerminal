@@ -48,7 +48,10 @@ class VirtualTerminal
 
     private void DisplayPrompt()
     {
-        Console.Write($"$ {currentDirectory} > ");
+        WriteColoredText("\x1b[1muser\x1b[22m", ConsoleColor.Green);
+        WriteColoredText(":", Console.ForegroundColor);
+        WriteColoredText($"\x1b[1m{currentDirectory}\x1b[22m", ConsoleColor.Blue);
+        WriteColoredText("$ ", Console.ForegroundColor);
     }
 
     private void ProcessCommand(string command)
@@ -308,6 +311,13 @@ class VirtualTerminal
             content += line + Environment.NewLine;
         }
         return content.TrimEnd('\n');
+    }
+
+    private static void WriteColoredText(string text, ConsoleColor color)
+    {
+        Console.ForegroundColor = color;
+        Console.Write(text);
+        Console.ResetColor(); // 다른 색상으로 바꾸기 전에 색상 리셋
     }
 }
 
