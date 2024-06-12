@@ -2,3 +2,17 @@ rwxr-x code bin
 
 drwxr-x code bin
 -rw-r-- code hello.txt
+
+2자리 8진수
+앞자리는 소유자
+뒷자리는 기타
+
+rwxr-x
+111101
+
+r = 4, w = 2, x = 1
+
+ls -1
+자세히 표시
+ls -a
+숨김 파일 표시
