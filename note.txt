@@ -1,0 +1,4 @@
+rwxr-x code bin
+
+drwxr-x code bin
+-rw-r-- code hello.txt
