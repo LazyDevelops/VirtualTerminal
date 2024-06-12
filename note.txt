@@ -3,6 +3,9 @@ rwxr-x code bin
 drwxr-x code bin
 -rw-r-- code hello.txt
 
+- : 일반 파일
+d : 디렉터일 파일(폴더)
+
 2자리 8진수
 앞자리는 소유자
 뒷자리는 기타
