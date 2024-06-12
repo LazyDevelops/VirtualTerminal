@@ -1,0 +1,342 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+class VirtualTerminal
+{
+    private Dictionary<string, string> fileSystem;
+    private string currentDirectory;
+    private List<string> commands;
+
+    public VirtualTerminal()
+    {
+        fileSystem = new Dictionary<string, string>
+        {
+            { "/", "root directory" },
+            { "/home", "home directory" },
+            { "/home/user", "user directory" },
+            { "/home/user/file.txt", "this is a sample file" }
+        };
+
+        currentDirectory = "/";
+        commands = new List<string> { "ls", "cd", "cat", "clear", "mkdir", "rmdir", "rm" };
+    }
+
+    public void Run()
+    {
+        while (true)
+        {
+            DisplayPrompt();
+            string command = ReadLineWithAutocomplete();
+            if (string.IsNullOrWhiteSpace(command))
+            {
+                continue;
+            }
+            ProcessCommand(command);
+        }
+    }
+
+    private void DisplayPrompt()
+    {
+        Console.Write($"$ {currentDirectory} > ");
+    }
+
+    private void ProcessCommand(string command)
+    {
+        string[] args = command.Split(' ');
+
+        switch (args[0])
+        {
+            case "ls":
+                ExecuteLs();
+                break;
+            case "cd":
+                if (args.Length > 1)
+                {
+                    ExecuteCd(args[1]);
+                }
+                else
+                {
+                    Console.WriteLine("Usage: cd <directory>");
+                }
+                break;
+            case "cat":
+                if (args.Length > 1)
+                {
+                    ExecuteCat(args[1]);
+                }
+                else
+                {
+                    Console.WriteLine("Usage: cat <file>");
+                }
+                break;
+            case "clear":
+                ExecuteClear();
+                break;
+            case "mkdir":
+                if (args.Length > 1)
+                {
+                    ExecuteMkdir(args[1]);
+                }
+                else
+                {
+                    Console.WriteLine("Usage: mkdir <directory>");
+                }
+                break;
+            case "rmdir":
+                if (args.Length > 1)
+                {
+                    ExecuteRmdir(args[1]);
+                }
+                else
+                {
+                    Console.WriteLine("Usage: rmdir <directory>");
+                }
+                break;
+            case "rm":
+                if (args.Length > 1)
+                {
+                    ExecuteRm(args[1]);
+                }
+                else
+                {
+                    Console.WriteLine("Usage: rm <file>");
+                }
+                break;
+            default:
+                Console.WriteLine($"Command not found: {command}");
+                break;
+        }
+    }
+
+    private void ExecuteLs()
+    {
+        HashSet<string> seen = new HashSet<string>();
+
+        foreach (var item in fileSystem.Keys)
+        {
+            if (item.StartsWith(currentDirectory))
+            {
+                string relativePath = item.Substring(currentDirectory.Length).TrimStart('/');
+                if (relativePath.Contains('/'))
+                {
+                    relativePath = relativePath.Substring(0, relativePath.IndexOf('/'));
+                }
+
+                if (!seen.Contains(relativePath) && relativePath.Length > 0)
+                {
+                    Console.WriteLine(relativePath);
+                    seen.Add(relativePath);
+                }
+            }
+        }
+    }
+
+    private void ExecuteCd(string dir)
+    {
+        if (dir == ".")
+        {
+            return;
+        }
+        else if (dir == "..")
+        {
+            if (currentDirectory != "/")
+            {
+                int lastSlashIndex = currentDirectory.LastIndexOf('/');
+                if (lastSlashIndex == 0)
+                {
+                    currentDirectory = "/";
+                }
+                else
+                {
+                    currentDirectory = currentDirectory.Substring(0, lastSlashIndex);
+                }
+            }
+        }
+        else
+        {
+            string newDir = currentDirectory == "/" ? $"/{dir}" : $"{currentDirectory}/{dir}";
+            if (fileSystem.ContainsKey(newDir) && fileSystem[newDir] == "directory")
+            {
+                currentDirectory = newDir;
+            }
+            else
+            {
+                Console.WriteLine($"Directory not found: {dir}");
+            }
+        }
+    }
+
+    private void ExecuteCat(string file)
+    {
+        string filePath = currentDirectory == "/" ? $"/{file}" : $"{currentDirectory}/{file}";
+        if (fileSystem.ContainsKey(filePath))
+        {
+            Console.WriteLine(fileSystem[filePath]);
+        }
+        else
+        {
+            Console.WriteLine($"File not found: {file}. Creating new file. Enter content (end with a single dot on a line):");
+            string content = ReadMultiLineInput();
+            fileSystem[filePath] = content;
+            Console.WriteLine("File created.");
+        }
+    }
+
+    private void ExecuteClear()
+    {
+        Console.Clear();
+    }
+
+    private void ExecuteMkdir(string dir)
+    {
+        string dirPath = currentDirectory == "/" ? $"/{dir}" : $"{currentDirectory}/{dir}";
+        if (fileSystem.ContainsKey(dirPath))
+        {
+            Console.WriteLine($"Directory already exists: {dir}");
+        }
+        else
+        {
+            fileSystem[dirPath] = "directory";
+            Console.WriteLine($"Directory created: {dir}");
+        }
+    }
+
+    private void ExecuteRmdir(string dir)
+    {
+        string dirPath = currentDirectory == "/" ? $"/{dir}" : $"{currentDirectory}/{dir}";
+        if (fileSystem.ContainsKey(dirPath) && fileSystem[dirPath] == "directory")
+        {
+            if (IsDirectoryEmpty(dirPath))
+            {
+                fileSystem.Remove(dirPath);
+                Console.WriteLine($"Directory removed: {dir}");
+            }
+            else
+            {
+                Console.WriteLine($"Directory not empty: {dir}");
+            }
+        }
+        else
+        {
+            Console.WriteLine($"Directory not found: {dir}");
+        }
+    }
+
+    private void ExecuteRm(string file)
+    {
+        string filePath = currentDirectory == "/" ? $"/{file}" : $"{currentDirectory}/{file}";
+        if (fileSystem.ContainsKey(filePath) && fileSystem[filePath] != "directory")
+        {
+            fileSystem.Remove(filePath);
+            Console.WriteLine($"File removed: {file}");
+        }
+        else
+        {
+            Console.WriteLine($"File not found: {file}");
+        }
+    }
+
+    private bool IsDirectoryEmpty(string dirPath)
+    {
+        foreach (var item in fileSystem.Keys)
+        {
+            if (item.StartsWith($"{dirPath}/"))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private string ReadMultiLineInput()
+    {
+        string content = "";
+        string line;
+        while ((line = Console.ReadLine()) != ".")
+        {
+            content += line + Environment.NewLine;
+        }
+        return content.TrimEnd('\n');
+    }
+
+    private string ReadLineWithAutocomplete()
+    {
+        string input = "";
+        int cursorPosition = 0;
+
+        while (true)
+        {
+            ConsoleKeyInfo keyInfo = Console.ReadKey(intercept: true);
+            if (keyInfo.Key == ConsoleKey.Enter)
+            {
+                Console.WriteLine();
+                return input;
+            }
+            else if (keyInfo.Key == ConsoleKey.Backspace)
+            {
+                if (input.Length > 0 && cursorPosition > 0)
+                {
+                    input = input.Remove(cursorPosition - 1, 1);
+                    cursorPosition--;
+                    Console.Write("\b \b");
+                }
+            }
+            else if (keyInfo.Key == ConsoleKey.Tab)
+            {
+                string autocompleteSuggestion = GetAutocompleteSuggestion(input);
+                if (!string.IsNullOrEmpty(autocompleteSuggestion))
+                {
+                    Console.Write(autocompleteSuggestion.Substring(input.Length));
+                    input = autocompleteSuggestion;
+                    cursorPosition = input.Length;
+                }
+            }
+            else
+            {
+                input += keyInfo.KeyChar;
+                cursorPosition++;
+                Console.Write(keyInfo.KeyChar);
+            }
+        }
+    }
+
+    private string GetAutocompleteSuggestion(string input)
+    {
+        List<string> possibilities = new List<string>();
+
+        // Commands
+        possibilities.AddRange(commands.Where(cmd => cmd.StartsWith(input)));
+
+        // Current directory files and folders
+        foreach (var item in fileSystem.Keys)
+        {
+            if (item.StartsWith(currentDirectory))
+            {
+                string relativePath = item.Substring(currentDirectory.Length).TrimStart('/');
+                if (!relativePath.Contains('/') && relativePath.StartsWith(input))
+                {
+                    possibilities.Add(relativePath);
+                }
+            }
+        }
+
+        if (possibilities.Count == 1)
+        {
+            return possibilities[0];
+        }
+        else
+        {
+            return input;
+        }
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        VirtualTerminal terminal = new VirtualTerminal();
+        terminal.Run();
+    }
+}
