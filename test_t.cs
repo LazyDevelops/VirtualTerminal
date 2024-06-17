@@ -9,6 +9,7 @@ using System.Collections.Generic;
 // rmdir - O
 // mv - O
 // rm - O
+// pwd
 // unlock - W
 // login - W
 // exit - O
