@@ -1,22 +1,59 @@
 using System;
 using System.Collections.Generic;
 
+// ls - O
+// cat - O
+// get <U, D, R, L> - W
+// go <U, D, R, L> - W
+// mkdir - O
+// rmdir - O
+// mv - O
+// rm - O
+// unlock - W
+// login - W
+// exit - O
+// mapping - W
+// man
+// help - O
+
 class VirtualTerminal
 {
-    private Dictionary<string, string?> fileSystem;
+    private struct FileSystemEntry
+    {
+        public string Path { get; }
+        public string? Content { get; }
+        public short Permission { get; }
+        public string UID { get; }
+        public bool IsDirectory { get; }
+
+        public FileSystemEntry(string path, string UID, short Permission, bool isDirectory, string? Content = null)
+        {
+            this.Path = path;
+            this.UID = UID;
+            this.Permission = Permission;
+            this.IsDirectory = isDirectory;
+            this.Content = Content;
+        }
+    }
+
+    private List<FileSystemEntry> fileSystem;
     private string currentDirectory;
+    private string currentUser;
 
     public VirtualTerminal()
     {
-        fileSystem = new Dictionary<string, string?>
-        {
-            { "/", null },
-            { "/home", null },
-            { "/home/user", null },
-            { "/home/user/file.txt", "this is a sample file" }
-        };
+        currentDirectory = "/home/user";
+        currentUser = "user";
 
-        currentDirectory = "/";
+        fileSystem = new List<FileSystemEntry>
+        {
+            // 8진수 입력 안됨
+            new FileSystemEntry("/", "root", 0b111101, true),
+            new FileSystemEntry("/root", "root", 0b111000, true),
+            new FileSystemEntry("/home", "root", 0b111101, true),
+            new FileSystemEntry("/home/user", currentUser, 0b111101, true),
+            new FileSystemEntry($"/home/user/Hello_{currentUser}.txt", "root", 0b111111, false, $"Hello, {currentUser}!")
+        };
     }
 
     public void Run()
@@ -35,17 +72,23 @@ class VirtualTerminal
 
     private void DisplayPrompt()
     {
-        Console.Write($"$ {currentDirectory} > ");
+        WriteColoredText("\x1b[1muser\x1b[22m", ConsoleColor.Green);
+        WriteColoredText(":", Console.ForegroundColor);
+        WriteColoredText($"\x1b[1m{currentDirectory}\x1b[22m", ConsoleColor.Blue);
+        WriteColoredText("$ ", Console.ForegroundColor);
     }
 
     private void ProcessCommand(string command)
     {
-        string[] args = command.Split(' ');
+        string[] args = command.Split(' ', 2);
+        string cmd = args[0];
+        // 수정 필요
+        string options = args.Length > 1 ? args[1] : string.Empty;
 
-        switch (args[0])
+        switch (cmd)
         {
             case "ls":
-                ExecuteLs();
+                ExecuteLs(options);
                 break;
             case "cd":
                 if (args.Length > 1)
@@ -112,15 +155,17 @@ class VirtualTerminal
         }
     }
 
-    private void ExecuteLs()
+    private void ExecuteLs(string options)
     {
         HashSet<string> seen = new HashSet<string>();
+        // 수정 필요
+        bool detailed = options.Contains("-l");
 
-        foreach (var item in fileSystem.Keys)
+        foreach (var entry in fileSystem)
         {
-            if (item.StartsWith(currentDirectory))
+            if (entry.Path.StartsWith(currentDirectory))
             {
-                string relativePath = item.Substring(currentDirectory.Length).TrimStart('/');
+                string relativePath = entry.Path.Substring(currentDirectory.Length).TrimStart('/');
                 if (relativePath.Contains('/'))
                 {
                     relativePath = relativePath.Substring(0, relativePath.IndexOf('/'));
@@ -128,23 +173,43 @@ class VirtualTerminal
 
                 if (!seen.Contains(relativePath) && relativePath.Length > 0)
                 {
-                    Console.WriteLine(relativePath);
+                    if (detailed)
+                    {
+                        string type = entry.IsDirectory ? "d" : "-";
+                        string permissions = ConvertPermissionsToString(entry.Permission);
+                        Console.WriteLine($"{type}{permissions} {entry.UID} {relativePath}");
+                    }
+                    else
+                    {
+                        Console.WriteLine(relativePath);
+                    }
                     seen.Add(relativePath);
                 }
             }
         }
     }
 
+    // 수정 필요
+    private string ConvertPermissionsToString(short permissions)
+    {
+        string result = string.Empty;
+        result += (permissions & 040) != 0 ? "r" : "-";
+        result += (permissions & 020) != 0 ? "w" : "-";
+        result += (permissions & 010) != 0 ? "x" : "-";
+        result += (permissions & 004) != 0 ? "r" : "-";
+        result += (permissions & 002) != 0 ? "w" : "-";
+        result += (permissions & 001) != 0 ? "x" : "-";
+        return result;
+    }
+
     private void ExecuteCd(string dir)
     {
         if (dir == "." || dir == "./")
         {
-            // Current directory, do nothing
             return;
         }
         else if (dir == ".." || dir == "../")
         {
-            // Move to parent directory
             if (currentDirectory != "/")
             {
                 int lastSlashIndex = currentDirectory.LastIndexOf('/');
@@ -160,9 +225,8 @@ class VirtualTerminal
         }
         else
         {
-            // Move to specified directory
             string newDir = currentDirectory == "/" ? $"/{dir}" : $"{currentDirectory}/{dir}";
-            if (fileSystem.ContainsKey(newDir) && fileSystem[newDir].EndsWith("directory"))
+            if (fileSystem.Exists(entry => entry.Path == newDir && entry.IsDirectory))
             {
                 currentDirectory = newDir;
             }
@@ -175,16 +239,21 @@ class VirtualTerminal
 
     private void ExecuteCat(string file)
     {
-        string filePath = currentDirectory == "/" ? $"/{file}" : $"{currentDirectory}/{file}";
-        if (fileSystem.ContainsKey(filePath))
+        string path = currentDirectory == "/" ? $"/{file}" : $"{currentDirectory}/{file}";
+        var entry = fileSystem.Find(entry => entry.Path == path); //  && !entry.IsDirectory
+
+        if(entry.IsDirectory){
+            Console.WriteLine($"Not a file: {file}");
+        }
+        else if (entry.Path != null)
         {
-            Console.WriteLine(fileSystem[filePath]);
+            Console.WriteLine(entry.Content);
         }
         else
         {
             Console.WriteLine($"File not found: {file}. Creating new file. Enter content (end with a single dot on a line):");
             string content = ReadMultiLineInput();
-            fileSystem[filePath] = content;
+            fileSystem.Add(new FileSystemEntry(path, currentUser, 0b110100, false, content));
             Console.WriteLine("File created.");
         }
     }
@@ -197,25 +266,35 @@ class VirtualTerminal
     private void ExecuteMkdir(string dir)
     {
         string dirPath = currentDirectory == "/" ? $"/{dir}" : $"{currentDirectory}/{dir}";
-        if (fileSystem.ContainsKey(dirPath))
+        if (fileSystem.Exists(entry => entry.Path == dirPath))
         {
             Console.WriteLine($"Directory already exists: {dir}");
         }
         else
         {
-            fileSystem[dirPath] = "directory";
+            fileSystem.Add(new FileSystemEntry(dirPath, currentUser, 0b111101, true));
             Console.WriteLine($"Directory created: {dir}");
         }
     }
 
     private void ExecuteRmdir(string dir)
     {
-        string dirPath = currentDirectory == "/" ? $"/{dir}" : $"{currentDirectory}/{dir}";
-        if (fileSystem.ContainsKey(dirPath) && fileSystem[dirPath] == "directory")
+        string path = currentDirectory == "/" ? $"/{dir}" : $"{currentDirectory}/{dir}";
+        var entry = fileSystem.Find(entry => entry.Path == path);
+
+        if (entry.Path == null)
         {
-            if (IsDirectoryEmpty(dirPath))
+            Console.WriteLine($"Directory not found: {dir}");
+        }
+        else if (!entry.IsDirectory)
+        {
+            Console.WriteLine($"Not a directory: {dir}");
+        }
+        else
+        {
+            if (IsDirectoryEmpty(path))
             {
-                fileSystem.Remove(dirPath);
+                fileSystem.RemoveAll(entry => entry.Path == path);
                 Console.WriteLine($"Directory removed: {dir}");
             }
             else
@@ -223,23 +302,25 @@ class VirtualTerminal
                 Console.WriteLine($"Directory not empty: {dir}");
             }
         }
-        else
-        {
-            Console.WriteLine($"Directory not found: {dir}");
-        }
     }
 
     private void ExecuteRm(string file)
     {
-        string filePath = currentDirectory == "/" ? $"/{file}" : $"{currentDirectory}/{file}";
-        if (fileSystem.ContainsKey(filePath) && fileSystem[filePath] != "directory")
+        string path = currentDirectory == "/" ? $"/{file}" : $"{currentDirectory}/{file}";
+        var entry = fileSystem.Find(entry => entry.Path == path);
+
+        if (entry.Path == null)
         {
-            fileSystem.Remove(filePath);
-            Console.WriteLine($"File removed: {file}");
+            Console.WriteLine($"File not found: {file}");
+        }
+        else if (entry.IsDirectory)
+        {
+            Console.WriteLine($"Not a file: {file}");
         }
         else
         {
-            Console.WriteLine($"File not found: {file}");
+            fileSystem.RemoveAll(entry => entry.Path == path);
+            Console.WriteLine($"File removed: {file}");
         }
     }
 
@@ -252,6 +333,7 @@ class VirtualTerminal
     {
         Console.WriteLine("Available commands:");
         Console.WriteLine("ls - List directory contents");
+        Console.WriteLine("ls -l - List directory contents with details");
         Console.WriteLine("cd - Change the current directory");
         Console.WriteLine("cat - Display file content");
         Console.WriteLine("clear - Clear the screen");
@@ -263,9 +345,9 @@ class VirtualTerminal
 
     private bool IsDirectoryEmpty(string dirPath)
     {
-        foreach (var item in fileSystem.Keys)
+        foreach (var entry in fileSystem)
         {
-            if (item.StartsWith($"{dirPath}/"))
+            if (entry.Path.StartsWith($"{dirPath}/"))
             {
                 return false;
             }
@@ -282,6 +364,13 @@ class VirtualTerminal
             content += line + Environment.NewLine;
         }
         return content.TrimEnd('\n');
+    }
+
+    private static void WriteColoredText(string text, ConsoleColor color)
+    {
+        Console.ForegroundColor = color;
+        Console.Write(text);
+        Console.ResetColor();
     }
 }
 

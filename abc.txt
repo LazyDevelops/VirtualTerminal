@@ -1,17 +1,25 @@
 using System;
 using System.Collections.Generic;
 
+// TODO
+//     - 권한 설정 및
+//     - 권한 표기 방법 고민
+
 class VirtualTerminal
 {
     private struct FileSystemEntry
     {
         public string Path { get; }
         public string? Content { get; }
+        public short Permission { get; }
+        public string UID { get; }
         public bool IsDirectory { get; }
 
-        public FileSystemEntry(string path, bool isDirectory, string? content = null)
+        public FileSystemEntry(string path, string UID, short Permission, bool isDirectory, string? content = null)
         {
             Path = path;
+            UID = UID;
+            Permission = Permission;
             IsDirectory = isDirectory;
             Content = content;
         }
@@ -23,10 +31,10 @@ class VirtualTerminal
     {
         fileSystem = new List<FileSystemEntry>
         {
-            new FileSystemEntry("/", true),
-            new FileSystemEntry("/home", true),
-            new FileSystemEntry("/home/user", true),
-            new FileSystemEntry("/home/user/file.txt", false, "this is a sample file")
+            new FileSystemEntry("/", "root", 075, true),
+            new FileSystemEntry("/home", "root", 075,  true),
+            new FileSystemEntry("/home/user", "root", 075, true),
+            new FileSystemEntry("/home/user/file.txt", "root", 077, false, "this is a sample file")
         };
 
         currentDirectory = "/";
@@ -128,6 +136,7 @@ class VirtualTerminal
         }
     }
 
+    // 옵션 기능 고려
     private void ExecuteLs()
     {
         HashSet<string> seen = new HashSet<string>();
@@ -202,7 +211,8 @@ class VirtualTerminal
         {
             Console.WriteLine($"File not found: {file}. Creating new file. Enter content (end with a single dot on a line):");
             string content = ReadMultiLineInput();
-            fileSystem.Add(new FileSystemEntry(path, false, content));
+            // need edit
+            fileSystem.Add(new FileSystemEntry(path, "user", 064, false, content));
             Console.WriteLine("File created.");
         }
     }
@@ -221,7 +231,8 @@ class VirtualTerminal
         }
         else
         {
-            fileSystem.Add(new FileSystemEntry(dirPath, true));
+            // need edit
+            fileSystem.Add(new FileSystemEntry(dirPath, "user", 075, true));
             Console.WriteLine($"Directory created: {dir}");
         }
     }
