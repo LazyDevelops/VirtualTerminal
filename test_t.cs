@@ -25,11 +25,9 @@ class VirtualTerminal
         public string? content { get; }
         public byte permission { get; }
         public string UID { get; }
-        public enum FileType { 
-            F, D 
-        } public FileType fileType { get; }
+        byte fileType { get; }
 
-        public FileSystemEntry(string path, string UID, byte permission, FileType fileType, string? content = null)
+        public FileSystemEntry(string path, string UID, byte permission, byte fileType, string? content = null)
         {
             this.path = path;
             this.UID = UID;
