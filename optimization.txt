@@ -1,0 +1,72 @@
+public Tree<FileSystemEntry> CreateFile(Tree<FileSystemEntry> root, string path, FileSystemEntry entry)
+{
+    Tree<FileSystemEntry> parent = FindParentDirectory(root, path);
+
+    if (parent == null)
+    {
+        return null; // 부모 디렉토리를 찾을 수 없음
+    }
+
+    Tree<FileSystemEntry> newFile = new Tree<FileSystemEntry>(entry);
+    parent.AppendChildNode(newFile);
+    return newFile;
+}
+
+public bool RemoveFile(Tree<FileSystemEntry> root, string path)
+{
+    Tree<FileSystemEntry>? parent = FindParentDirectory(root, path);
+    string fileName = path.Substring(path.LastIndexOf('/') + 1);
+
+    if (parent != null)
+    {
+        Tree<FileSystemEntry>? fileToRemove = FindFile(parent, fileName);
+        if (fileToRemove != null && fileToRemove.LeftChild == null)
+        {
+            parent.RemoveChildNode(fileToRemove);
+            return true;
+        }
+    }
+
+    return false;
+}
+
+public Tree<FileSystemEntry>? FindFile(Tree<FileSystemEntry> root, string fileName)
+{
+    foreach (Tree<FileSystemEntry> child in root.GetChildren())
+    {
+        if (child.Data.Name == fileName && !child.Data.IsDirectory)
+        {
+            return child;
+        }
+    }
+    return null;
+}
+
+private Tree<FileSystemEntry>? FindParentDirectory(Tree<FileSystemEntry> root, string path)
+{
+    string[] directories = path.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+    Tree<FileSystemEntry>? current = root;
+
+    for (int i = 0; i < directories.Length - 1; i++) // 마지막 요소는 파일 이름
+    {
+        current = FindDirectory(current, directories[i]);
+        if (current == null)
+        {
+            return null; // 경로에 해당하는 디렉토리가 없음
+        }
+    }
+
+    return current;
+}
+
+private Tree<FileSystemEntry>? FindDirectory(Tree<FileSystemEntry> startDir, string dirName)
+{
+    foreach (Tree<FileSystemEntry> child in startDir.GetChildren())
+    {
+        if (child.Data.Name == dirName && child.Data.IsDirectory)
+        {
+            return child;
+        }
+    }
+    return null;
+}
