@@ -19,3 +19,30 @@ ls -1
 자세히 표시
 ls -a
 숨김 파일 표시
+
+private struct FileSystemEntry{
+    public string name { get; }
+    public byte permission { get; }
+    public string UID { get; }
+    public enum FileType { 
+        F, D 
+    } public FileType fileType { get; }
+    public string? content { get; }
+
+    public FileSystemEntry(string name, string UID, byte permission, FileType fileType, string? content = null){
+        this.name = name;
+        this.UID = UID;
+        this.permission = permission;
+        this.fileType = fileType;
+        this.content = content;
+    }
+}
+
+Tree<FileSystemNode> root = new Tree<FileSystemNode>(new FileSystemEntry("/", "root", 0b111101, 1));
+
+CreateFile(root, "/", new FileSystemEntry("root", "root", 0b111000, 1));
+CreateFile(root, "/", new FileSystemEntry("home", "root", 0b111101, 1));
+Tree<FileSystemNode> HOME = CreateFile(root, "/home", new FileSystemEntry($"{USER}", USER, 0b111101, 1));
+CreateFile(root, $"/home/{USER}", new FileSystemEntry($"Hello_{USER}.txt", "root", 0b111111, 0, $"Hello, {USER}!"));
+
+RemoveFile 함수 구현 필요
