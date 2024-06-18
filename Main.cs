@@ -56,7 +56,7 @@ class Program
     {
         string[] directories = path.Split('/');
         Tree<FileSystemEntry> current = root;
-        Tree<FileSystemEntry>? parents = null;
+        Tree<FileSystemEntry> parents = root;
 
         for (int i = 1; i < directories.Length; i++)
         {
@@ -65,7 +65,7 @@ class Program
                 if (tempNode.Data.name == directories[i])
                 {
                     current = tempNode;
-                    if (directories.Length - i == 1)
+                    if (directories.Length - i == 2)
                     {
                         parents = current;
                     }
@@ -74,7 +74,7 @@ class Program
             }
         }
 
-        if (current.LeftChild == null && parents != null)
+        if (current.LeftChild == null)
         {
             parents.RemoveChildNode(current);
             return true;
@@ -106,19 +106,23 @@ class Program
     {
         Tree<FileSystemEntry> root = new Tree<FileSystemEntry>(new FileSystemEntry("/", "root", 0b111101, FileSystemEntry.FileType.D));
         Tree<FileSystemEntry> home = new Tree<FileSystemEntry>(new FileSystemEntry("home", "root", 0b111101, FileSystemEntry.FileType.D));
-        Tree<FileSystemEntry> rootD = new Tree<FileSystemEntry>(new FileSystemEntry("root", "root", 0b111000, FileSystemEntry.FileType.D));
+        Tree<FileSystemEntry> bin = new Tree<FileSystemEntry>(new FileSystemEntry("bin", "root", 0b111101, FileSystemEntry.FileType.D));
         Tree<FileSystemEntry> user = new Tree<FileSystemEntry>(new FileSystemEntry("user", "user", 0b111000, FileSystemEntry.FileType.D));
         Tree<FileSystemEntry> item = new Tree<FileSystemEntry>(new FileSystemEntry("item", "user", 0b111101, FileSystemEntry.FileType.D));
         Tree<FileSystemEntry> file = new Tree<FileSystemEntry>(new FileSystemEntry("Hello_user.txt", "root", 0b111111, FileSystemEntry.FileType.F));
 
         root.AppendChildNode(home);
-        root.AppendChildNode(rootD);
+        root.AppendChildNode(bin);
         home.AppendChildNode(user);
         user.AppendChildNode(item);
         user.AppendChildNode(file);
 
         Program program = new Program();
-        program.CreateFile(root, "/home/user/item", new FileSystemEntry("newItem.item", "user", 0b111101, FileSystemEntry.FileType.F));
+        program.CreateFile(root, "/home/user/item", new FileSystemEntry("newItem.item", "user", 0b111101, FileSystemEntry.FileType.F, "It`s is Item."));
+        program.CreateFile(root, "/", new FileSystemEntry("check.txt", "user", 0b111101, FileSystemEntry.FileType.F, "check File"));
+        program.RemoveFile(root, "/bin");
+        Console.WriteLine(program.FindFile(root, "/home/user").Data.name);
+        Console.WriteLine();
 
         root.PrintTree(0);
 

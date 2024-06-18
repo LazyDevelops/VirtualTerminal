@@ -51,6 +51,8 @@ namespace VirtualTerminal {
             root = new Tree<FileSystemNode>(new FileSystemEntry("/", "root", 0b111101, 1));
         }
 
+        // File함수 Main보고 수정하기!
+
         public Tree<FileSystemEntry> CreateFile(string path, FileSystemEntry entry)
         {
             string[] directories = path.Split('/');
