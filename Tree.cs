@@ -3,8 +3,8 @@ using System;
 namespace Tree {
     class Tree<T> {
         public T? Data;
-        private Tree<T>? LeftChild;
-        private Tree<T>? RightSibling;
+        public Tree<T>? LeftChild;
+        public Tree<T>? RightSibling;
 
         public Tree() { }
 
@@ -25,6 +25,49 @@ namespace Tree {
                 }
 
                 temp.RightSibling = child;
+            }
+        }
+
+        public List<Tree<T>> GetChildren()
+        {
+            List<Tree<T>> children = new List<Tree<T>>();
+            Tree<T>? child = LeftChild;
+
+            while (child != null)
+            {
+                children.Add(child);
+                child = child.RightSibling;
+            }
+
+            return children;
+        }
+
+        public void RemoveChildNode(Tree<T> nodeToRemove)
+        {
+            if (nodeToRemove == null)
+            {
+                return; // 삭제할 노드가 null인 경우 종료
+            }
+
+            if (LeftChild == nodeToRemove)
+            {
+                // 삭제할 노드가 첫 번째 자식인 경우
+                LeftChild = nodeToRemove.RightSibling;
+            }
+            else
+            {
+                // 삭제할 노드가 첫 번째 자식이 아닌 경우
+                Tree<T>? currentChild = LeftChild;
+                while (currentChild != null)
+                {
+                    if (currentChild.RightSibling == nodeToRemove)
+                    {
+                        // 삭제할 노드를 찾은 경우
+                        currentChild.RightSibling = nodeToRemove.RightSibling;
+                        return;
+                    }
+                    currentChild = currentChild.RightSibling;
+                }
             }
         }
 
