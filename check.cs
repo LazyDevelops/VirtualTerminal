@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Internal;
 using Tree;
 
 namespace VirtualTerminal {
@@ -64,7 +65,7 @@ namespace VirtualTerminal {
             return newFile;
         }
 
-        public bool RemoveFile(string path)
+        public int RemoveFile(string path)
         {
             string[] directories = path.Split('/');
             Tree<FileNode> current = root;
@@ -78,9 +79,9 @@ namespace VirtualTerminal {
             if (current.LeftChild == null)
             {
                 parents.RemoveChildNode(current);
-                return true;
+                return 0;
             }
-            return false;
+            return -1;
         }
 
         public Tree<FileNode> FindFile(string path)
@@ -145,27 +146,27 @@ namespace VirtualTerminal {
                 // case "cat":
                 //     ExecuteCat(args);
                 //     break;
-                // case "clear":
-                //     ExecuteClear();
-                //     break;
+                case "clear":
+                    ExecuteClear();
+                    break;
                 case "exit":
                     ExecuteExit();
                     break;
-                // case "help":
-                //     ExecuteHelp();
-                //     break;
+                case "help":
+                    ExecuteHelp();
+                    break;
                 case "ls":
                     ExecuteLs(args);
                     break;
-                // case "mkdir":
-                //     ExecuteMkdir(args);
-                //     break;
+                case "mkdir":
+                    ExecuteMkdir(args);
+                    break;
                 // case "rm":
                 //     ExecuteRm(args);
                 //     break;
-                // case "rmdir":
-                //     ExecuteRmdir(args);
-                //     break;
+                case "rmdir":
+                    ExecuteRmdir(args);
+                    break;
                 default:
                     Console.WriteLine($"Command not found: {command}");
                     break;
@@ -274,51 +275,58 @@ namespace VirtualTerminal {
         //     }
         // }
 
-        // private void ExecuteClear()
-        // {
-        //     Console.Clear();
-        // }
+        private void ExecuteClear()
+        {
+            Console.Clear();
+        }
 
-        // private void ExecuteMkdir(string[] args)
-        // {
-        //     string dirPath = PWD == "/" ? $"/{dir}" : $"{PWD}/{dir}";
-        //     if (fileSystem.Exists(entry => entry.Path == dirPath))
-        //     {
-        //         Console.WriteLine($"Directory already exists: {dir}");
-        //     }
-        //     else
-        //     {
-        //         fileSystem.Add(new FileSystemEntry(dirPath, USER, 0b111101, 1));
-        //         Console.WriteLine($"Directory created: {dir}");
-        //     }
-        // }
+        private void ExecuteMkdir(string[] args){
+            string[] parts = path.Split('/');
+            string fileName = parts[parts.Length - 1];
+            
+            foreach(string temp in args){
+                if(temp.Contains("/") && !FindFile(temp)){
+                    CreateFile(temp, new FileNode(fileName, USER, 0b111101, FileNode.FileType.D));
+                }
+            }
+        }
 
-        // private void ExecuteRmdir(string[] args)
-        // {
-        //     string path = PWD == "/" ? $"/{dir}" : $"{PWD}/{dir}";
-        //     var entry = fileSystem.Find(entry => entry.Path == path);
+        private void ExecuteRmdir(string[] args){
+            Tree<FileNode> file = new Tree<FileNode>();
 
-        //     if (entry.Path == null)
-        //     {
-        //         Console.WriteLine($"Directory not found: {dir}");
-        //     }
-        //     else if (!entry.IsDirectory)
-        //     {
-        //         Console.WriteLine($"Not a directory: {dir}");
-        //     }
-        //     else
-        //     {
-        //         if (IsDirectoryEmpty(path))
-        //         {
-        //             fileSystem.RemoveAll(entry => entry.Path == path);
-        //             Console.WriteLine($"Directory removed: {dir}");
-        //         }
-        //         else
-        //         {
-        //             Console.WriteLine($"Directory not empty: {dir}");
-        //         }
-        //     }
-        // }
+            foreach(string temp in args){
+                if(temp.Contains("/")){
+                    if(file.Data.fileType == FileNode.FileType.D){
+                        if(!RemoveFile(temp)){
+                            Console.WriteLine($"failed to remove '{file.Data.name}': Directory not empty");
+                        }
+                    }
+                }
+            }
+            // string path = PWD == "/" ? $"/{dir}" : $"{PWD}/{dir}";
+            // var entry = fileSystem.Find(entry => entry.Path == path);
+
+            // if (entry.Path == null)
+            // {
+            //     Console.WriteLine($"Directory not found: {dir}");
+            // }
+            // else if (!entry.IsDirectory)
+            // {
+            //     Console.WriteLine($"Not a directory: {dir}");
+            // }
+            // else
+            // {
+            //     if (IsDirectoryEmpty(path))
+            //     {
+            //         fileSystem.RemoveAll(entry => entry.Path == path);
+            //         Console.WriteLine($"Directory removed: {dir}");
+            //     }
+            //     else
+            //     {
+            //         Console.WriteLine($"Directory not empty: {dir}");
+            //     }
+            // }
+        }
 
         // private void ExecuteRm(string[] args)
         // {
@@ -345,18 +353,18 @@ namespace VirtualTerminal {
             Environment.Exit(0);
         }
 
-        // private void ExecuteHelp()
-        // {
-        //     Console.WriteLine("Available commands:");
-        //     Console.WriteLine("ls - List directory contents");
-        //     Console.WriteLine("cd - Change the current directory");
-        //     Console.WriteLine("cat - Display file content");
-        //     Console.WriteLine("clear - Clear the screen");
-        //     Console.WriteLine("mkdir - Create a new directory");
-        //     Console.WriteLine("rmdir - Remove a directory");
-        //     Console.WriteLine("rm - Remove a file");
-        //     Console.WriteLine("exit - Exit the terminal");
-        // }
+        private void ExecuteHelp()
+        {
+            Console.WriteLine("Available commands:");
+            Console.WriteLine("ls - List directory contents");
+            Console.WriteLine("cd - Change the current directory");
+            Console.WriteLine("cat - Display file content");
+            Console.WriteLine("clear - Clear the screen");
+            Console.WriteLine("mkdir - Create a new directory");
+            Console.WriteLine("rmdir - Remove a directory");
+            Console.WriteLine("rm - Remove a file");
+            Console.WriteLine("exit - Exit the terminal");
+        }
 
         private string ConvertPermissionsToString(short permissions)
         {
