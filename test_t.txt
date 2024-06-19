@@ -25,25 +25,7 @@ using Tree;
 namespace VirtualTerminal {
     class VirtualTerminal
     {
-        private struct FileSystemEntry
-        {
-            public string path { get; }
-            public string? content { get; }
-            public byte permission { get; }
-            public string UID { get; }
-            public enum FileType { 
-                F, D 
-            } public FileType fileType { get; }
-
-            public FileSystemEntry(string path, string UID, byte permission, FileType fileType, string? content = null)
-            {
-                this.path = path;
-                this.UID = UID;
-                this.permission = permission;
-                this.fileType = fileType;
-                this.content = content;
-            }
-        }
+        \
 
         private List<FileSystemEntry> fileSystem;
         private string PWD;
