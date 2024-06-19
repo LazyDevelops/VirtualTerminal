@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Tree;
 
 class Program
@@ -105,27 +107,57 @@ class Program
     static void Main()
     {
         Tree<FileSystemEntry> root = new Tree<FileSystemEntry>(new FileSystemEntry("/", "root", 0b111101, FileSystemEntry.FileType.D));
-        Tree<FileSystemEntry> home = new Tree<FileSystemEntry>(new FileSystemEntry("home", "root", 0b111101, FileSystemEntry.FileType.D));
-        Tree<FileSystemEntry> bin = new Tree<FileSystemEntry>(new FileSystemEntry("bin", "root", 0b111101, FileSystemEntry.FileType.D));
-        Tree<FileSystemEntry> user = new Tree<FileSystemEntry>(new FileSystemEntry("user", "user", 0b111000, FileSystemEntry.FileType.D));
-        Tree<FileSystemEntry> item = new Tree<FileSystemEntry>(new FileSystemEntry("item", "user", 0b111101, FileSystemEntry.FileType.D));
-        Tree<FileSystemEntry> file = new Tree<FileSystemEntry>(new FileSystemEntry("Hello_user.txt", "root", 0b111111, FileSystemEntry.FileType.F));
+        // Tree<FileSystemEntry> home = new Tree<FileSystemEntry>(new FileSystemEntry("home", "root", 0b111101, FileSystemEntry.FileType.D));
+        // Tree<FileSystemEntry> bin = new Tree<FileSystemEntry>(new FileSystemEntry("bin", "root", 0b111101, FileSystemEntry.FileType.D));
+        // Tree<FileSystemEntry> user = new Tree<FileSystemEntry>(new FileSystemEntry("user", "user", 0b111000, FileSystemEntry.FileType.D));
+        // Tree<FileSystemEntry> item = new Tree<FileSystemEntry>(new FileSystemEntry("item", "user", 0b111101, FileSystemEntry.FileType.D));
+        // Tree<FileSystemEntry> file = new Tree<FileSystemEntry>(new FileSystemEntry("Hello_user.txt", "root", 0b111111, FileSystemEntry.FileType.F));
 
-        root.AppendChildNode(home);
-        root.AppendChildNode(bin);
-        home.AppendChildNode(user);
-        user.AppendChildNode(item);
-        user.AppendChildNode(file);
+        // root.AppendChildNode(home);
+        // root.AppendChildNode(bin);
+        // home.AppendChildNode(user);
+        // user.AppendChildNode(item);
+        // user.AppendChildNode(file);
 
         Program program = new Program();
+
+        program.CreateFile(root, "/", new FileSystemEntry("home", "root", 0b111101, FileSystemEntry.FileType.D));
+        program.CreateFile(root, "/", new FileSystemEntry("bin", "root", 0b111101, FileSystemEntry.FileType.D));
+        program.CreateFile(root, "/home", new FileSystemEntry("user", "user", 0b111101, FileSystemEntry.FileType.D));
+        program.CreateFile(root, "/home/user", new FileSystemEntry("item", "user", 0b111101, FileSystemEntry.FileType.D));
+        program.CreateFile(root, "/home/user", new FileSystemEntry("Hello_user.txt", "root", 0b111111, FileSystemEntry.FileType.F));
+
         program.CreateFile(root, "/home/user/item", new FileSystemEntry("newItem.item", "user", 0b111101, FileSystemEntry.FileType.F, "It`s is Item."));
         program.CreateFile(root, "/", new FileSystemEntry("check.txt", "user", 0b111101, FileSystemEntry.FileType.F, "check File"));
+        
         program.RemoveFile(root, "/bin");
         Console.WriteLine(program.FindFile(root, "/home/user").Data.name);
+        
         Console.WriteLine();
 
         root.PrintTree(0);
 
         Console.WriteLine();
+
+        List<string> StringList = new List<string>();
+
+        while(true){
+            string? input = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                continue;
+            }
+
+            StringList.Append(input);
+
+            program.CreateFile(root, "/", new FileSystemEntry(input, "user", 0b111101, FileSystemEntry.FileType.F, "check File"));
+
+            Console.WriteLine("---PrintTree---");
+            root.PrintTree(0);
+            Console.WriteLine("---PrintTree---");
+        }
+
+
     }
 }
