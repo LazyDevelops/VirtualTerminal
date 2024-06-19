@@ -115,8 +115,8 @@ class Program
         root.PrintTree(0);
 
         Console.WriteLine();
-
-        Console.WriteLine(program.FindFile(root, "/home/user").Parents.Data.name);
+        
+        // Console.WriteLine(program.FindFile(root, "/home/user").Parents.Data.name);
 
         List<string> StringList = new List<string>();
 
@@ -136,7 +136,5 @@ class Program
         //     root.PrintTree(0);
         //     Console.WriteLine("---PrintTree---");
         // }
-
-
     }
 }
