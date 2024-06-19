@@ -37,17 +37,19 @@ class Program
         string[] directories = path.Split('/');
         Tree<FileSystemEntry> current = root;
 
-        for (int i = 1; i < directories.Length; i++)
-        {
-            foreach (Tree<FileSystemEntry> tempNode in current.GetChildren())
-            {
-                if (tempNode.Data.name == directories[i])
-                {
-                    current = tempNode;
-                    break;
-                }
-            }
-        }
+        // for (int i = 1; i < directories.Length; i++)
+        // {
+        //     foreach (Tree<FileSystemEntry> tempNode in current.GetChildren())
+        //     {
+        //         if (tempNode.Data.name == directories[i])
+        //         {
+        //             current = tempNode;
+        //             break;
+        //         }
+        //     }
+        // }
+
+        current = FindFile(root, path);
 
         Tree<FileSystemEntry> newFile = new Tree<FileSystemEntry>(entry);
         current.AppendChildNode(newFile);
