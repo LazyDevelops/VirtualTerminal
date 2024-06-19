@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Tree;
 
 class Program
@@ -37,18 +35,6 @@ class Program
         string[] directories = path.Split('/');
         Tree<FileSystemEntry> current = root;
 
-        // for (int i = 1; i < directories.Length; i++)
-        // {
-        //     foreach (Tree<FileSystemEntry> tempNode in current.GetChildren())
-        //     {
-        //         if (tempNode.Data.name == directories[i])
-        //         {
-        //             current = tempNode;
-        //             break;
-        //         }
-        //     }
-        // }
-
         current = FindFile(root, path);
 
         Tree<FileSystemEntry> newFile = new Tree<FileSystemEntry>(entry);
@@ -62,20 +48,9 @@ class Program
         Tree<FileSystemEntry> current = root;
         Tree<FileSystemEntry> parents = root;
 
-        for (int i = 1; i < directories.Length; i++)
-        {
-            foreach (Tree<FileSystemEntry> tempNode in current.GetChildren())
-            {
-                if (tempNode.Data.name == directories[i])
-                {
-                    current = tempNode;
-                    if (directories.Length - i == 2)
-                    {
-                        parents = current;
-                    }
-                    break;
-                }
-            }
+        current = FindFile(root, path);
+        if(current.Parents != null){
+            parents = current.Parents;
         }
 
         if (current.LeftChild == null)
@@ -141,24 +116,26 @@ class Program
 
         Console.WriteLine();
 
+        Console.WriteLine(program.FindFile(root, "/home/user").Parents.Data.name);
+
         List<string> StringList = new List<string>();
 
-        while(true){
-            string? input = Console.ReadLine();
+        // while(true){
+        //     string? input = Console.ReadLine();
 
-            if (string.IsNullOrWhiteSpace(input))
-            {
-                continue;
-            }
+        //     if (string.IsNullOrWhiteSpace(input))
+        //     {
+        //         continue;
+        //     }
 
-            StringList.Append(input);
+        //     StringList.Append(input);
 
-            program.CreateFile(root, "/", new FileSystemEntry(input, "user", 0b111101, FileSystemEntry.FileType.F, "check File"));
+        //     program.CreateFile(root, "/", new FileSystemEntry(input, "user", 0b111101, FileSystemEntry.FileType.F, "check File"));
 
-            Console.WriteLine("---PrintTree---");
-            root.PrintTree(0);
-            Console.WriteLine("---PrintTree---");
-        }
+        //     Console.WriteLine("---PrintTree---");
+        //     root.PrintTree(0);
+        //     Console.WriteLine("---PrintTree---");
+        // }
 
 
     }

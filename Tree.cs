@@ -3,6 +3,7 @@ using System;
 namespace Tree {
     class Tree<T> {
         public T? Data;
+        public Tree<T>? Parents;
         public Tree<T>? LeftChild;
         public Tree<T>? RightSibling;
 
@@ -26,6 +27,8 @@ namespace Tree {
 
                 temp.RightSibling = child;
             }
+            
+            child.Parents = this;
         }
 
         public List<Tree<T>> GetChildren()
