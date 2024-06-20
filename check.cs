@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Internal;
+using System.IO.Enumeration;
 using Tree;
 
 namespace VirtualTerminal {
@@ -48,7 +48,7 @@ namespace VirtualTerminal {
             
             homeNode = CreateFile("/home", new FileNode(USER, USER, 0b111101, FileNode.FileType.D));
 
-            CreateFile(HOME, new FileNode($"Hello_{USER}.txt", "root", 0b111111, FileNode.FileType.F));
+            CreateFile(HOME, new FileNode($"Hello_{USER}.txt", "root", 0b111111, FileNode.FileType.F, $"Hello, {USER}!"));
             
             pwdNode = FindFile(PWD);
         }
@@ -81,24 +81,26 @@ namespace VirtualTerminal {
                 parents.RemoveChildNode(current);
                 return 0;
             }
-            return -1;
+            return 1;
         }
 
         public Tree<FileNode> FindFile(string path)
         {
             string[] directories = path.Split('/');
+            string fileName = directories[directories.Length - 1];
             Tree<FileNode> current = root;
 
-            for (int i = 1; i < directories.Length; i++)
-            {
-                foreach (Tree<FileNode> tempNode in current.GetChildren())
-                {
-                    if (tempNode.Data.name == directories[i])
-                    {
+            for (int i = 1; i < directories.Length; i++){
+                foreach (Tree<FileNode> tempNode in current.GetChildren()){
+                    if (tempNode.Data.name == directories[i]){
                         current = tempNode;
                         break;
                     }
                 }
+            }
+
+            if(current.Data.name == fileName){
+                return null;
             }
 
             return current;
@@ -143,9 +145,9 @@ namespace VirtualTerminal {
                 // case "cd":
                 //     ExecuteCd(args);
                 //     break;
-                // case "cat":
-                //     ExecuteCat(args);
-                //     break;
+                case "cat":
+                    ExecuteCat(args);
+                    break;
                 case "clear":
                     ExecuteClear();
                     break;
@@ -254,26 +256,47 @@ namespace VirtualTerminal {
             // }
         }
 
-        // private void ExecuteCat(string[] args)
-        // {
-        //     string path = PWD == "/" ? $"/{file}" : $"{PWD}/{file}";
-        //     var entry = fileSystem.Find(entry => entry.Path == path);
+        private void ExecuteCat(string[] args)
+        {
+            Tree<FileNode> file = new Tree<FileNode>();
 
-        //     if(entry.IsDirectory){
-        //         Console.WriteLine($"Not a file: {file}");
-        //     }
-        //     else if (entry.Path != null)
-        //     {
-        //         Console.WriteLine(entry.Content);
-        //     }
-        //     else
-        //     {
-        //         Console.WriteLine($"File not found: {file}. Creating new file. Enter content (end with a single dot on a line):");
-        //         string content = ReadMultiLineInput();
-        //         fileSystem.Add(new FileSystemEntry(path, USER, 0b110100, 0, content));
-        //         Console.WriteLine("File created.");
-        //     }
-        // }
+            if(file.Data.fileType == FileNode.FileType.D){
+                Console.WriteLine($"Not a file: {file}");
+                return;
+            }
+            
+            foreach(string temp in args){
+                if(temp.Contains("/")){
+                    file = FindFile(temp);
+
+                    if(file != null){
+                        Console.WriteLine(file.Data.content);
+                    }else{
+                        Console.WriteLine($"File not found: {file}. Creating new file. Enter content (end with a single dot on a line):");
+                        string content = ReadMultiLineInput();
+                        CreateFile(temp, new FileNode(temp, USER, 0b110100, FileNode.FileType.F, content));
+                    }
+                }
+            }
+            
+            // string path = PWD == "/" ? $"/{file}" : $"{PWD}/{file}";
+            // var entry = fileSystem.Find(entry => entry.Path == path);
+
+            // if(entry.IsDirectory){
+            //     Console.WriteLine($"Not a file: {file}");
+            // }
+            // else if (entry.Path != null)
+            // {
+            //     Console.WriteLine(entry.Content);
+            // }
+            // else
+            // {
+            //     Console.WriteLine($"File not found: {file}. Creating new file. Enter content (end with a single dot on a line):");
+            //     string content = ReadMultiLineInput();
+            //     fileSystem.Add(new FileSystemEntry(path, USER, 0b110100, 0, content));
+            //     Console.WriteLine("File created.");
+            // }
+        }
 
         private void ExecuteClear()
         {
@@ -281,51 +304,37 @@ namespace VirtualTerminal {
         }
 
         private void ExecuteMkdir(string[] args){
-            string[] parts = path.Split('/');
-            string fileName = parts[parts.Length - 1];
+            string[]? parts = null;
+            string? fileName = null;
             
             foreach(string temp in args){
-                if(temp.Contains("/") && !FindFile(temp)){
+                if(temp.Contains("/") && FindFile(temp) != null){
+                    parts = temp.Split('/');
+                    fileName = parts[parts.Length - 1];
                     CreateFile(temp, new FileNode(fileName, USER, 0b111101, FileNode.FileType.D));
                 }
             }
         }
 
+        // 에러 메세지 수정 필요
         private void ExecuteRmdir(string[] args){
             Tree<FileNode> file = new Tree<FileNode>();
 
             foreach(string temp in args){
                 if(temp.Contains("/")){
+                    file = FindFile(temp);
+                    
                     if(file.Data.fileType == FileNode.FileType.D){
-                        if(!RemoveFile(temp)){
-                            Console.WriteLine($"failed to remove '{file.Data.name}': Directory not empty");
-                        }
+                        Console.WriteLine($"failed to remove '{file.Data.name}': Not a directory");
+                        return;
+                    }
+
+                    if(RemoveFile(temp) != 0){
+                        Console.WriteLine($"failed to remove '{file.Data.name}': Directory not empty");
+                        return;
                     }
                 }
             }
-            // string path = PWD == "/" ? $"/{dir}" : $"{PWD}/{dir}";
-            // var entry = fileSystem.Find(entry => entry.Path == path);
-
-            // if (entry.Path == null)
-            // {
-            //     Console.WriteLine($"Directory not found: {dir}");
-            // }
-            // else if (!entry.IsDirectory)
-            // {
-            //     Console.WriteLine($"Not a directory: {dir}");
-            // }
-            // else
-            // {
-            //     if (IsDirectoryEmpty(path))
-            //     {
-            //         fileSystem.RemoveAll(entry => entry.Path == path);
-            //         Console.WriteLine($"Directory removed: {dir}");
-            //     }
-            //     else
-            //     {
-            //         Console.WriteLine($"Directory not empty: {dir}");
-            //     }
-            // }
         }
 
         // private void ExecuteRm(string[] args)
