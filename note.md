@@ -40,17 +40,20 @@ private struct FileSystemEntry{
 }
 ```
 
-
+```cs
 Tree<FileSystemNode> root = new Tree<FileSystemNode>(new FileSystemEntry("/", "root", 0b111101, 1));
 
 CreateFile(root, "/", new FileSystemEntry("root", "root", 0b111000, 1));
 CreateFile(root, "/", new FileSystemEntry("home", "root", 0b111101, 1));
 Tree<FileSystemNode> HOME = CreateFile(root, "/home", new FileSystemEntry($"{USER}", USER, 0b111101, 1));
 CreateFile(root, $"/home/{USER}", new FileSystemEntry($"Hello_{USER}.txt", "root", 0b111111, 0, $"Hello, {USER}!"));
+```
 
+```cs
 bool RemoveFile("상대 주소 or 절대 주소")
 
 Tree<FileSystemNode> FindFile("상대 주소 or 절대 주소")
+```
 
 
 생대 주소 예시
