@@ -70,3 +70,6 @@ Tree<FileSystemNode> FindFile("상대 주소 or 절대 주소")
 예)
 "pwd는 /home라고 가정"
 ./user = /home/user = ~
+
+## TODO
+- 경로 스택으로 관리하게 전부 변경하기
