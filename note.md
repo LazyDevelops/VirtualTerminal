@@ -1,23 +1,23 @@
 rwxr-x code bin
 
-drwxr-x code bin
+drwxr-x code bin  
 -rw-r-- code hello.txt
 
-￦- : 일반 파일
+￦- : 일반 파일  
 d : 디렉터일 파일(폴더)
 
-2자리 8진수
-앞자리는 소유자
+2자리 8진수  
+앞자리는 소유자  
 뒷자리는 기타
 
-rwxr-x
+rwxr-x  
 111101
 
 r = 4, w = 2, x = 1
 
-ls -1
-자세히 표시
-ls -a
+ls -1  
+자세히 표시  
+ls -a  
 숨김 파일 표시
 
 ```cs
@@ -56,25 +56,23 @@ Tree<FileSystemNode> FindFile("상대 주소 or 절대 주소")
 ```
 
 
-상대 주소 예시
-./ : 현제 디렉터리
-예)
-"pwd는 /home/user라고 가정"
+상대 주소 예시  
+./ : 현제 디렉터리  
+예)  
+"pwd는 /home/user라고 가정"  
 ./Hello.sh = Hello.sh = /home/user/Hello.sh
 
 
-../ : 이전 디렉터리
-
-예)
-"pwd는 /home/user라고 가정"
-../ = /home
+../ : 이전 디렉터리  
+예)  
+"pwd는 /home/user라고 가정"  
+../ = /home  
 ../../ = /
 
 
-~/ = home 디렉터리
-
-예)
-"pwd는 /home라고 가정"
+~/ = home 디렉터리  
+예)  
+"pwd는 /home라고 가정"  
 ./user = /home/user = ~
 
 ## TODO
