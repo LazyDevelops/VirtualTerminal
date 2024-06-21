@@ -48,3 +48,25 @@ CreateFile(root, $"/home/{USER}", new FileSystemEntry($"Hello_{USER}.txt", "root
 bool RemoveFile("상대 주소 or 절대 주소")
 
 Tree<FileSystemNode> FindFile("상대 주소 or 절대 주소")
+
+
+생대 주소 예시
+./ : 현제 디렉터리
+예)
+"pwd는 /home/user라고 가정"
+./Hello.sh = Hello.sh = /home/user/Hello.sh
+
+
+../ : 이전 디렉터리
+
+예)
+"pwd는 /home/user라고 가정"
+../ = /home
+../../ = /
+
+
+~/ = home 디렉터리
+
+예)
+"pwd는 /home라고 가정"
+./user = /home/user = ~

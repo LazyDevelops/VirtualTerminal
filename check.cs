@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.IO.Enumeration;
+using System.Linq;
 using Tree;
 
 namespace VirtualTerminal {
@@ -29,8 +29,8 @@ namespace VirtualTerminal {
         }
 
         private Tree<FileNode> root;
-        private Tree<FileNode> pwdNode;
-        private Tree<FileNode> homeNode;
+        private Tree<FileNode>? pwdNode;
+        private Tree<FileNode>? homeNode;
         
         private string PWD;
         private string HOME;
@@ -51,59 +51,88 @@ namespace VirtualTerminal {
             CreateFile(HOME, new FileNode($"Hello_{USER}.txt", "root", 0b111111, FileNode.FileType.F, $"Hello, {USER}!"));
             
             pwdNode = FindFile(PWD);
+            
+            if(homeNode == null){
+                Console.WriteLine($"homeNode err");
+                Environment.Exit(0);
+            }
+
+            if(pwdNode == null){
+                Console.WriteLine("homeNode err");
+                Environment.Exit(0);
+            }
         }
 
-        public Tree<FileNode> CreateFile(string path, FileNode entry)
-        {
-            string[] directories = path.Split('/');
-            Tree<FileNode> current = root;
+        public Tree<FileNode>? CreateFile(string path, FileNode entry) {
+            Tree<FileNode>? current = null;
 
             current = FindFile(path);
 
-            Tree<FileNode> newFile = new Tree<FileNode>(entry);
-            current.AppendChildNode(newFile);
-            return newFile;
-        }
-
-        public int RemoveFile(string path)
-        {
-            string[] directories = path.Split('/');
-            Tree<FileNode> current = root;
-            Tree<FileNode> parents = root;
-
-            current = FindFile(path);
-            if(current.Parents != null){
-                parents = current.Parents;
-            }
-
-            if (current.LeftChild == null)
-            {
-                parents.RemoveChildNode(current);
-                return 0;
-            }
-            return 1;
-        }
-
-        public Tree<FileNode> FindFile(string path)
-        {
-            string[] directories = path.Split('/');
-            string fileName = directories[directories.Length - 1];
-            Tree<FileNode> current = root;
-
-            for (int i = 1; i < directories.Length; i++){
-                foreach (Tree<FileNode> tempNode in current.GetChildren()){
-                    if (tempNode.Data.name == directories[i]){
-                        current = tempNode;
-                        break;
-                    }
-                }
-            }
-
-            if(current.Data.name == fileName){
+            if(current == null) {
                 return null;
             }
 
-            return current;
+            Tree<FileNode> newFile = new Tree<FileNode>(entry);
+            current.AppendChildNode(newFile);
+
+            return newFile;
+        }
+
+        public int RemoveFile(string path) {
+            string[] directories = path.Split('/');
+            Tree<FileNode>? current = null;
+            Tree<FileNode> parents = root;
+
+            current = FindFile(path);
+
+            if(current == null) {
+                return 1;
+            }
+
+            if(current.Parents != null) {
+                parents = current.Parents;
+            }
+
+            if (current.LeftChild == null) {
+                parents.RemoveChildNode(current);
+                return 0;
+            }
+
+            return 2;
+        }
+
+        public Tree<FileNode>? FindFile(string path) {
+            // string[] files = path.Split('/');
+            // string fileName = files[files.Length - 1];
+            Tree<FileNode> current = root;
+            string? fileName = null;
+            var files = new List<string>();
+
+            path = path.Substring(1);
+            files.AddRange(path.Split('/'));
+
+            fileName = files.Last();
+
+            if(files[0] == "") {
+                return root;
+            }else{
+                foreach(string temp in files) {
+                // for(int i = 1; i < files.Length; i++){
+                    foreach (Tree<FileNode> tempNode in current.GetChildren()){
+                        if (tempNode.Data.name == temp){
+                        // if(tempNode.Data.name == files[i]){
+                            current = tempNode;
+                            break;
+                        }
+                    }
+                }
+
+                if(current.Data.name != fileName) {
+                    return null;
+                }
+
+                return current;
+            }
         }
 
         public void Run()
@@ -125,10 +154,6 @@ namespace VirtualTerminal {
             WriteColoredText("\x1b[1muser\x1b[22m", ConsoleColor.Green);
             WriteColoredText(":", Console.ForegroundColor);
             // homeDirectory 일시 ~ 표시 코드 짜기
-            // if(!currentDirectory.Equals(homeDirectory))
-            //     WriteColoredText("\x1b[1m~\x1b[22m", ConsoleColor.Blue);
-            // else
-            //     WriteColoredText("\x1b[1m/\x1b[22m", ConsoleColor.Blue);
             WriteColoredText($"\x1b[1m{PWD}\x1b[22m", ConsoleColor.Blue);
             WriteColoredText("$ ", Console.ForegroundColor);
         }
@@ -136,15 +161,12 @@ namespace VirtualTerminal {
         private void ProcessCommand(string command)
         {
             string[] args = command.Split(' ');
-            // foreach(string temp in args){
-            //     Console.WriteLine(temp);
-            // }
 
             switch (args[0])
             {
-                // case "cd":
-                //     ExecuteCd(args);
-                //     break;
+                case "cd":
+                    ExecuteCd(args);
+                    break;
                 case "cat":
                     ExecuteCat(args);
                     break;
@@ -160,15 +182,18 @@ namespace VirtualTerminal {
                 case "ls":
                     ExecuteLs(args);
                     break;
-                case "mkdir":
-                    ExecuteMkdir(args);
-                    break;
+                // case "mv":
+                //     ExecuteMv(args);
+                //     break;
+                // case "mkdir":
+                //     ExecuteMkdir(args);
+                //     break;
                 // case "rm":
                 //     ExecuteRm(args);
                 //     break;
-                case "rmdir":
-                    ExecuteRmdir(args);
-                    break;
+                // case "rmdir":
+                //     ExecuteRmdir(args);
+                //     break;
                 default:
                     Console.WriteLine($"Command not found: {command}");
                     break;
@@ -194,7 +219,11 @@ namespace VirtualTerminal {
                 }
             }
 
-            List<Tree<FileNode>> pwdChildren = pwdNode.GetChildren();
+            List<Tree<FileNode>>? pwdChildren = pwdNode?.GetChildren();
+
+            if(pwdChildren == null){
+                return;
+            }
 
             foreach(Tree<FileNode> temp in pwdChildren){
                 if(options["l"]){
@@ -220,82 +249,55 @@ namespace VirtualTerminal {
             }
         }
 
-        private void ExecuteCd(string[] args)
-        {
-            
-            // if (dir == "." || dir == "./")
-            // {
-            //     return;
-            // }
-            // else if (dir == ".." || dir == "../")
-            // {
-            //     if (PWD != "/")
-            //     {
-            //         int lastSlashIndex = PWD.LastIndexOf('/');
-            //         if (lastSlashIndex == 0)
-            //         {
-            //             PWD = "/";
-            //         }
-            //         else
-            //         {
-            //             PWD = PWD.Substring(0, lastSlashIndex);
-            //         }
-            //     }
-            // }
-            // else
-            // {
-            //     string newDir = PWD == "/" ? $"/{dir}" : $"{PWD}/{dir}";
-            //     if (fileSystem.Exists(entry => entry.Path == newDir && entry.IsDirectory))
-            //     {
-            //         PWD = newDir;
-            //     }
-            //     else
-            //     {
-            //         Console.WriteLine($"Directory not found: {dir}");
-            //     }
-            // }
-        }
+        private void ExecuteCd(string[] args){
+            Tree<FileNode>? file = new Tree<FileNode>();
 
-        private void ExecuteCat(string[] args)
-        {
-            Tree<FileNode> file = new Tree<FileNode>();
-
-            if(file.Data.fileType == FileNode.FileType.D){
-                Console.WriteLine($"Not a file: {file}");
-                return;
-            }
-            
             foreach(string temp in args){
                 if(temp.Contains("/")){
                     file = FindFile(temp);
 
-                    if(file != null){
-                        Console.WriteLine(file.Data.content);
-                    }else{
-                        Console.WriteLine($"File not found: {file}. Creating new file. Enter content (end with a single dot on a line):");
-                        string content = ReadMultiLineInput();
-                        CreateFile(temp, new FileNode(temp, USER, 0b110100, FileNode.FileType.F, content));
+                    if(file == null){
+                        Console.WriteLine($"test: No such file or directory");
+                        return;
                     }
+
+                    if(file.Data.fileType != FileNode.FileType.D){
+                        Console.WriteLine($"{file.Data.name}: Not a directory");
+                        return;
+                    }
+
+                    pwdNode = file;
+                    PWD = temp;
                 }
             }
-            
-            // string path = PWD == "/" ? $"/{file}" : $"{PWD}/{file}";
-            // var entry = fileSystem.Find(entry => entry.Path == path);
+        }
 
-            // if(entry.IsDirectory){
-            //     Console.WriteLine($"Not a file: {file}");
-            // }
-            // else if (entry.Path != null)
-            // {
-            //     Console.WriteLine(entry.Content);
-            // }
-            // else
-            // {
-            //     Console.WriteLine($"File not found: {file}. Creating new file. Enter content (end with a single dot on a line):");
-            //     string content = ReadMultiLineInput();
-            //     fileSystem.Add(new FileSystemEntry(path, USER, 0b110100, 0, content));
-            //     Console.WriteLine("File created.");
-            // }
+        private void ExecuteCat(string[] args){
+            Tree<FileNode>? file = new Tree<FileNode>();
+            string[]? path = null;
+            string? fileName = null;
+            
+            foreach(string temp in args){
+                if(temp.Contains("/")){
+                    file = FindFile(temp);
+                    path = temp.Split("/");
+                    fileName = path[path.Length - 1];
+
+                    if(file == null){
+                        Console.WriteLine($"File not found: {file}. Creating new file. Enter content (end with a single dot on a line):");
+                        string content = ReadMultiLineInput();
+                        CreateFile(temp, new FileNode(fileName, USER, 0b110100, FileNode.FileType.F, content));
+                        return;
+                    }
+
+                    if(file.Data.fileType == FileNode.FileType.D){
+                        Console.WriteLine($"Not a file: {file}");
+                        return;
+                    }
+
+                    Console.WriteLine(file.Data.content);
+                }
+            }
         }
 
         private void ExecuteClear()
@@ -318,19 +320,29 @@ namespace VirtualTerminal {
 
         // 에러 메세지 수정 필요
         private void ExecuteRmdir(string[] args){
-            Tree<FileNode> file = new Tree<FileNode>();
+            Tree<FileNode>? file = new Tree<FileNode>();
+            string[]? path = null;
+            string? fileName = null;
 
             foreach(string temp in args){
-                if(temp.Contains("/")){
+                if(temp.Contains('/')){
+                    path = temp.Split('/');
+                    fileName = path[path.Length - 1];
+                    
                     file = FindFile(temp);
+
+                    if(file == null){
+                        Console.WriteLine($"{args[0]}: failed to remove '{fileName}': No such file or directory");
+                        return;
+                    }
                     
                     if(file.Data.fileType == FileNode.FileType.D){
-                        Console.WriteLine($"failed to remove '{file.Data.name}': Not a directory");
+                        Console.WriteLine($"{args[0]}: failed to remove '{file.Data.name}': Not a directory");
                         return;
                     }
 
                     if(RemoveFile(temp) != 0){
-                        Console.WriteLine($"failed to remove '{file.Data.name}': Directory not empty");
+                        Console.WriteLine($"{args[0]}: failed to remove '{file.Data.name}': Directory not empty");
                         return;
                     }
                 }
