@@ -3,7 +3,7 @@ rwxr-x code bin
 drwxr-x code bin
 -rw-r-- code hello.txt
 
-- : 일반 파일
+￦- : 일반 파일
 d : 디렉터일 파일(폴더)
 
 2자리 8진수
@@ -20,6 +20,7 @@ ls -1
 ls -a
 숨김 파일 표시
 
+```cs
 private struct FileSystemEntry{
     public string name { get; }
     public byte permission { get; }
@@ -37,6 +38,8 @@ private struct FileSystemEntry{
         this.content = content;
     }
 }
+```
+
 
 Tree<FileSystemNode> root = new Tree<FileSystemNode>(new FileSystemEntry("/", "root", 0b111101, 1));
 
