@@ -56,7 +56,7 @@ Tree<FileSystemNode> FindFile("상대 주소 or 절대 주소")
 ```
 
 
-생대 주소 예시
+상대 주소 예시
 ./ : 현제 디렉터리
 예)
 "pwd는 /home/user라고 가정"
