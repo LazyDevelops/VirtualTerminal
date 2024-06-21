@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Tree;
 
-namespace VirtualTerminal {
-    class VirtualTerminal
-    {
+namespace VirtualTerminal{
+    class VirtualTerminal{
         public struct FileNode{
             public string name { get; }
             public byte permission { get; }
             public string UID { get; }
-            public enum FileType { 
+            public enum FileType{ 
                 F, D 
             } public FileType fileType { get; }
             public string? content { get; }
@@ -23,7 +22,7 @@ namespace VirtualTerminal {
                 this.content = content;
             }
 
-            public override string ToString() {
+            public override string ToString(){
                 return name;
             }
         }
@@ -33,11 +32,12 @@ namespace VirtualTerminal {
         private Tree<FileNode>? homeNode;
         
         private string PWD;
+        // private List<string> PWD;
+        // private List<FileNode> PWD;
         private string HOME;
         private string USER;
 
-        public VirtualTerminal()
-        {
+        public VirtualTerminal(){
             USER = "user";
             PWD = $"/home/{USER}";
             HOME = $"/home/{USER}";
@@ -58,12 +58,12 @@ namespace VirtualTerminal {
             }
 
             if(pwdNode == null){
-                Console.WriteLine("homeNode err");
+                Console.WriteLine("pwdNode err");
                 Environment.Exit(0);
             }
         }
 
-        public Tree<FileNode>? CreateFile(string path, FileNode entry) {
+        public Tree<FileNode>? CreateFile(string path, FileNode entry){
             Tree<FileNode>? current = null;
 
             current = FindFile(path);
@@ -78,22 +78,22 @@ namespace VirtualTerminal {
             return newFile;
         }
 
-        public int RemoveFile(string path) {
+        public int RemoveFile(string path){
             string[] directories = path.Split('/');
             Tree<FileNode>? current = null;
             Tree<FileNode> parents = root;
 
             current = FindFile(path);
 
-            if(current == null) {
+            if(current == null){
                 return 1;
             }
 
-            if(current.Parents != null) {
+            if(current.Parents != null){
                 parents = current.Parents;
             }
 
-            if (current.LeftChild == null) {
+            if (current.LeftChild == null){
                 parents.RemoveChildNode(current);
                 return 0;
             }
@@ -101,9 +101,7 @@ namespace VirtualTerminal {
             return 2;
         }
 
-        public Tree<FileNode>? FindFile(string path) {
-            // string[] files = path.Split('/');
-            // string fileName = files[files.Length - 1];
+        public Tree<FileNode>? FindFile(string path){
             Tree<FileNode> current = root;
             string? fileName = null;
             var files = new List<string>();
@@ -113,14 +111,12 @@ namespace VirtualTerminal {
 
             fileName = files.Last();
 
-            if(files[0] == "") {
+            if(files[0] == ""){
                 return root;
             }else{
-                foreach(string temp in files) {
-                // for(int i = 1; i < files.Length; i++){
+                foreach(string temp in files){
                     foreach (Tree<FileNode> tempNode in current.GetChildren()){
                         if (tempNode.Data.name == temp){
-                        // if(tempNode.Data.name == files[i]){
                             current = tempNode;
                             break;
                         }
@@ -135,22 +131,20 @@ namespace VirtualTerminal {
             }
         }
 
-        public void Run()
-        {
-            while (true)
-            {
+        public void Run(){
+            while (true) {
                 DisplayPrompt();
                 string? command = Console.ReadLine();
-                if (string.IsNullOrWhiteSpace(command))
-                {
+
+                if (string.IsNullOrWhiteSpace(command)) {
                     continue;
                 }
+
                 ProcessCommand(command);
             }
         }
 
-        private void DisplayPrompt()
-        {
+        private void DisplayPrompt(){
             WriteColoredText("\x1b[1muser\x1b[22m", ConsoleColor.Green);
             WriteColoredText(":", Console.ForegroundColor);
             // homeDirectory 일시 ~ 표시 코드 짜기
@@ -158,12 +152,10 @@ namespace VirtualTerminal {
             WriteColoredText("$ ", Console.ForegroundColor);
         }
 
-        private void ProcessCommand(string command)
-        {
+        private void ProcessCommand(string command){
             string[] args = command.Split(' ');
 
-            switch (args[0])
-            {
+            switch (args[0]) {
                 case "cd":
                     ExecuteCd(args);
                     break;
@@ -200,18 +192,17 @@ namespace VirtualTerminal {
             }
         }
 
-        private void ExecuteLs(string[] args)
-        {
+        private void ExecuteLs(string[] args){
             Dictionary<string, bool> options = new Dictionary<string, bool>{
                 { "l", false },
             };
             
             foreach (string temp in args){
                 // -- 옵션을 위한 코드
-                /*if(temp.Contains("--")){
+                /*if(temp.Contains("--")) {
                     options[temp.Replace("--", "")] = true;
                 }else */if(temp.Contains("-")){
-                    foreach(char c in temp){
+                    foreach(char c in temp) {
                         if(c != '-'){
                             options[temp] = true;
                         }
