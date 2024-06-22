@@ -164,7 +164,7 @@ namespace VirtualTerminal
 
             foreach (string temp in args)
             {
-                if (temp.Contains('/') || temp.StartsWith(',') || temp.StartsWith("..") || temp.StartsWith('~'))
+                if (temp != args[0] && !temp.Contains('-') && !temp.Contains("--"))
                 {
                     file = fileSystem.FindFile(fileSystem.GetAbsolutePath(temp, HOME, PWD), root);
 
