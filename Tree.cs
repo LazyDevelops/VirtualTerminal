@@ -89,5 +89,31 @@ namespace Tree {
                 RightSibling.PrintTree(depth);
             }
         }
+
+        public void TestPrintTree(int depth){
+            for (int i = 0; i < depth-1; i++) {
+                Console.Write("    ");
+            }
+
+            if(depth != 0){
+                Console.Write("|-- ");
+            }
+
+            if(LeftChild == null){
+                Console.WriteLine(Data);
+            }else{
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine(Data);
+                Console.ResetColor();
+            }
+
+            if (LeftChild != null) {
+                LeftChild.TestPrintTree(depth + 1);
+            }
+
+            if (RightSibling != null) {
+                RightSibling.TestPrintTree(depth);
+            }
+        }
     }
 }

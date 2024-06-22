@@ -112,7 +112,7 @@ class Program
         
         Console.WriteLine();
 
-        root.PrintTree(0);
+        root.TestPrintTree(0);
 
         Console.WriteLine();
         

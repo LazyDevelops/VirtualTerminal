@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "mujMP1/pIzE=",
+  "dgSpecHash": "BU31oqeij1s=",
   "success": true,
   "projectFilePath": "/home/code/VirtualTerminal/App.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/home/code/.nuget/packages/microsoft.netcore.app.ref/8.0.6/microsoft.netcore.app.ref.8.0.6.nupkg.sha512",
+    "/home/code/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.6/microsoft.aspnetcore.app.ref.8.0.6.nupkg.sha512",
+    "/home/code/.nuget/packages/microsoft.netcore.app.host.linux-x64/8.0.6/microsoft.netcore.app.host.linux-x64.8.0.6.nupkg.sha512"
+  ],
   "logs": []
 }
