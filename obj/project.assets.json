@@ -8,24 +8,26 @@
     "net8.0": []
   },
   "packageFolders": {
-    "/home/code/.nuget/packages/": {}
+    "C:\\Users\\CheeseSand\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/code/VirtualTerminal/App.csproj",
-      "projectName": "App",
-      "projectPath": "/home/code/VirtualTerminal/App.csproj",
-      "packagesPath": "/home/code/.nuget/packages/",
-      "outputPath": "/home/code/VirtualTerminal/obj/",
+      "projectUniqueName": "C:\\Users\\CheeseSand\\Desktop\\VirtualTerminal\\VirtualTerminal.csproj",
+      "projectName": "VirtualTerminal",
+      "projectPath": "C:\\Users\\CheeseSand\\Desktop\\VirtualTerminal\\VirtualTerminal.csproj",
+      "packagesPath": "C:\\Users\\CheeseSand\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\CheeseSand\\Desktop\\VirtualTerminal\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/code/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\CheeseSand\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -59,26 +61,12 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[8.0.6, 8.0.6]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Host.linux-x64",
-            "version": "[8.0.6, 8.0.6]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Ref",
-            "version": "[8.0.6, 8.0.6]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.302/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
