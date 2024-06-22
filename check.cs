@@ -147,22 +147,7 @@ namespace VirtualTerminal
             {
                 if (options["l"])
                 {
-                    /*char? type;
-
-                    switch (temp.Data.fileType)
-                    {
-                        case FileNode.FileType.F:
-                            type = '-';
-                            break;
-                        case FileNode.FileType.D:
-                            type = 'd';
-                            break;
-                        default:
-                            break;
-                    }*/
-
-                    string permissions = ConvertPermissionsToString(temp.Data.permission);
-
+                    string permissions = fileSystem.ConvertPermissionsToString(temp.Data.permission);
                     Console.WriteLine($"{temp.Data.fileType}{permissions} {temp.Data.UID} {temp.Data.name}");
                 }
                 else
@@ -212,7 +197,7 @@ namespace VirtualTerminal
                 {
                     file = fileSystem.FindFile(temp, root);
                     path = temp.Split('-');
-                    fileName = path[path.Length - 1];
+                    fileName = path[^1]; // path.Length - 1
 
                     if (file == null)
                     {
@@ -329,17 +314,7 @@ namespace VirtualTerminal
             Console.WriteLine("exit - Exit the terminal");
         }
 
-        private string ConvertPermissionsToString(short permissions)
-        {
-            string result = string.Empty;
-            result += (permissions & 040) != 0 ? "r" : "-";
-            result += (permissions & 020) != 0 ? "w" : "-";
-            result += (permissions & 010) != 0 ? "x" : "-";
-            result += (permissions & 004) != 0 ? "r" : "-";
-            result += (permissions & 002) != 0 ? "w" : "-";
-            result += (permissions & 001) != 0 ? "x" : "-";
-            return result;
-        }
+        // 부가 함수
 
         private string ReadMultiLineInput()
         {
