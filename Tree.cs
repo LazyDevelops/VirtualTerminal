@@ -1,7 +1,7 @@
-using System;
-
-namespace Tree {
-    class Tree<T> {
+namespace Tree
+{
+    class Tree<T>
+    {
         public T? Data;
         public Tree<T>? Parents;
         public Tree<T>? LeftChild;
@@ -9,25 +9,31 @@ namespace Tree {
 
         public Tree() { }
 
-        public Tree(T data) {
+        public Tree(T data)
+        {
             LeftChild = null;
             RightSibling = null;
             Data = data;
         }
 
-        public void AppendChildNode(Tree<T> child) {
-            if (LeftChild == null) {
+        public void AppendChildNode(Tree<T> child)
+        {
+            if (LeftChild == null)
+            {
                 LeftChild = child;
-            } else {
+            }
+            else
+            {
                 Tree<T> temp = LeftChild;
 
-                while (temp.RightSibling != null) {
+                while (temp.RightSibling != null)
+                {
                     temp = temp.RightSibling;
                 }
 
                 temp.RightSibling = child;
             }
-            
+
             child.Parents = this;
         }
 
@@ -74,44 +80,56 @@ namespace Tree {
             }
         }
 
-        public void PrintTree(int depth) {
-            for (int i = 0; i < depth; i++) {
+        public void PrintTree(int depth)
+        {
+            for (int i = 0; i < depth; i++)
+            {
                 Console.Write(" ");
             }
 
             Console.WriteLine(Data);
 
-            if (LeftChild != null) {
+            if (LeftChild != null)
+            {
                 LeftChild.PrintTree(depth + 1);
             }
 
-            if (RightSibling != null) {
+            if (RightSibling != null)
+            {
                 RightSibling.PrintTree(depth);
             }
         }
 
-        public void TestPrintTree(int depth){
-            for (int i = 0; i < depth-1; i++) {
+        public void TestPrintTree(int depth)
+        {
+            for (int i = 0; i < depth - 1; i++)
+            {
                 Console.Write("    ");
             }
 
-            if(depth != 0){
+            if (depth != 0)
+            {
                 Console.Write("|-- ");
             }
 
-            if(LeftChild == null){
+            if (LeftChild == null)
+            {
                 Console.WriteLine(Data);
-            }else{
+            }
+            else
+            {
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine(Data);
                 Console.ResetColor();
             }
 
-            if (LeftChild != null) {
+            if (LeftChild != null)
+            {
                 LeftChild.TestPrintTree(depth + 1);
             }
 
-            if (RightSibling != null) {
+            if (RightSibling != null)
+            {
                 RightSibling.TestPrintTree(depth);
             }
         }

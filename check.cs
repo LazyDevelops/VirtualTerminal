@@ -1,28 +1,23 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Tree;
+﻿using Tree;
 
-namespace VirtualTerminal{
-    class VirtualTerminal{
-        public struct FileNode{
-            public string name { get; }
-            public byte permission { get; }
-            public string UID { get; }
-            public enum FileType{ 
-                F, D 
-            } public FileType fileType { get; }
-            public string? content { get; }
-
-            public FileNode(string name, string UID, byte permission, FileType fileType, string? content = null){
-                this.name = name;
-                this.UID = UID;
-                this.permission = permission;
-                this.fileType = fileType;
-                this.content = content;
+namespace VirtualTerminal
+{
+    class VirtualTerminal
+    {
+        public struct FileNode(string name, string UID, byte permission, FileNode.FileType fileType, string? content = null)
+        {
+            public string name { get; } = name;
+            public byte permission { get; } = permission;
+            public string UID { get; } = UID;
+            public enum FileType
+            {
+                F, D
             }
+            public FileType fileType { get; } = fileType;
+            public string? content { get; } = content;
 
-            public override string ToString(){
+            public override string ToString()
+            {
                 return name;
             }
         }
@@ -30,14 +25,15 @@ namespace VirtualTerminal{
         private Tree<FileNode> root;
         private Tree<FileNode>? pwdNode;
         private Tree<FileNode>? homeNode;
-        
+
         private string PWD;
         // private List<string> PWD;
         // private List<FileNode> PWD;
         private string HOME;
         private string USER;
 
-        public VirtualTerminal(){
+        public VirtualTerminal()
+        {
             USER = "user";
             PWD = $"/home/{USER}";
             HOME = $"/home/{USER}";
@@ -45,55 +41,63 @@ namespace VirtualTerminal{
             root = new Tree<FileNode>(new FileNode("/", "root", 0b111101, FileNode.FileType.D));
             CreateFile("/", new FileNode("home", "root", 0b111101, FileNode.FileType.D));
             CreateFile("/", new FileNode("root", "root", 0b111000, FileNode.FileType.D));
-            
+
             homeNode = CreateFile("/home", new FileNode(USER, USER, 0b111101, FileNode.FileType.D));
 
             CreateFile(HOME, new FileNode($"Hello_{USER}.txt", "root", 0b111111, FileNode.FileType.F, $"Hello, {USER}!"));
-            
+
             pwdNode = FindFile(PWD);
-            
-            if(homeNode == null){
+
+            if (homeNode == null)
+            {
                 Console.WriteLine($"homeNode err");
                 Environment.Exit(0);
             }
 
-            if(pwdNode == null){
+            if (pwdNode == null)
+            {
                 Console.WriteLine("pwdNode err");
                 Environment.Exit(0);
             }
         }
 
-        public Tree<FileNode>? CreateFile(string path, FileNode entry){
-            Tree<FileNode>? current = null;
+        public Tree<FileNode>? CreateFile(string path, FileNode entry)
+        {
+            Tree<FileNode>? current;
 
             current = FindFile(path);
 
-            if(current == null) {
+            if (current == null)
+            {
                 return null;
             }
 
-            Tree<FileNode> newFile = new Tree<FileNode>(entry);
+            Tree<FileNode> newFile = new(entry);
             current.AppendChildNode(newFile);
 
             return newFile;
         }
 
-        public int RemoveFile(string path){
+        public int RemoveFile(string path)
+        {
             string[] directories = path.Split('/');
-            Tree<FileNode>? current = null;
+            Tree<FileNode>? current;
             Tree<FileNode> parents = root;
 
             current = FindFile(path);
 
-            if(current == null){
+            if (current == null)
+            {
                 return 1;
             }
 
-            if(current.Parents != null){
+            if (current.Parents != null)
+            {
                 parents = current.Parents;
             }
 
-            if (current.LeftChild == null){
+            if (current.LeftChild == null)
+            {
                 parents.RemoveChildNode(current);
                 return 0;
             }
@@ -101,9 +105,10 @@ namespace VirtualTerminal{
             return 2;
         }
 
-        public Tree<FileNode>? FindFile(string path){
+        public Tree<FileNode>? FindFile(string path)
+        {
             Tree<FileNode> current = root;
-            string? fileName = null;
+            string? fileName;
             var files = new List<string>();
 
             path = path.Substring(1);
@@ -111,19 +116,26 @@ namespace VirtualTerminal{
 
             fileName = files.Last();
 
-            if(files[0] == ""){
+            if (files[0] == "")
+            {
                 return root;
-            }else{
-                foreach(string temp in files){
-                    foreach (Tree<FileNode> tempNode in current.GetChildren()){
-                        if (tempNode.Data.name == temp){
+            }
+            else
+            {
+                foreach (string temp in files)
+                {
+                    foreach (Tree<FileNode> tempNode in current.GetChildren())
+                    {
+                        if (tempNode.Data.name == temp)
+                        {
                             current = tempNode;
                             break;
                         }
                     }
                 }
 
-                if(current.Data.name != fileName) {
+                if (current.Data.name != fileName)
+                {
                     return null;
                 }
 
@@ -131,12 +143,15 @@ namespace VirtualTerminal{
             }
         }
 
-        public void Run(){
-            while (true) {
+        public void Run()
+        {
+            while (true)
+            {
                 DisplayPrompt();
                 string? command = Console.ReadLine();
 
-                if (string.IsNullOrWhiteSpace(command)) {
+                if (string.IsNullOrWhiteSpace(command))
+                {
                     continue;
                 }
 
@@ -144,7 +159,8 @@ namespace VirtualTerminal{
             }
         }
 
-        private void DisplayPrompt(){
+        private void DisplayPrompt()
+        {
             WriteColoredText("\x1b[1muser\x1b[22m", ConsoleColor.Green);
             WriteColoredText(":", Console.ForegroundColor);
             // homeDirectory 일시 ~ 표시 코드 짜기
@@ -152,10 +168,12 @@ namespace VirtualTerminal{
             WriteColoredText("$ ", Console.ForegroundColor);
         }
 
-        private void ProcessCommand(string command){
+        private void ProcessCommand(string command)
+        {
             string[] args = command.Split(' ');
 
-            switch (args[0]) {
+            switch (args[0])
+            {
                 case "cd":
                     ExecuteCd(args);
                     break;
@@ -192,18 +210,24 @@ namespace VirtualTerminal{
             }
         }
 
-        private void ExecuteLs(string[] args){
-            Dictionary<string, bool> options = new Dictionary<string, bool>{
+        private void ExecuteLs(string[] args)
+        {
+            Dictionary<string, bool> options = new(){
                 { "l", false },
             };
-            
-            foreach (string temp in args){
+
+            foreach (string temp in args)
+            {
                 // -- 옵션을 위한 코드
                 /*if(temp.Contains("--")) {
                     options[temp.Replace("--", "")] = true;
-                }else */if(temp.Contains("-")){
-                    foreach(char c in temp) {
-                        if(c != '-'){
+                }else */
+                if (temp.Contains('-'))
+                {
+                    foreach (char c in temp)
+                    {
+                        if (c != '-')
+                        {
                             options[temp] = true;
                         }
                     }
@@ -212,15 +236,19 @@ namespace VirtualTerminal{
 
             List<Tree<FileNode>>? pwdChildren = pwdNode?.GetChildren();
 
-            if(pwdChildren == null){
+            if (pwdChildren == null)
+            {
                 return;
             }
 
-            foreach(Tree<FileNode> temp in pwdChildren){
-                if(options["l"]){
+            foreach (Tree<FileNode> temp in pwdChildren)
+            {
+                if (options["l"])
+                {
                     char? type = null;
 
-                    switch(temp.Data.fileType){
+                    switch (temp.Data.fileType)
+                    {
                         case FileNode.FileType.F:
                             type = '-';
                             break;
@@ -234,25 +262,32 @@ namespace VirtualTerminal{
                     string permissions = ConvertPermissionsToString(temp.Data.permission);
 
                     Console.WriteLine($"{type}{permissions} {temp.Data.UID} {temp.Data.name}");
-                }else{
+                }
+                else
+                {
                     Console.WriteLine(temp.Data.name);
                 }
             }
         }
 
-        private void ExecuteCd(string[] args){
-            Tree<FileNode>? file = new Tree<FileNode>();
+        private void ExecuteCd(string[] args)
+        {
+            Tree<FileNode>? file = new();
 
-            foreach(string temp in args){
-                if(temp.Contains("/")){
+            foreach (string temp in args)
+            {
+                if (temp.Contains('-'))
+                {
                     file = FindFile(temp);
 
-                    if(file == null){
+                    if (file == null)
+                    {
                         Console.WriteLine($"test: No such file or directory");
                         return;
                     }
 
-                    if(file.Data.fileType != FileNode.FileType.D){
+                    if (file.Data.fileType != FileNode.FileType.D)
+                    {
                         Console.WriteLine($"{file.Data.name}: Not a directory");
                         return;
                     }
@@ -263,25 +298,30 @@ namespace VirtualTerminal{
             }
         }
 
-        private void ExecuteCat(string[] args){
-            Tree<FileNode>? file = new Tree<FileNode>();
-            string[]? path = null;
-            string? fileName = null;
-            
-            foreach(string temp in args){
-                if(temp.Contains("/")){
+        private void ExecuteCat(string[] args)
+        {
+            Tree<FileNode>? file;
+            string[]? path;
+            string? fileName;
+
+            foreach (string temp in args)
+            {
+                if (temp.Contains('-'))
+                {
                     file = FindFile(temp);
-                    path = temp.Split("/");
+                    path = temp.Split('-');
                     fileName = path[path.Length - 1];
 
-                    if(file == null){
+                    if (file == null)
+                    {
                         Console.WriteLine($"File not found: {file}. Creating new file. Enter content (end with a single dot on a line):");
                         string content = ReadMultiLineInput();
                         CreateFile(temp, new FileNode(fileName, USER, 0b110100, FileNode.FileType.F, content));
                         return;
                     }
 
-                    if(file.Data.fileType == FileNode.FileType.D){
+                    if (file.Data.fileType == FileNode.FileType.D)
+                    {
                         Console.WriteLine($"Not a file: {file}");
                         return;
                     }
@@ -296,12 +336,15 @@ namespace VirtualTerminal{
             Console.Clear();
         }
 
-        private void ExecuteMkdir(string[] args){
-            string[]? parts = null;
-            string? fileName = null;
-            
-            foreach(string temp in args){
-                if(temp.Contains("/") && FindFile(temp) != null){
+        private void ExecuteMkdir(string[] args)
+        {
+            string[]? parts;
+            string? fileName;
+
+            foreach (string temp in args)
+            {
+                if (temp.Contains('/') && FindFile(temp) != null)
+                {
                     parts = temp.Split('/');
                     fileName = parts[parts.Length - 1];
                     CreateFile(temp, new FileNode(fileName, USER, 0b111101, FileNode.FileType.D));
@@ -310,29 +353,35 @@ namespace VirtualTerminal{
         }
 
         // 에러 메세지 수정 필요
-        private void ExecuteRmdir(string[] args){
-            Tree<FileNode>? file = new Tree<FileNode>();
-            string[]? path = null;
-            string? fileName = null;
+        private void ExecuteRmdir(string[] args)
+        {
+            Tree<FileNode>? file = new();
+            string[]? path;
+            string? fileName;
 
-            foreach(string temp in args){
-                if(temp.Contains('/')){
+            foreach (string temp in args)
+            {
+                if (temp.Contains('/'))
+                {
                     path = temp.Split('/');
-                    fileName = path[path.Length - 1];
-                    
+                    fileName = path[^1]; // path[path.Length - 1];
+
                     file = FindFile(temp);
 
-                    if(file == null){
+                    if (file == null)
+                    {
                         Console.WriteLine($"{args[0]}: failed to remove '{fileName}': No such file or directory");
                         return;
                     }
-                    
-                    if(file.Data.fileType == FileNode.FileType.D){
+
+                    if (file.Data.fileType == FileNode.FileType.D)
+                    {
                         Console.WriteLine($"{args[0]}: failed to remove '{file.Data.name}': Not a directory");
                         return;
                     }
 
-                    if(RemoveFile(temp) != 0){
+                    if (RemoveFile(temp) != 0)
+                    {
                         Console.WriteLine($"{args[0]}: failed to remove '{file.Data.name}': Directory not empty");
                         return;
                     }
@@ -410,11 +459,11 @@ namespace VirtualTerminal{
     }
 }
 
-class Program
+class Check
 {
     static void Main()
     {
-        VirtualTerminal.VirtualTerminal terminal = new VirtualTerminal.VirtualTerminal();
+        VirtualTerminal.VirtualTerminal terminal = new();
         terminal.Run();
     }
 }

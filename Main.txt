@@ -1,4 +1,3 @@
-using System;
 using Tree;
 
 class Program
@@ -49,7 +48,8 @@ class Program
         Tree<FileSystemEntry> parents = root;
 
         current = FindFile(root, path);
-        if(current.Parents != null){
+        if (current.Parents != null)
+        {
             parents = current.Parents;
         }
 
@@ -106,16 +106,16 @@ class Program
 
         program.CreateFile(root, "/home/user/item", new FileSystemEntry("newItem.item", "user", 0b111101, FileSystemEntry.FileType.F, "It`s is Item."));
         program.CreateFile(root, "/", new FileSystemEntry("check.txt", "user", 0b111101, FileSystemEntry.FileType.F, "check File"));
-        
+
         program.RemoveFile(root, "/bin");
         Console.WriteLine(program.FindFile(root, "/home/user").Data.name);
-        
+
         Console.WriteLine();
 
         root.TestPrintTree(0);
 
         Console.WriteLine();
-        
+
         // Console.WriteLine(program.FindFile(root, "/home/user").Parents.Data.name);
 
         List<string> StringList = new List<string>();
