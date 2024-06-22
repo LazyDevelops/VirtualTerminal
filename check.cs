@@ -1,4 +1,5 @@
-﻿using Tree;
+﻿using System.IO;
+using Tree;
 using static FileSystem.FileSystem;
 
 namespace VirtualTerminal
@@ -97,9 +98,9 @@ namespace VirtualTerminal
                 // case "mv":
                 //     ExecuteMv(args);
                 //     break;
-                // case "mkdir":
-                //     ExecuteMkdir(args);
-                //     break;
+                case "mkdir":
+                    ExecuteMkdir(args);
+                    break;
                 // case "rm":
                 //     ExecuteRm(args);
                 //     break;
@@ -107,7 +108,7 @@ namespace VirtualTerminal
                 //     ExecuteRmdir(args);
                 //     break;
                 default:
-                    Console.WriteLine($"Command not found: {command}");
+                    Console.WriteLine($"Command not found: {args[0]}");
                     break;
             }
         }
@@ -163,9 +164,9 @@ namespace VirtualTerminal
 
             foreach (string temp in args)
             {
-                if (temp.Contains('-'))
+                if (temp.Contains('/') || temp.StartsWith(',') || temp.StartsWith("..") || temp.StartsWith('~'))
                 {
-                    file = fileSystem.FindFile(temp, root);
+                    file = fileSystem.FindFile(fileSystem.GetAbsolutePath(temp, HOME, PWD), root);
 
                     if (file == null)
                     {
@@ -180,7 +181,7 @@ namespace VirtualTerminal
                     }
 
                     pwdNode = file;
-                    PWD = temp;
+                    PWD = fileSystem.GetAbsolutePath(temp, HOME, PWD);
                 }
             }
         }
@@ -188,28 +189,30 @@ namespace VirtualTerminal
         private void ExecuteCat(string[] args)
         {
             Tree<FileNode>? file;
-            string[]? path;
+            string[]? paths;
+            string? path;
             string? fileName;
 
             foreach (string temp in args)
             {
-                if (temp.Contains('-'))
+                if (temp.Contains('/'))
                 {
                     file = fileSystem.FindFile(temp, root);
-                    path = temp.Split('-');
-                    fileName = path[^1]; // path.Length - 1
+                    paths = temp.Split('/');
+                    fileName = paths[^1]; // path.Length - 1
+                    path = temp.Replace('/' + fileName, "");
 
                     if (file == null)
                     {
-                        Console.WriteLine($"File not found: {file}. Creating new file. Enter content (end with a single dot on a line):");
+                        Console.WriteLine($"File not found: {fileName}. Creating new file. Enter content (end with a single dot on a line):");
                         string content = ReadMultiLineInput();
-                        fileSystem.CreateFile(temp, new FileNode(fileName, USER, 0b110100, FileType.F, content), root);
+                        fileSystem.CreateFile(path, new FileNode(fileName, USER, 0b110100, FileType.F, content), root);
                         return;
                     }
 
                     if (file.Data.fileType == FileType.D)
                     {
-                        Console.WriteLine($"Not a file: {file}");
+                        Console.WriteLine($"Not a file: {file.Data.name}");
                         return;
                     }
 
@@ -225,16 +228,24 @@ namespace VirtualTerminal
 
         private void ExecuteMkdir(string[] args)
         {
-            string[]? parts;
+            string? path;
             string? fileName;
 
             foreach (string temp in args)
             {
-                if (temp.Contains('/') && fileSystem.FindFile(temp, root) != null)
+                if (temp.Contains('/'))
                 {
-                    parts = temp.Split('/');
-                    fileName = parts[parts.Length - 1];
-                    fileSystem.CreateFile(temp, new FileNode(fileName, USER, 0b111101, FileType.D), root);
+                    fileName = temp.Split('/')[^1];
+                    path = temp.Replace('/' + fileName, "");
+
+                    if (fileSystem.FindFile(path, root) != null)
+                    {
+                        Console.WriteLine($"{args[0]}: cannot create directory '{fileName}': File exists");
+                        Console.WriteLine($"{path} {fileName}");
+                        return;
+                    }
+                    
+                    fileSystem.CreateFile(path, new FileNode(fileName, USER, 0b111101, FileType.D), root);
                 }
             }
         }

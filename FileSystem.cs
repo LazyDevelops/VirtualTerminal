@@ -115,5 +115,81 @@ namespace FileSystem
             result += (permissions & 001) != 0 ? "x" : "-";
             return result;
         }
+
+        public string GetAbsolutePath(string path, string HomeDirectory, string CurrentDirectory)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                throw new ArgumentException("Path cannot be null or empty.", nameof(path));
+            }
+
+            if (path.StartsWith('/'))
+            {
+                // 절대 경로인 경우
+                return NormalizePath(path);
+            }
+            else if (path.StartsWith("~/") || path == "~")
+            {
+                // 홈 디렉터리(~)로 시작하는 경우
+                return NormalizePath(HomeDirectory + "/" + path.Substring(2));
+            }
+            else if (path == ".")
+            {
+                // 현재 디렉터리를 나타내는 경우
+                return CurrentDirectory;
+            }
+            else if (path == "..")
+            {
+                // 부모 디렉터리를 나타내는 경우
+                int lastSlashIndex = CurrentDirectory.LastIndexOf('/');
+
+                if (lastSlashIndex > 0)
+                {
+                    return CurrentDirectory.Substring(0, lastSlashIndex);
+                }
+                else
+                {
+                    // 루트 디렉터리인 경우
+                    return "/";
+                }
+            }
+            else
+            {
+                // 파일 이름만 주어진 경우, 현재 디렉터리를 기준으로 절대 경로 생성
+                return NormalizePath(CurrentDirectory + "/" + path);
+            }
+        }
+
+        private string NormalizePath(string path)
+        {
+            var parts = path.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+            var stack = new Stack<string>();
+
+            foreach (var part in parts)
+            {
+                if (part == ".")
+                {
+                    // 현재 디렉터리, 무시
+                    continue;
+                }
+                else if (part == "..")
+                {
+                    // 부모 디렉터리, 스택에서 하나 제거
+                    if (stack.Count > 0)
+                    {
+                        stack.Pop();
+                    }
+                }
+                else
+                {
+                    // 일반 디렉터리 이름, 스택에 추가
+                    stack.Push(part);
+                }
+            }
+
+            var result = new List<string>(stack);
+            result.Reverse();
+            return "/" + string.Join("/", result);
+        }
     }
 }
