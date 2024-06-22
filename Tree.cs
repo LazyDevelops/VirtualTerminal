@@ -1,6 +1,6 @@
 namespace Tree
 {
-    class Tree<T>
+    public class Tree<T>
     {
         public T? Data;
         public Tree<T>? Parents;
@@ -11,6 +11,7 @@ namespace Tree
 
         public Tree(T data)
         {
+            Parents = null;
             LeftChild = null;
             RightSibling = null;
             Data = data;
@@ -89,15 +90,8 @@ namespace Tree
 
             Console.WriteLine(Data);
 
-            if (LeftChild != null)
-            {
-                LeftChild.PrintTree(depth + 1);
-            }
-
-            if (RightSibling != null)
-            {
-                RightSibling.PrintTree(depth);
-            }
+            LeftChild?.PrintTree(depth + 1);
+            RightSibling?.PrintTree(depth);
         }
 
         public void TestPrintTree(int depth)
@@ -123,15 +117,8 @@ namespace Tree
                 Console.ResetColor();
             }
 
-            if (LeftChild != null)
-            {
-                LeftChild.TestPrintTree(depth + 1);
-            }
-
-            if (RightSibling != null)
-            {
-                RightSibling.TestPrintTree(depth);
-            }
+            LeftChild?.TestPrintTree(depth + 1);
+            RightSibling?.TestPrintTree(depth);
         }
     }
 }
