@@ -363,7 +363,7 @@ namespace VirtualTerminal
     }
 }
 
-class Check
+class Program
 {
     static void Main()
     {
