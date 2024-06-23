@@ -79,6 +79,11 @@ namespace VirtualTerminal
             }
         }
 
+        internal interface ICommand
+        {
+            void Execute(string[] args, VirtualTerminal VT);
+        }
+
         private void DisplayPrompt()
         {
             WriteColoredText("\x1b[1muser\x1b[22m", ConsoleColor.Green);
@@ -117,11 +122,6 @@ namespace VirtualTerminal
             Console.ForegroundColor = color;
             Console.Write(text);
             Console.ResetColor();
-        }
-
-        internal interface ICommand
-        {
-            void Execute(string[] args, VirtualTerminal VT);
         }
     }
 }
