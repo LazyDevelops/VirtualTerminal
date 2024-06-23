@@ -6,15 +6,15 @@ namespace FileSystem
     {
         public struct FileNode(string name, string UID, byte permission, FileType fileType, string? content = null)
         {
-            public string name { get; } = name;
-            public byte permission { get; } = permission;
+            public string Name { get; } = name;
+            public byte Permission { get; } = permission;
             public string UID { get; } = UID;
-            public FileType fileType { get; } = fileType;
-            public string? content { get; } = content;
+            public FileType FileType { get; } = fileType;
+            public string? Content { get; } = content;
 
             public override string ToString()
             {
-                return name;
+                return Name;
             }
         }
 
@@ -86,7 +86,7 @@ namespace FileSystem
                 {
                     foreach (Tree<FileNode> tempNode in current.GetChildren())
                     {
-                        if (tempNode.Data.name == temp)
+                        if (tempNode.Data.Name == temp)
                         {
                             current = tempNode;
                             break;
@@ -94,7 +94,7 @@ namespace FileSystem
                     }
                 }
 
-                if (current.Data.name != fileName)
+                if (current.Data.Name != fileName)
                 {
                     return null;
                 }
@@ -127,24 +127,24 @@ namespace FileSystem
                 // 절대 경로인 경우
                 return NormalizePath(path);
             }
-            
+
             if (path.StartsWith("~/"))
             {
                 // 홈 디렉터리(~)로 시작하는 경우
                 return NormalizePath(HomeDirectory + "/" + path.Substring(2));
             }
-            
+
             if (path == "~")
             {
                 return HomeDirectory;
             }
-            
+
             if (path == ".")
             {
                 // 현재 디렉터리를 나타내는 경우
                 return CurrentDirectory;
             }
-            
+
             if (path == "..")
             {
                 // 부모 디렉터리를 나타내는 경우
@@ -160,7 +160,7 @@ namespace FileSystem
                     return "/";
                 }
             }
-            
+
             // 파일 이름만 주어진 경우, 현재 디렉터리를 기준으로 절대 경로 생성
             return NormalizePath(CurrentDirectory + "/" + path);
         }

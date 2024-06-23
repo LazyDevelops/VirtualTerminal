@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Tree;
+﻿using Tree;
 using static FileSystem.FileSystem;
 
 namespace VirtualTerminal
@@ -149,12 +148,12 @@ namespace VirtualTerminal
             {
                 if (options["l"])
                 {
-                    string permissions = fileSystem.ConvertPermissionsToString(temp.Data.permission);
-                    Console.WriteLine($"{temp.Data.fileType}{permissions} {temp.Data.UID} {temp.Data.name}");
+                    string permissions = fileSystem.ConvertPermissionsToString(temp.Data.Permission);
+                    Console.WriteLine($"{temp.Data.FileType}{permissions} {temp.Data.UID} {temp.Data.Name}");
                 }
                 else
                 {
-                    Console.WriteLine(temp.Data.name);
+                    Console.WriteLine(temp.Data.Name);
                 }
             }
         }
@@ -175,9 +174,9 @@ namespace VirtualTerminal
                         return;
                     }
 
-                    if (file.Data.fileType != FileType.D)
+                    if (file.Data.FileType != FileType.D)
                     {
-                        Console.WriteLine($"{file.Data.name}: Not a directory");
+                        Console.WriteLine($"{file.Data.Name}: Not a directory");
                         return;
                     }
 
@@ -214,13 +213,13 @@ namespace VirtualTerminal
                         return;
                     }
 
-                    if (file.Data.fileType == FileType.D)
+                    if (file.Data.FileType == FileType.D)
                     {
-                        Console.WriteLine($"Not a file: {file.Data.name}");
+                        Console.WriteLine($"Not a file: {file.Data.Name}");
                         return;
                     }
 
-                    Console.WriteLine(file.Data.content);
+                    Console.WriteLine(file.Data.Content);
                 }
             }
         }
@@ -253,12 +252,12 @@ namespace VirtualTerminal
                         return;
                     }
 
-                    if(fileSystem.FindFile(parentsPath, root) == null)
+                    if (fileSystem.FindFile(parentsPath, root) == null)
                     {
                         Console.WriteLine($"{args[0]}: cannot create directory '{fileName}': No such file or directory");
                         return;
                     }
-                    
+
                     fileSystem.CreateFile(parentsPath, new FileNode(fileName, USER, 0b111101, FileType.D), root);
                 }
             }
@@ -288,15 +287,15 @@ namespace VirtualTerminal
                         return;
                     }
 
-                    if (file.Data.fileType == FileType.D)
+                    if (file.Data.FileType == FileType.D)
                     {
-                        Console.WriteLine($"{args[0]}: failed to remove '{file.Data.name}': Not a directory");
+                        Console.WriteLine($"{args[0]}: failed to remove '{file.Data.Name}': Not a directory");
                         return;
                     }
 
                     if (fileSystem.RemoveFile(absolutePath, root) != 0)
                     {
-                        Console.WriteLine($"{args[0]}: failed to remove '{file.Data.name}': Directory not empty");
+                        Console.WriteLine($"{args[0]}: failed to remove '{file.Data.Name}': Directory not empty");
                         return;
                     }
                 }
