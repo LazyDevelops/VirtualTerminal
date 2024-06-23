@@ -1,20 +1,23 @@
 ﻿using Tree;
+using VirtualTerminal.Commands;
 using static FileSystem.FileSystem;
 
 namespace VirtualTerminal
 {
     public partial class VirtualTerminal
     {
-        private FileSystem.FileSystem fileSystem = new();
-        private Tree<FileNode> root;
-        private Tree<FileNode>? pwdNode;
-        private Tree<FileNode>? homeNode;
+        internal FileSystem.FileSystem fileSystem = new();
+        internal Tree<FileNode> root;
+        internal Tree<FileNode>? pwdNode;
+        internal Tree<FileNode>? homeNode;
 
-        private string PWD;
+        internal string PWD;
         // private List<string> PWD;
         // private List<FileNode> PWD;
-        private string HOME;
-        private string USER;
+        internal string HOME;
+        internal string USER;
+
+        private Dictionary<string, ICommand> commandMap;
 
         public VirtualTerminal()
         {
@@ -43,6 +46,21 @@ namespace VirtualTerminal
                 Console.WriteLine("pwdNode err");
                 Environment.Exit(0);
             }
+
+            // 명령어와 메서드를 매핑하는 사전 초기화
+            commandMap = new Dictionary<string, ICommand>
+            {
+                { "cd", new CdCommand() },
+                { "cat", new CatCommand() },
+                { "clear", new ClearCommand() },
+                { "exit", new ExitCommand() },
+                { "help", new HelpCommand() },
+                { "ls", new LsCommand() },
+                // { "mv", new MvCommand() },
+                { "mkdir", new MkdirCommand() },
+                // { "rm", new RmCommand() },
+                { "rmdir", new RmdirCommand() }
+            };
         }
         
         public void Run()
@@ -73,45 +91,17 @@ namespace VirtualTerminal
         {
             string[] args = command.Split(' ');
 
-            switch (args[0])
+            if (commandMap.TryGetValue(args[0], out var action))
             {
-                case "cd":
-                    ExecuteCd(args);
-                    break;
-                case "cat":
-                    ExecuteCat(args);
-                    break;
-                case "clear":
-                    ExecuteClear();
-                    break;
-                case "exit":
-                    ExecuteExit();
-                    break;
-                case "help":
-                    ExecuteHelp();
-                    break;
-                case "ls":
-                    ExecuteLs(args);
-                    break;
-                // case "mv":
-                //     ExecuteMv(args);
-                //     break;
-                case "mkdir":
-                    ExecuteMkdir(args);
-                    break;
-                // case "rm":
-                //     ExecuteRm(args);
-                //     break;
-                case "rmdir":
-                    ExecuteRmdir(args);
-                    break;
-                default:
-                    Console.WriteLine($"Command not found: {args[0]}");
-                    break;
+                action.Execute(args, this);
+            }
+            else
+            {
+                Console.WriteLine($"Command not found: {args[0]}");
             }
         }
 
-        private string ReadMultiLineInput()
+        internal string ReadMultiLineInput()
         {
             string content = string.Empty;
             string? line;
@@ -127,6 +117,11 @@ namespace VirtualTerminal
             Console.ForegroundColor = color;
             Console.Write(text);
             Console.ResetColor();
+        }
+
+        internal interface ICommand
+        {
+            void Execute(string[] args, VirtualTerminal VT);
         }
     }
 }

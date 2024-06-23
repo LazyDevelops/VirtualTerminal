@@ -1,8 +1,8 @@
-﻿namespace VirtualTerminal
+﻿namespace VirtualTerminal.Commands
 {
-    public partial class VirtualTerminal
+    public class HelpCommand : VirtualTerminal.ICommand
     {
-        private void ExecuteHelp()
+        public void Execute(string[] args, VirtualTerminal VT)
         {
             Console.WriteLine("Available commands:");
             Console.WriteLine("ls - List directory contents");

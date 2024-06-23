@@ -1,10 +1,10 @@
 ﻿using static FileSystem.FileSystem;
 
-namespace VirtualTerminal
+namespace VirtualTerminal.Commands
 {
-    public partial class VirtualTerminal
+    public class MkdirCommand : VirtualTerminal.ICommand
     {
-        private void ExecuteMkdir(string[] args)
+        public void Execute(string[] args, VirtualTerminal VT)
         {
             string[]? path;
             string? absolutePath;
@@ -15,25 +15,25 @@ namespace VirtualTerminal
             {
                 if (temp != args[0] && !temp.Contains('-') && !temp.Contains("--"))
                 {
-                    absolutePath = fileSystem.GetAbsolutePath(temp, HOME, PWD);
+                    absolutePath = VT.fileSystem.GetAbsolutePath(temp, VT.HOME, VT.PWD);
                     path = absolutePath.Split('/');
                     fileName = path[^1]; // path.Length - 1
                     parentsPath = absolutePath.Replace('/' + fileName, "");
 
-                    if (fileSystem.FindFile(absolutePath, root) != null)
+                    if (VT.fileSystem.FindFile(absolutePath, VT.root) != null)
                     {
                         Console.WriteLine($"{args[0]}: cannot create directory '{fileName}': File exists");
                         Console.WriteLine($"{path} {fileName}");
                         return;
                     }
 
-                    if (fileSystem.FindFile(parentsPath, root) == null)
+                    if (VT.fileSystem.FindFile(parentsPath, VT.root) == null)
                     {
                         Console.WriteLine($"{args[0]}: cannot create directory '{fileName}': No such file or directory");
                         return;
                     }
 
-                    fileSystem.CreateFile(parentsPath, new FileNode(fileName, USER, 0b111101, FileType.D), root);
+                    VT.fileSystem.CreateFile(parentsPath, new FileNode(fileName, VT.USER, 0b111101, FileType.D), VT.root);
                 }
             }
         }

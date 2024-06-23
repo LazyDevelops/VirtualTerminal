@@ -1,11 +1,11 @@
 ﻿using Tree;
 using static FileSystem.FileSystem;
 
-namespace VirtualTerminal
+namespace VirtualTerminal.Commands
 {
-    public partial class VirtualTerminal
+    public class LsCommand : VirtualTerminal.ICommand
     {
-        private void ExecuteLs(string[] args)
+        public void Execute(string[] args, VirtualTerminal VT)
         {
             Dictionary<string, bool> options = new(){
                 { "l", false }
@@ -29,7 +29,7 @@ namespace VirtualTerminal
                 }
             }
 
-            List<Tree<FileNode>>? pwdChildren = pwdNode?.GetChildren();
+            List<Tree<FileNode>>? pwdChildren = VT.pwdNode?.GetChildren();
 
             if (pwdChildren == null)
             {
@@ -40,7 +40,7 @@ namespace VirtualTerminal
             {
                 if (options["l"])
                 {
-                    string permissions = fileSystem.ConvertPermissionsToString(temp.Data.Permission);
+                    string permissions = VT.fileSystem.ConvertPermissionsToString(temp.Data.Permission);
                     Console.WriteLine($"{temp.Data.FileType}{permissions} {temp.Data.UID} {temp.Data.Name}");
                 }
                 else

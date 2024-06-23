@@ -1,12 +1,12 @@
 ﻿using Tree;
 using static FileSystem.FileSystem;
 
-namespace VirtualTerminal
+namespace VirtualTerminal.Commands
 {
-    public partial class VirtualTerminal
+    public class RmCommand : VirtualTerminal.ICommand
     {
-        // private void ExecuteRm(string[] args)
-        // {
+        public void Execute(string[] args, VirtualTerminal VT)
+        {
         //     string path = PWD == "/" ? $"/{file}" : $"{PWD}/{file}";
         //     var entry = fileSystem.Find(entry => entry.Path == path);
 
@@ -23,6 +23,6 @@ namespace VirtualTerminal
         //         fileSystem.RemoveAll(entry => entry.Path == path);
         //         Console.WriteLine($"File removed: {file}");
         //     }
-        // }
+        }
     }
 }

@@ -1,8 +1,8 @@
-﻿namespace VirtualTerminal
+﻿namespace VirtualTerminal.Commands
 {
-    public partial class VirtualTerminal
+    public class ClearCommand : VirtualTerminal.ICommand
     {
-        private void ExecuteClear()
+        public void Execute(string[] args, VirtualTerminal VT)
         {
             Console.Clear();
         }

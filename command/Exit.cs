@@ -1,8 +1,8 @@
-﻿namespace VirtualTerminal
+﻿namespace VirtualTerminal.Commands
 {
-    public partial class VirtualTerminal
+    public class ExitCommand : VirtualTerminal.ICommand
     {
-        private void ExecuteExit()
+        public void Execute(string[] args, VirtualTerminal VT)
         {
             Environment.Exit(0);
         }

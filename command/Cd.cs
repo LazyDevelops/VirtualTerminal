@@ -1,11 +1,11 @@
 ﻿using Tree;
 using static FileSystem.FileSystem;
 
-namespace VirtualTerminal
+namespace VirtualTerminal.Commands
 {
-    public partial class VirtualTerminal
+    public class CdCommand : VirtualTerminal.ICommand
     {
-        private void ExecuteCd(string[] args)
+        public void Execute(string[] args, VirtualTerminal VT)
         {
             Tree<FileNode>? file;
 
@@ -13,7 +13,7 @@ namespace VirtualTerminal
             {
                 if (temp != args[0] && !temp.Contains('-') && !temp.Contains("--"))
                 {
-                    file = fileSystem.FindFile(fileSystem.GetAbsolutePath(temp, HOME, PWD), root);
+                    file = VT.fileSystem.FindFile(VT.fileSystem.GetAbsolutePath(temp, VT.HOME, VT.PWD), VT.root);
 
                     if (file == null)
                     {
@@ -27,8 +27,8 @@ namespace VirtualTerminal
                         return;
                     }
 
-                    pwdNode = file;
-                    PWD = fileSystem.GetAbsolutePath(temp, HOME, PWD);
+                    VT.pwdNode = file;
+                    VT.PWD = VT.fileSystem.GetAbsolutePath(temp, VT.HOME, VT.PWD);
                 }
             }
         }

@@ -1,12 +1,11 @@
 ﻿using Tree;
 using static FileSystem.FileSystem;
 
-namespace VirtualTerminal
+namespace VirtualTerminal.Commands
 {
-    public partial class VirtualTerminal
+    public class RmdirCommand : VirtualTerminal.ICommand
     {
-        // 에러 메세지 수정 필요
-        private void ExecuteRmdir(string[] args)
+        public void Execute(string[] args, VirtualTerminal VT)
         {
             Tree<FileNode>? file;
             string[]? path;
@@ -17,11 +16,11 @@ namespace VirtualTerminal
             {
                 if (temp != args[0] && !temp.Contains('-') && !temp.Contains("--"))
                 {
-                    absolutePath = fileSystem.GetAbsolutePath(temp, HOME, PWD);
+                    absolutePath = VT.fileSystem.GetAbsolutePath(temp, VT.HOME, VT.PWD);
                     path = absolutePath.Split('/');
                     fileName = path[^1]; // path.Length - 1
 
-                    file = fileSystem.FindFile(temp, root);
+                    file = VT.fileSystem.FindFile(temp, VT.root);
 
                     if (file == null)
                     {
@@ -35,7 +34,7 @@ namespace VirtualTerminal
                         return;
                     }
 
-                    if (fileSystem.RemoveFile(absolutePath, root) != 0)
+                    if (VT.fileSystem.RemoveFile(absolutePath, VT.root) != 0)
                     {
                         Console.WriteLine($"{args[0]}: failed to remove '{file.Data.Name}': Directory not empty");
                         return;
