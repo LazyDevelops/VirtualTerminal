@@ -3,7 +3,7 @@ using static FileSystem.FileSystem;
 
 namespace VirtualTerminal
 {
-    class VirtualTerminal
+    public partial class VirtualTerminal
     {
         private FileSystem.FileSystem fileSystem = new();
         private Tree<FileNode> root;
@@ -44,7 +44,7 @@ namespace VirtualTerminal
                 Environment.Exit(0);
             }
         }
-
+        
         public void Run()
         {
             while (true)
@@ -65,8 +65,6 @@ namespace VirtualTerminal
         {
             WriteColoredText("\x1b[1muser\x1b[22m", ConsoleColor.Green);
             WriteColoredText(":", Console.ForegroundColor);
-            // homeDirectory 일시 ~ 표시 코드 짜기
-            // 리눅스에 대해 모르는 사람들을 위해 ~ 사용 폐기
             WriteColoredText($"\x1b[1m{PWD}\x1b[22m", ConsoleColor.Blue);
             WriteColoredText("$ ", Console.ForegroundColor);
         }
@@ -113,235 +111,6 @@ namespace VirtualTerminal
             }
         }
 
-        private void ExecuteLs(string[] args)
-        {
-            Dictionary<string, bool> options = new(){
-                { "l", false }
-            };
-
-            foreach (string temp in args)
-            {
-                // -- 옵션을 위한 코드
-                /*if(temp.Contains("--")) {
-                    options[temp.Replace("--", "")] = true;
-                }else */
-                if (temp.Contains('-'))
-                {
-                    foreach (char c in temp)
-                    {
-                        if (c != '-')
-                        {
-                            options[temp] = true;
-                        }
-                    }
-                }
-            }
-
-            List<Tree<FileNode>>? pwdChildren = pwdNode?.GetChildren();
-
-            if (pwdChildren == null)
-            {
-                return;
-            }
-
-            foreach (Tree<FileNode> temp in pwdChildren)
-            {
-                if (options["l"])
-                {
-                    string permissions = fileSystem.ConvertPermissionsToString(temp.Data.Permission);
-                    Console.WriteLine($"{temp.Data.FileType}{permissions} {temp.Data.UID} {temp.Data.Name}");
-                }
-                else
-                {
-                    Console.WriteLine(temp.Data.Name);
-                }
-            }
-        }
-
-        private void ExecuteCd(string[] args)
-        {
-            Tree<FileNode>? file;
-
-            foreach (string temp in args)
-            {
-                if (temp != args[0] && !temp.Contains('-') && !temp.Contains("--"))
-                {
-                    file = fileSystem.FindFile(fileSystem.GetAbsolutePath(temp, HOME, PWD), root);
-
-                    if (file == null)
-                    {
-                        Console.WriteLine($"test: No such file or directory");
-                        return;
-                    }
-
-                    if (file.Data.FileType != FileType.D)
-                    {
-                        Console.WriteLine($"{file.Data.Name}: Not a directory");
-                        return;
-                    }
-
-                    pwdNode = file;
-                    PWD = fileSystem.GetAbsolutePath(temp, HOME, PWD);
-                }
-            }
-        }
-
-        private void ExecuteCat(string[] args)
-        {
-            Tree<FileNode>? file;
-            string[]? path;
-            string? absolutePath;
-            string? parentsPath;
-            string? fileName;
-
-            foreach (string temp in args)
-            {
-                if (temp != args[0] && !temp.Contains('-') && !temp.Contains("--"))
-                {
-                    absolutePath = fileSystem.GetAbsolutePath(temp, HOME, PWD);
-                    path = absolutePath.Split('/');
-                    fileName = path[^1]; // path.Length - 1
-                    parentsPath = absolutePath.Replace('/' + fileName, "");
-
-                    file = fileSystem.FindFile(absolutePath, root);
-
-                    if (file == null)
-                    {
-                        Console.WriteLine($"File not found: {fileName}. Creating new file. Enter content (end with a single dot on a line):");
-                        string content = ReadMultiLineInput();
-                        fileSystem.CreateFile(parentsPath, new FileNode(fileName, USER, 0b110100, FileType.F, content), root);
-                        return;
-                    }
-
-                    if (file.Data.FileType == FileType.D)
-                    {
-                        Console.WriteLine($"Not a file: {file.Data.Name}");
-                        return;
-                    }
-
-                    Console.WriteLine(file.Data.Content);
-                }
-            }
-        }
-
-        private void ExecuteClear()
-        {
-            Console.Clear();
-        }
-
-        private void ExecuteMkdir(string[] args)
-        {
-            string[]? path;
-            string? absolutePath;
-            string? parentsPath;
-            string? fileName;
-
-            foreach (string temp in args)
-            {
-                if (temp != args[0] && !temp.Contains('-') && !temp.Contains("--"))
-                {
-                    absolutePath = fileSystem.GetAbsolutePath(temp, HOME, PWD);
-                    path = absolutePath.Split('/');
-                    fileName = path[^1]; // path.Length - 1
-                    parentsPath = absolutePath.Replace('/' + fileName, "");
-
-                    if (fileSystem.FindFile(absolutePath, root) != null)
-                    {
-                        Console.WriteLine($"{args[0]}: cannot create directory '{fileName}': File exists");
-                        Console.WriteLine($"{path} {fileName}");
-                        return;
-                    }
-
-                    if (fileSystem.FindFile(parentsPath, root) == null)
-                    {
-                        Console.WriteLine($"{args[0]}: cannot create directory '{fileName}': No such file or directory");
-                        return;
-                    }
-
-                    fileSystem.CreateFile(parentsPath, new FileNode(fileName, USER, 0b111101, FileType.D), root);
-                }
-            }
-        }
-
-        // 에러 메세지 수정 필요
-        private void ExecuteRmdir(string[] args)
-        {
-            Tree<FileNode>? file;
-            string[]? path;
-            string? absolutePath;
-            string? fileName;
-
-            foreach (string temp in args)
-            {
-                if (temp != args[0] && !temp.Contains('-') && !temp.Contains("--"))
-                {
-                    absolutePath = fileSystem.GetAbsolutePath(temp, HOME, PWD);
-                    path = absolutePath.Split('/');
-                    fileName = path[^1]; // path.Length - 1
-
-                    file = fileSystem.FindFile(temp, root);
-
-                    if (file == null)
-                    {
-                        Console.WriteLine($"{args[0]}: failed to remove '{fileName}': No such file or directory");
-                        return;
-                    }
-
-                    if (file.Data.FileType == FileType.D)
-                    {
-                        Console.WriteLine($"{args[0]}: failed to remove '{file.Data.Name}': Not a directory");
-                        return;
-                    }
-
-                    if (fileSystem.RemoveFile(absolutePath, root) != 0)
-                    {
-                        Console.WriteLine($"{args[0]}: failed to remove '{file.Data.Name}': Directory not empty");
-                        return;
-                    }
-                }
-            }
-        }
-
-        // private void ExecuteRm(string[] args)
-        // {
-        //     string path = PWD == "/" ? $"/{file}" : $"{PWD}/{file}";
-        //     var entry = fileSystem.Find(entry => entry.Path == path);
-
-        //     if (entry.Path == null)
-        //     {
-        //         Console.WriteLine($"File not found: {file}");
-        //     }
-        //     else if (entry.IsDirectory)
-        //     {
-        //         Console.WriteLine($"Not a file: {file}");
-        //     }
-        //     else
-        //     {
-        //         fileSystem.RemoveAll(entry => entry.Path == path);
-        //         Console.WriteLine($"File removed: {file}");
-        //     }
-        // }
-
-        private void ExecuteExit()
-        {
-            Environment.Exit(0);
-        }
-
-        private void ExecuteHelp()
-        {
-            Console.WriteLine("Available commands:");
-            Console.WriteLine("ls - List directory contents");
-            Console.WriteLine("cd - Change the current directory");
-            Console.WriteLine("cat - Display file content");
-            Console.WriteLine("clear - Clear the screen");
-            Console.WriteLine("mkdir - Create a new directory");
-            Console.WriteLine("rmdir - Remove a directory");
-            Console.WriteLine("rm - Remove a file");
-            Console.WriteLine("exit - Exit the terminal");
-        }
-
-        // 부가 함수
-
         private string ReadMultiLineInput()
         {
             string content = string.Empty;
@@ -359,14 +128,5 @@ namespace VirtualTerminal
             Console.Write(text);
             Console.ResetColor();
         }
-    }
-}
-
-class Program
-{
-    static void Main()
-    {
-        VirtualTerminal.VirtualTerminal terminal = new();
-        terminal.Run();
     }
 }
