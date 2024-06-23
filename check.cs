@@ -67,6 +67,7 @@ namespace VirtualTerminal
             WriteColoredText("\x1b[1muser\x1b[22m", ConsoleColor.Green);
             WriteColoredText(":", Console.ForegroundColor);
             // homeDirectory 일시 ~ 표시 코드 짜기
+            // 리눅스에 대해 모르는 사람들을 위해 ~ 사용 폐기
             WriteColoredText($"\x1b[1m{PWD}\x1b[22m", ConsoleColor.Blue);
             WriteColoredText("$ ", Console.ForegroundColor);
         }
@@ -104,9 +105,9 @@ namespace VirtualTerminal
                 // case "rm":
                 //     ExecuteRm(args);
                 //     break;
-                // case "rmdir":
-                //     ExecuteRmdir(args);
-                //     break;
+                case "rmdir":
+                    ExecuteRmdir(args);
+                    break;
                 default:
                     Console.WriteLine($"Command not found: {args[0]}");
                     break;
@@ -189,24 +190,27 @@ namespace VirtualTerminal
         private void ExecuteCat(string[] args)
         {
             Tree<FileNode>? file;
-            string[]? paths;
-            string? path;
+            string[]? path;
+            string? absolutePath;
+            string? parentsPath;
             string? fileName;
 
             foreach (string temp in args)
             {
-                if (temp.Contains('/'))
+                if (temp != args[0] && !temp.Contains('-') && !temp.Contains("--"))
                 {
-                    file = fileSystem.FindFile(temp, root);
-                    paths = temp.Split('/');
-                    fileName = paths[^1]; // path.Length - 1
-                    path = temp.Replace('/' + fileName, "");
+                    absolutePath = fileSystem.GetAbsolutePath(temp, HOME, PWD);
+                    path = absolutePath.Split('/');
+                    fileName = path[^1]; // path.Length - 1
+                    parentsPath = absolutePath.Replace('/' + fileName, "");
+
+                    file = fileSystem.FindFile(absolutePath, root);
 
                     if (file == null)
                     {
                         Console.WriteLine($"File not found: {fileName}. Creating new file. Enter content (end with a single dot on a line):");
                         string content = ReadMultiLineInput();
-                        fileSystem.CreateFile(path, new FileNode(fileName, USER, 0b110100, FileType.F, content), root);
+                        fileSystem.CreateFile(parentsPath, new FileNode(fileName, USER, 0b110100, FileType.F, content), root);
                         return;
                     }
 
@@ -228,24 +232,34 @@ namespace VirtualTerminal
 
         private void ExecuteMkdir(string[] args)
         {
-            string? path;
+            string[]? path;
+            string? absolutePath;
+            string? parentsPath;
             string? fileName;
 
             foreach (string temp in args)
             {
-                if (temp.Contains('/'))
+                if (temp != args[0] && !temp.Contains('-') && !temp.Contains("--"))
                 {
-                    fileName = temp.Split('/')[^1];
-                    path = temp.Replace('/' + fileName, "");
+                    absolutePath = fileSystem.GetAbsolutePath(temp, HOME, PWD);
+                    path = absolutePath.Split('/');
+                    fileName = path[^1]; // path.Length - 1
+                    parentsPath = absolutePath.Replace('/' + fileName, "");
 
-                    if (fileSystem.FindFile(path, root) != null)
+                    if (fileSystem.FindFile(absolutePath, root) != null)
                     {
                         Console.WriteLine($"{args[0]}: cannot create directory '{fileName}': File exists");
                         Console.WriteLine($"{path} {fileName}");
                         return;
                     }
+
+                    if(fileSystem.FindFile(parentsPath, root) == null)
+                    {
+                        Console.WriteLine($"{args[0]}: cannot create directory '{fileName}': No such file or directory");
+                        return;
+                    }
                     
-                    fileSystem.CreateFile(path, new FileNode(fileName, USER, 0b111101, FileType.D), root);
+                    fileSystem.CreateFile(parentsPath, new FileNode(fileName, USER, 0b111101, FileType.D), root);
                 }
             }
         }
@@ -255,14 +269,16 @@ namespace VirtualTerminal
         {
             Tree<FileNode>? file;
             string[]? path;
+            string? absolutePath;
             string? fileName;
 
             foreach (string temp in args)
             {
-                if (temp.Contains('/'))
+                if (temp != args[0] && !temp.Contains('-') && !temp.Contains("--"))
                 {
-                    path = temp.Split('/');
-                    fileName = path[^1]; // path[path.Length - 1];
+                    absolutePath = fileSystem.GetAbsolutePath(temp, HOME, PWD);
+                    path = absolutePath.Split('/');
+                    fileName = path[^1]; // path.Length - 1
 
                     file = fileSystem.FindFile(temp, root);
 
@@ -278,7 +294,7 @@ namespace VirtualTerminal
                         return;
                     }
 
-                    if (fileSystem.RemoveFile(temp, root) != 0)
+                    if (fileSystem.RemoveFile(absolutePath, root) != 0)
                     {
                         Console.WriteLine($"{args[0]}: failed to remove '{file.Data.name}': Directory not empty");
                         return;

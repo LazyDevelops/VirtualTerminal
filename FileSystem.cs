@@ -128,17 +128,25 @@ namespace FileSystem
                 // 절대 경로인 경우
                 return NormalizePath(path);
             }
-            else if (path.StartsWith("~/") || path == "~")
+            
+            if (path.StartsWith("~/"))
             {
                 // 홈 디렉터리(~)로 시작하는 경우
                 return NormalizePath(HomeDirectory + "/" + path.Substring(2));
             }
-            else if (path == ".")
+            
+            if (path == "~")
+            {
+                return HomeDirectory;
+            }
+            
+            if (path == ".")
             {
                 // 현재 디렉터리를 나타내는 경우
                 return CurrentDirectory;
             }
-            else if (path == "..")
+            
+            if (path == "..")
             {
                 // 부모 디렉터리를 나타내는 경우
                 int lastSlashIndex = CurrentDirectory.LastIndexOf('/');
@@ -153,11 +161,9 @@ namespace FileSystem
                     return "/";
                 }
             }
-            else
-            {
-                // 파일 이름만 주어진 경우, 현재 디렉터리를 기준으로 절대 경로 생성
-                return NormalizePath(CurrentDirectory + "/" + path);
-            }
+            
+            // 파일 이름만 주어진 경우, 현재 디렉터리를 기준으로 절대 경로 생성
+            return NormalizePath(CurrentDirectory + "/" + path);
         }
 
         private string NormalizePath(string path)
