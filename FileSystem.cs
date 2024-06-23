@@ -41,7 +41,6 @@ namespace FileSystem
 
         public int RemoveFile(string path, Tree<FileNode> root)
         {
-            string[] directories = path.Split('/');
             Tree<FileNode>? current = FindFile(path, root);
             Tree<FileNode> parents;
 
@@ -66,11 +65,11 @@ namespace FileSystem
             return 3;
         }
 
-        public Tree<FileNode>? FindFile(string path, Tree<FileNode> root)
+        public static Tree<FileNode>? FindFile(string path, Tree<FileNode> root)
         {
             Tree<FileNode> current = root;
-            string? fileName;
             var files = new List<string>();
+            string? fileName;
 
             path = path.Substring(1);
             files.AddRange(path.Split('/'));
@@ -104,7 +103,7 @@ namespace FileSystem
             }
         }
 
-        public string ConvertPermissionsToString(short permissions)
+        public static string ConvertPermissionsToString(short permissions)
         {
             string result = string.Empty;
             result += (permissions & 040) != 0 ? "r" : "-";
@@ -166,7 +165,7 @@ namespace FileSystem
             return NormalizePath(CurrentDirectory + "/" + path);
         }
 
-        private string NormalizePath(string path)
+        private static string NormalizePath(string path)
         {
             var parts = path.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
             var stack = new Stack<string>();
