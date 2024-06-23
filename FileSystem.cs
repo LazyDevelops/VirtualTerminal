@@ -65,7 +65,7 @@ namespace FileSystem
             return 3;
         }
 
-        public static Tree<FileNode>? FindFile(string path, Tree<FileNode> root)
+        public Tree<FileNode>? FindFile(string path, Tree<FileNode> root)
         {
             Tree<FileNode> current = root;
             var files = new List<string>();
@@ -103,7 +103,7 @@ namespace FileSystem
             }
         }
 
-        public static string ConvertPermissionsToString(short permissions)
+        public string ConvertPermissionsToString(short permissions)
         {
             string result = string.Empty;
             result += (permissions & 040) != 0 ? "r" : "-";
@@ -165,7 +165,7 @@ namespace FileSystem
             return NormalizePath(CurrentDirectory + "/" + path);
         }
 
-        private static string NormalizePath(string path)
+        private string NormalizePath(string path)
         {
             var parts = path.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
             var stack = new Stack<string>();
