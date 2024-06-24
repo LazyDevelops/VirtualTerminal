@@ -11,6 +11,11 @@ namespace VirtualTerminal.Commands
                 { "l", false }
             };
 
+            Tree<FileNode>? file;
+            List<Tree<FileNode>>? fileChildren;
+            string[]? path;
+            string? absolutePath;
+
             foreach (string temp in args)
             {
                 // -- 옵션을 위한 코드
@@ -29,14 +34,39 @@ namespace VirtualTerminal.Commands
                 }
             }
 
-            List<Tree<FileNode>>? pwdChildren = VT.pwdNode?.GetChildren();
+            fileChildren = VT.pwdNode?.GetChildren();
 
-            if (pwdChildren == null)
+            foreach (string temp in args)
+            {
+                if (temp != args[0] && !temp.Contains('-') && !temp.Contains("--"))
+                {
+                    absolutePath = VT.fileSystem.GetAbsolutePath(temp, VT.HOME, VT.PWD);
+                    path = absolutePath.Split('/');
+
+                    file = VT.fileSystem.FindFile(absolutePath, VT.root);
+
+                    if (file == null)
+                    {
+                        Console.WriteLine($"ls: cannot access '{temp}': No such file or directory");
+                        return;
+                    }
+
+                    if (file.Data.FileType != FileType.D)
+                    {
+                        Console.WriteLine($"{temp}: Not a directory");
+                        return;
+                    }
+
+                    fileChildren = file.GetChildren();
+                }
+            }
+
+            if (fileChildren == null)
             {
                 return;
             }
 
-            foreach (Tree<FileNode> temp in pwdChildren)
+            foreach (Tree<FileNode> temp in fileChildren)
             {
                 if (options["l"])
                 {
