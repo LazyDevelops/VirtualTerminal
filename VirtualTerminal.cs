@@ -53,12 +53,14 @@ namespace VirtualTerminal
                 { "cd", new CdCommand() },
                 { "cat", new CatCommand() },
                 { "clear", new ClearCommand() },
+                { "date", new DateCommand() },
                 { "echo", new EchoCommand() },
                 { "exit", new ExitCommand() },
                 { "help", new HelpCommand() },
                 { "ls", new LsCommand() },
                 // { "mv", new MvCommand() },
                 { "mkdir", new MkdirCommand() },
+                { "pwd", new PwdCommand() },
                 // { "rm", new RmCommand() },
                 { "rmdir", new RmdirCommand() }
             };

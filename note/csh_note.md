@@ -108,3 +108,6 @@ Tree<FileSystemNode> FindFile("상대 주소 or 절대 주소")
     - mv
     - rm
     - rmdir
+
+cp 명령어 만들고
+만든 명령어들 목록에 추가하기
