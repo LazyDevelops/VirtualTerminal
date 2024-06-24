@@ -77,3 +77,34 @@ Tree<FileSystemNode> FindFile("상대 주소 or 절대 주소")
 
 ## TODO
 - 경로 스택으로 관리하게 전부 변경하기
+
+# 기본 명력어 목록
+    - cat
+    - cd
+    - clear
+    - exit
+    - help
+    - ls
+    - mkdir
+    - man
+    - mv
+    - rm
+    - rmdir
+
+# 게임 조작 명령어
+    - go
+    - get
+    - unlock
+    - mapping
+
+# 구현중 or 구현 완료된 명령어
+    - cat
+    - cd
+    - clear
+    - exit
+    - help
+    - ls
+    - mkdir
+    - mv
+    - rm
+    - rmdir

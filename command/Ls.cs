@@ -23,7 +23,7 @@ namespace VirtualTerminal.Commands
                     {
                         if (c != '-')
                         {
-                            options[temp] = true;
+                            options[c.ToString()] = true;
                         }
                     }
                 }
@@ -41,6 +41,7 @@ namespace VirtualTerminal.Commands
                 if (options["l"])
                 {
                     string permissions = VT.fileSystem.ConvertPermissionsToString(temp.Data.Permission);
+                    // file 타입이 -가 아닌 F로 출력됨
                     Console.WriteLine($"{temp.Data.FileType}{permissions} {temp.Data.UID} {temp.Data.Name}");
                 }
                 else

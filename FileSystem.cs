@@ -142,6 +142,7 @@ namespace FileSystem
             if (path == ".")
             {
                 // 현재 디렉터리를 나타내는 경우
+                Console.WriteLine($"{path}, {path == "."}");
                 return CurrentDirectory;
             }
 
