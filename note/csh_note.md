@@ -110,4 +110,5 @@ Tree<FileSystemNode> FindFile("상대 주소 or 절대 주소")
     - rmdir
 
 cp 명령어 만들고
+logout 명령어도 목록에 추가하기
 만든 명령어들 목록에 추가하기
