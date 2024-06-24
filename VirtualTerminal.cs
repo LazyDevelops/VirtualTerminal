@@ -17,7 +17,7 @@ namespace VirtualTerminal
         internal string HOME;
         internal string USER;
 
-        private Dictionary<string, ICommand> commandMap;
+        internal Dictionary<string, ICommand> commandMap;
 
         public VirtualTerminal()
         {
@@ -53,6 +53,7 @@ namespace VirtualTerminal
                 { "cd", new CdCommand() },
                 { "cat", new CatCommand() },
                 { "clear", new ClearCommand() },
+                { "echo", new EchoCommand() },
                 { "exit", new ExitCommand() },
                 { "help", new HelpCommand() },
                 { "ls", new LsCommand() },
@@ -82,6 +83,7 @@ namespace VirtualTerminal
         internal interface ICommand
         {
             void Execute(string[] args, VirtualTerminal VT);
+            //String Description();
         }
 
         private void DisplayPrompt()
