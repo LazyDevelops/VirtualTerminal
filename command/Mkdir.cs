@@ -8,7 +8,7 @@ namespace VirtualTerminal.Commands
         {
             string[]? path;
             string? absolutePath;
-            string? parentsPath;
+            string? parentPath;
             string? fileName;
 
             foreach (string arg in args)
@@ -18,7 +18,7 @@ namespace VirtualTerminal.Commands
                     absolutePath = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
                     path = absolutePath.Split('/');
                     fileName = path[^1]; // path.Length - 1
-                    parentsPath = absolutePath.Replace('/' + fileName, "");
+                    parentPath = absolutePath.Replace('/' + fileName, "");
 
                     if (VT.fileSystem.FindFile(absolutePath, VT.root) != null)
                     {
@@ -26,13 +26,13 @@ namespace VirtualTerminal.Commands
                         return;
                     }
 
-                    if (VT.fileSystem.FindFile(parentsPath, VT.root) == null)
+                    if (VT.fileSystem.FindFile(parentPath, VT.root) == null)
                     {
                         Console.WriteLine($"{args[0]}: cannot create directory '{arg}': No such file or directory");
                         return;
                     }
 
-                    VT.fileSystem.CreateFile(parentsPath, new FileNode(fileName, VT.USER, 0b111101, FileType.D), VT.root);
+                    VT.fileSystem.CreateFile(parentPath, new FileNode(fileName, VT.USER, 0b111101, FileType.D), VT.root);
                 }
             }
         }

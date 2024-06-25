@@ -116,6 +116,39 @@ namespace FileSystem
             return result;
         }
 
+        public bool[] CheckFilePermission(string username, FileNode file)
+        {
+            var permissions = new bool[6];
+
+            for (int i = 0; i < 6; i++)
+            {
+                permissions[i] = (file.Permission & (1 << i)) != 0;
+            }
+
+            bool[] returnPermissions = new bool[3];
+
+            int readIndex = file.UID == username ? 3 : 0;
+            int writeIndex = file.UID == username ? 4 : 1;
+            int executeIndex = file.UID == username ? 5 : 2;
+
+            if (permissions[readIndex])
+            {
+                returnPermissions[0] = true;
+            }
+
+            if (permissions[writeIndex])
+            {
+                returnPermissions[1] = true;
+            }
+
+            if (permissions[executeIndex])
+            {
+                returnPermissions[2] = true;
+            }
+
+            return returnPermissions;
+        }
+
         // path stack이나 list로 수정 고려
         public string GetAbsolutePath(string path, string HomeDirectory, string CurrentDirectory)
         {
