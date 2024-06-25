@@ -121,7 +121,7 @@ namespace VirtualTerminal
             return content.TrimEnd('\n');
         }
 
-        private static void WriteColoredText(string text, ConsoleColor color)
+        internal void WriteColoredText(string text, ConsoleColor color)
         {
             Console.ForegroundColor = color;
             Console.Write(text);
