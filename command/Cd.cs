@@ -8,12 +8,14 @@ namespace VirtualTerminal.Commands
         public void Execute(string[] args, VirtualTerminal VT)
         {
             Tree<FileNode>? file;
+            string? absolutePath;
 
             foreach (string arg in args)
             {
                 if (arg != args[0] && !arg.Contains('-') && !arg.Contains("--"))
                 {
-                    file = VT.fileSystem.FindFile(VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD), VT.root);
+                    absolutePath = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
+                    file = VT.fileSystem.FindFile(absolutePath, VT.root);
 
                     if (file == null)
                     {
@@ -28,7 +30,7 @@ namespace VirtualTerminal.Commands
                     }
 
                     VT.pwdNode = file;
-                    VT.PWD = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
+                    VT.PWD = absolutePath;
                 }
             }
         }
