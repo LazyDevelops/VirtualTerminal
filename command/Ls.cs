@@ -16,15 +16,15 @@ namespace VirtualTerminal.Commands
             string[]? path;
             string? absolutePath;
 
-            foreach (string temp in args)
+            foreach (string arg in args)
             {
                 // -- 옵션을 위한 코드
                 /*if(temp.Contains("--")) {
                     options[temp.Replace("--", "")] = true;
                 }else */
-                if (temp.Contains('-'))
+                if (arg.Contains('-'))
                 {
-                    foreach (char c in temp)
+                    foreach (char c in arg)
                     {
                         if (c != '-')
                         {
@@ -36,24 +36,24 @@ namespace VirtualTerminal.Commands
 
             fileChildren = VT.pwdNode?.GetChildren();
 
-            foreach (string temp in args)
+            foreach (string arg in args)
             {
-                if (temp != args[0] && !temp.Contains('-') && !temp.Contains("--"))
+                if (arg != args[0] && !arg.Contains('-') && !arg.Contains("--"))
                 {
-                    absolutePath = VT.fileSystem.GetAbsolutePath(temp, VT.HOME, VT.PWD);
+                    absolutePath = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
                     path = absolutePath.Split('/');
 
                     file = VT.fileSystem.FindFile(absolutePath, VT.root);
 
                     if (file == null)
                     {
-                        Console.WriteLine($"ls: cannot access '{temp}': No such file or directory");
+                        Console.WriteLine($"ls: cannot access '{arg}': No such file or directory");
                         return;
                     }
 
                     if (file.Data.FileType != FileType.D)
                     {
-                        Console.WriteLine($"{temp}: Not a directory");
+                        Console.WriteLine($"{arg}: Not a directory");
                         return;
                     }
 
@@ -66,16 +66,16 @@ namespace VirtualTerminal.Commands
                 return;
             }
 
-            foreach (Tree<FileNode> temp in fileChildren)
+            foreach (Tree<FileNode> fileChild in fileChildren)
             {
                 if (options["l"])
                 {
-                    string permissions = VT.fileSystem.ConvertPermissionsToString(temp.Data.Permission);
-                    Console.WriteLine($"{Convert.ToChar(temp.Data.FileType)}{permissions} {temp.Data.UID} {temp.Data.Name}");
+                    string permissions = VT.fileSystem.ConvertPermissionsToString(fileChild.Data.Permission);
+                    Console.WriteLine($"{Convert.ToChar(fileChild.Data.FileType)}{permissions} {fileChild.Data.UID} {fileChild.Data.Name}");
                 }
                 else
                 {
-                    Console.WriteLine(temp.Data.Name);
+                    Console.WriteLine(fileChild.Data.Name);
                 }
             }
         }

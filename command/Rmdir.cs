@@ -12,15 +12,15 @@ namespace VirtualTerminal.Commands
             string? absolutePath;
             string? fileName;
 
-            foreach (string temp in args)
+            foreach (string arg in args)
             {
-                if (temp != args[0] && !temp.Contains('-') && !temp.Contains("--"))
+                if (arg != args[0] && !arg.Contains('-') && !arg.Contains("--"))
                 {
-                    absolutePath = VT.fileSystem.GetAbsolutePath(temp, VT.HOME, VT.PWD);
+                    absolutePath = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
                     path = absolutePath.Split('/');
                     fileName = path[^1]; // path.Length - 1
 
-                    file = VT.fileSystem.FindFile(temp, VT.root);
+                    file = VT.fileSystem.FindFile(arg, VT.root);
 
                     if (file == null)
                     {

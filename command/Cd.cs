@@ -9,11 +9,11 @@ namespace VirtualTerminal.Commands
         {
             Tree<FileNode>? file;
 
-            foreach (string temp in args)
+            foreach (string arg in args)
             {
-                if (temp != args[0] && !temp.Contains('-') && !temp.Contains("--"))
+                if (arg != args[0] && !arg.Contains('-') && !arg.Contains("--"))
                 {
-                    file = VT.fileSystem.FindFile(VT.fileSystem.GetAbsolutePath(temp, VT.HOME, VT.PWD), VT.root);
+                    file = VT.fileSystem.FindFile(VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD), VT.root);
 
                     if (file == null)
                     {
@@ -28,7 +28,7 @@ namespace VirtualTerminal.Commands
                     }
 
                     VT.pwdNode = file;
-                    VT.PWD = VT.fileSystem.GetAbsolutePath(temp, VT.HOME, VT.PWD);
+                    VT.PWD = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
                 }
             }
         }

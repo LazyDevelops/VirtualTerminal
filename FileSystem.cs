@@ -71,7 +71,7 @@ namespace FileSystem
             var files = new List<string>();
             string? fileName;
 
-            path = path.Substring(1);
+            path = path.TrimStart('/');
             files.AddRange(path.Split('/'));
 
             fileName = files.Last();
