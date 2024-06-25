@@ -40,8 +40,8 @@ namespace Tree
 
         public List<Tree<T>> GetChildren()
         {
-            List<Tree<T>> children = new List<Tree<T>>();
-            Tree<T>? child = LeftChild;
+            var children = new List<Tree<T>>();
+            var child = LeftChild;
 
             while (child != null)
             {
