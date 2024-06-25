@@ -72,31 +72,19 @@ namespace VirtualTerminal.Commands
                 {
                     string permissions = VT.fileSystem.ConvertPermissionsToString(fileChild.Data.Permission);
                     Console.Write($"{Convert.ToChar(fileChild.Data.FileType)}{permissions} {fileChild.Data.UID} ");
-
-                    if(fileChild.Data.FileType == FileType.D)
-                    {
-                        VT.WriteColoredText($"{fileChild?.Data.Name}", ConsoleColor.Blue);
-                    }
-                    else
-                    {
-                        Console.Write(fileChild?.Data.Name);
-                    }
-
-                    Console.WriteLine();
+                }
+                
+                
+                if(fileChild?.Data.FileType == FileType.D)
+                {
+                    VT.WriteColoredText($"{fileChild?.Data.Name}", ConsoleColor.Blue);
                 }
                 else
                 {
-                    if(fileChild.Data.FileType == FileType.D)
-                    {
-                        VT.WriteColoredText($"{fileChild?.Data.Name}", ConsoleColor.Blue);
-                    }
-                    else
-                    {
-                        Console.Write(fileChild?.Data.Name);
-                    }
-
-                    Console.WriteLine();
+                    Console.Write(fileChild?.Data.Name);
                 }
+
+                Console.WriteLine();
             }
         }
     }
