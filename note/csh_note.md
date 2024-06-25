@@ -112,3 +112,25 @@ Tree<FileSystemNode> FindFile("상대 주소 or 절대 주소")
 cp 명령어 만들고
 logout 명령어도 목록에 추가하기
 만든 명령어들 목록에 추가하기
+
+숨김 파일 기능 고려
+
+```cs
+        foreach (string arg in args)
+            {
+                // -- 옵션을 위한 코드
+                /*if(arg.Contains("--")) {
+                    options[arg.Replace("--", "")] = true;
+                }else */
+                if (arg.Contains('-'))
+                {
+                    foreach (char c in arg)
+                    {
+                        if (c != '-')
+                        {
+                            options[c.ToString()] = true;
+                        }
+                    }
+                }
+            }
+```

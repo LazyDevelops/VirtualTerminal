@@ -18,10 +18,6 @@ namespace VirtualTerminal.Commands
 
             foreach (string arg in args)
             {
-                // -- 옵션을 위한 코드
-                /*if(temp.Contains("--")) {
-                    options[temp.Replace("--", "")] = true;
-                }else */
                 if (arg.Contains('-'))
                 {
                     foreach (char c in arg)
