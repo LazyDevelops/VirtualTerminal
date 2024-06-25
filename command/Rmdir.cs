@@ -24,19 +24,19 @@ namespace VirtualTerminal.Commands
 
                     if (file == null)
                     {
-                        Console.WriteLine($"{args[0]}: failed to remove '{fileName}': No such file or directory");
+                        Console.WriteLine($"{args[0]}: failed to remove '{arg}': No such file or directory");
                         return;
                     }
 
-                    if (file.Data.FileType == FileType.D)
+                    if (file.Data.FileType == FileType.F)
                     {
-                        Console.WriteLine($"{args[0]}: failed to remove '{file.Data.Name}': Not a directory");
+                        Console.WriteLine($"{args[0]}: failed to remove '{arg}': Not a directory");
                         return;
                     }
 
                     if (VT.fileSystem.RemoveFile(absolutePath, VT.root) != 0)
                     {
-                        Console.WriteLine($"{args[0]}: failed to remove '{file.Data.Name}': Directory not empty");
+                        Console.WriteLine($"{args[0]}: failed to remove '{arg}': Directory not empty");
                         return;
                     }
                 }

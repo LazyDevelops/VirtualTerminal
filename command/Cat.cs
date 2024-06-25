@@ -34,7 +34,7 @@ namespace VirtualTerminal.Commands
 
                     if (file.Data.FileType == FileType.D)
                     {
-                        Console.WriteLine($"Not a file: {file.Data.Name}");
+                        Console.WriteLine($"{args[0]}: {arg}: Not a file");
                         return;
                     }
 

@@ -41,13 +41,13 @@ namespace VirtualTerminal.Commands
 
                     if (file == null)
                     {
-                        Console.WriteLine($"ls: cannot access '{arg}': No such file or directory");
+                        Console.WriteLine($"{args[0]}: cannot access '{arg}': No such file or directory");
                         return;
                     }
 
                     if (file.Data.FileType != FileType.D)
                     {
-                        Console.WriteLine($"{arg}: Not a directory");
+                        Console.WriteLine(arg);
                         return;
                     }
 

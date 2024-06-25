@@ -22,14 +22,13 @@ namespace VirtualTerminal.Commands
 
                     if (VT.fileSystem.FindFile(absolutePath, VT.root) != null)
                     {
-                        Console.WriteLine($"{args[0]}: cannot create directory '{fileName}': File exists");
-                        Console.WriteLine($"{path} {fileName}");
+                        Console.WriteLine($"{args[0]}: cannot create directory '{arg}': File exists");
                         return;
                     }
 
                     if (VT.fileSystem.FindFile(parentsPath, VT.root) == null)
                     {
-                        Console.WriteLine($"{args[0]}: cannot create directory '{fileName}': No such file or directory");
+                        Console.WriteLine($"{args[0]}: cannot create directory '{arg}': No such file or directory");
                         return;
                     }
 

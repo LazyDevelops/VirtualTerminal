@@ -19,13 +19,20 @@ namespace VirtualTerminal.Commands
 
                     if (file == null)
                     {
-                        Console.WriteLine($"test: No such file or directory");
+                        Console.WriteLine($"bash: {args[0]}: {arg}: No such file or directory");
                         return;
                     }
 
                     if (file.Data.FileType != FileType.D)
                     {
-                        Console.WriteLine($"{file.Data.Name}: Not a directory");
+                        Console.WriteLine($"bash: {args[0]}: {arg}: Not a directory");
+                        return;
+                    }
+
+                    // if(file.Data.Permission )
+                    if(false)
+                    {
+                        Console.WriteLine($"bash: {args[0]}: {arg}: Permission denied");
                         return;
                     }
 
