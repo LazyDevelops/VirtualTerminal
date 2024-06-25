@@ -115,6 +115,7 @@ namespace FileSystem
             return result;
         }
 
+        // path stack이나 list로 수정 고려
         public string GetAbsolutePath(string path, string HomeDirectory, string CurrentDirectory)
         {
             if (string.IsNullOrEmpty(path))
@@ -131,7 +132,7 @@ namespace FileSystem
             if (path.StartsWith("~/"))
             {
                 // 홈 디렉터리(~)로 시작하는 경우
-                return NormalizePath(HomeDirectory + "/" + path.Substring(2));
+                return NormalizePath(HomeDirectory + "/" + path.Remove(0, 2));
             }
 
             if (path == "~")
@@ -142,7 +143,6 @@ namespace FileSystem
             if (path == ".")
             {
                 // 현재 디렉터리를 나타내는 경우
-                Console.WriteLine($"{path}, {path == "."}");
                 return CurrentDirectory;
             }
 
@@ -153,7 +153,7 @@ namespace FileSystem
 
                 if (lastSlashIndex > 0)
                 {
-                    return CurrentDirectory.Substring(0, lastSlashIndex);
+                    return CurrentDirectory.Remove(lastSlashIndex);
                 }
                 else
                 {
@@ -168,7 +168,7 @@ namespace FileSystem
 
         private string NormalizePath(string path)
         {
-            var parts = path.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+            var parts = path.Split('/', StringSplitOptions.RemoveEmptyEntries);
             var stack = new Stack<string>();
 
             foreach (var part in parts)

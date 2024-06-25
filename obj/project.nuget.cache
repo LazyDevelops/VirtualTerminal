@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "ysZzwEC69LE=",
+  "dgSpecHash": "xdPa1LuYhnQ=",
   "success": true,
-  "projectFilePath": "C:\\Users\\CheeseSand\\Desktop\\VirtualTerminal\\VirtualTerminal.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "/home/code/VirtualTerminal/VirtualTerminal.csproj",
+  "expectedPackageFiles": [
+    "/home/code/.nuget/packages/microsoft.netcore.app.ref/8.0.6/microsoft.netcore.app.ref.8.0.6.nupkg.sha512",
+    "/home/code/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.6/microsoft.aspnetcore.app.ref.8.0.6.nupkg.sha512",
+    "/home/code/.nuget/packages/microsoft.netcore.app.host.linux-x64/8.0.6/microsoft.netcore.app.host.linux-x64.8.0.6.nupkg.sha512"
+  ],
   "logs": []
 }
