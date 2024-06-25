@@ -11,6 +11,7 @@ namespace VirtualTerminal.Commands
             string[]? path;
             string? absolutePath;
             string? fileName;
+            bool[] parentPermission;
 
             foreach (string arg in args)
             {
@@ -22,7 +23,15 @@ namespace VirtualTerminal.Commands
 
                     file = VT.fileSystem.FindFile(arg, VT.root);
 
-                    if (file == null)
+                    if (file == null || file.Parents == null)
+                    {
+                        Console.WriteLine($"{args[0]}: failed to remove '{arg}': No such file or directory");
+                        return;
+                    }
+
+                    parentPermission = VT.fileSystem.CheckFilePermission(VT.USER, file.Parents.Data);
+
+                    if (parentPermission[1])
                     {
                         Console.WriteLine($"{args[0]}: failed to remove '{arg}': No such file or directory");
                         return;

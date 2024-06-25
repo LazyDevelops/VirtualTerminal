@@ -123,13 +123,14 @@ namespace FileSystem
             for (int i = 0; i < 6; i++)
             {
                 permissions[i] = (file.Permission & (1 << i)) != 0;
+                // Console.WriteLine((file.Permission & (1 << i)) != 0);
             }
 
             bool[] returnPermissions = new bool[3];
 
-            int readIndex = file.UID == username ? 3 : 0;
+            int executeIndex = file.UID == username ? 3 : 0;
             int writeIndex = file.UID == username ? 4 : 1;
-            int executeIndex = file.UID == username ? 5 : 2;
+            int readIndex = file.UID == username ? 5 : 2;
 
             if (permissions[readIndex])
             {

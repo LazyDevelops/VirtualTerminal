@@ -1,4 +1,5 @@
-﻿using static FileSystem.FileSystem;
+﻿using Tree;
+using static FileSystem.FileSystem;
 
 namespace VirtualTerminal.Commands
 {
@@ -6,10 +7,12 @@ namespace VirtualTerminal.Commands
     {
         public void Execute(string[] args, VirtualTerminal VT)
         {
+            Tree<FileNode>? parentFile;
             string[]? path;
             string? absolutePath;
             string? parentPath;
             string? fileName;
+            bool[] parentPermission;
 
             foreach (string arg in args)
             {
@@ -19,16 +22,24 @@ namespace VirtualTerminal.Commands
                     path = absolutePath.Split('/');
                     fileName = path[^1]; // path.Length - 1
                     parentPath = absolutePath.Replace('/' + fileName, "");
+                    parentFile = VT.fileSystem.FindFile(parentPath, VT.root);
+
+                    if (parentFile == null)
+                    {
+                        Console.WriteLine($"{args[0]}: cannot create directory '{arg}': No such file or directory");
+                        return;
+                    }
+
+                    parentPermission = VT.fileSystem.CheckFilePermission(VT.USER, parentFile.Data);
+
+                    if(!parentPermission[1]){
+                        Console.WriteLine($"{args[0]}: cannot create directory '{arg}': Permission denied");
+                        return;
+                    }
 
                     if (VT.fileSystem.FindFile(absolutePath, VT.root) != null)
                     {
                         Console.WriteLine($"{args[0]}: cannot create directory '{arg}': File exists");
-                        return;
-                    }
-
-                    if (VT.fileSystem.FindFile(parentPath, VT.root) == null)
-                    {
-                        Console.WriteLine($"{args[0]}: cannot create directory '{arg}': No such file or directory");
                         return;
                     }
 
