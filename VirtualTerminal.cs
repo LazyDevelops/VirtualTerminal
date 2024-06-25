@@ -30,7 +30,8 @@ namespace VirtualTerminal
             fileSystem.CreateFile("/", new FileNode("root", "root", 0b111000, FileType.D), root);
 
             homeNode = fileSystem.CreateFile("/home", new FileNode(USER, USER, 0b111101, FileType.D), root);
-
+            
+            fileSystem.CreateFile(HOME, new FileNode("Item", "root", 0b111101, FileType.D), root);
             fileSystem.CreateFile(HOME, new FileNode($"Hello_{USER}.txt", "root", 0b111111, FileType.F, $"Hello, {USER}!"), root);
 
             pwdNode = fileSystem.FindFile(PWD, root);

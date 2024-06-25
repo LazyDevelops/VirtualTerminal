@@ -20,8 +20,9 @@ namespace FileSystem
 
         public enum FileType
         {
-            F = '-',
-            D = 'd'
+            F = '-', // 일반 파일
+            D = 'd', // 디렉터리 파일
+            I = 'I' // 아이템 파일
         }
 
         public Tree<FileNode>? CreateFile(string path, FileNode entry, Tree<FileNode> root)
