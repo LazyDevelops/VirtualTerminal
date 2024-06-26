@@ -78,7 +78,7 @@ namespace VirtualTerminal.Commands
 
         public string Description()
         {
-            return "cat - ";
+            return "cat - 파일 내용 출력";
         }
     }
 }

@@ -9,7 +9,7 @@ namespace VirtualTerminal.Commands
 
         public string Description()
         {
-            return "test";
+            return "whoami - 접속중인 유저 이름 출력";
         }
     }
 }

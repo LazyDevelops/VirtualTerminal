@@ -27,7 +27,7 @@ namespace VirtualTerminal.Commands
 
         public string Description()
         {
-            return "test";
+            return "rm - 파일이나 디렉터리 삭제";
         }
     }
 }

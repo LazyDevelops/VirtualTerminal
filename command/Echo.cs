@@ -17,7 +17,7 @@
 
         public string Description()
         {
-            return "test";
+            return "ehco - 입력한 테스트 출력";
         }
     }
 }

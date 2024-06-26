@@ -9,7 +9,7 @@
 
         public string Description()
         {
-            return "clear - ";
+            return "clear - 터미널 창 정리";
         }
     }
 }

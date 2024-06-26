@@ -18,7 +18,7 @@ namespace VirtualTerminal.Commands
 
         public string Description()
         {
-            return "test";
+            return "man - 명령어에 대한 자세한 설명 출력";
         }
     }
 }

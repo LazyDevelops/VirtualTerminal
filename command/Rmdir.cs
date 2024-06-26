@@ -55,7 +55,7 @@ namespace VirtualTerminal.Commands
 
         public string Description()
         {
-            return "test";
+            return "rmdir - 비어있는 디렉터리를 삭제";
         }
     }
 }

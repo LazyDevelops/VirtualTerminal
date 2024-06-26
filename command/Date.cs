@@ -13,7 +13,7 @@ namespace VirtualTerminal.Commands
 
         public string Description()
         {
-            return "date - ";
+            return "date - 현제 날짜 및 시간 출력";
         }
     }
 }

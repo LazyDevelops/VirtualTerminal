@@ -12,7 +12,7 @@ namespace VirtualTerminal.Commands
 
         public string Description()
         {
-            return "test";
+            return "mv - 파일이나 폴더 위치를 옮기거나 이름 제지정";
         }
     }
 }

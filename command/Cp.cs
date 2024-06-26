@@ -9,7 +9,7 @@ namespace VirtualTerminal.Commands
 
         public string Description()
         {
-            return "cp - ";
+            return "cp - 파일이나 디렉터리 복사";
         }
     }
 }
