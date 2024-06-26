@@ -79,7 +79,7 @@ namespace VirtualTerminal
         internal interface ICommand
         {
             void Execute(string[] args, VirtualTerminal VT);
-            String Description();
+            string Description();
         }
 
         private void DisplayPrompt()
