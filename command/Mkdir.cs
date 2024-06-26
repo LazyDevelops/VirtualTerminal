@@ -32,7 +32,7 @@ namespace VirtualTerminal.Commands
 
                     parentPermission = VT.fileSystem.CheckFilePermission(VT.USER, parentFile, VT.root);
 
-                    if(!parentPermission[1]){
+                    if(!parentPermission[0] || !parentPermission[1] || !parentPermission[2]){
                         Console.WriteLine($"{args[0]}: cannot create directory '{arg}': Permission denied");
                         return;
                     }

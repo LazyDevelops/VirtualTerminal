@@ -32,7 +32,7 @@ namespace VirtualTerminal.Commands
 
                     permissions = VT.fileSystem.CheckFilePermission(VT.USER, file, VT.root);
                     
-                    if(!permissions[2])
+                    if(!permissions[0] || !permissions[2])
                     {
                         Console.WriteLine($"bash: {args[0]}: {arg}: Permission denied");
                         return;

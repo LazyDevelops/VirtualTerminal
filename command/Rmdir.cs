@@ -29,17 +29,17 @@ namespace VirtualTerminal.Commands
                         return;
                     }
 
-                    parentPermission = VT.fileSystem.CheckFilePermission(VT.USER, file.Parents, VT.root);
-
-                    if (parentPermission[1])
-                    {
-                        Console.WriteLine($"{args[0]}: failed to remove '{arg}': No such file or directory");
-                        return;
-                    }
-
                     if (file.Data.FileType == FileType.F)
                     {
                         Console.WriteLine($"{args[0]}: failed to remove '{arg}': Not a directory");
+                        return;
+                    }
+
+                    parentPermission = VT.fileSystem.CheckFilePermission(VT.USER, file.Parents, VT.root);
+
+                    if (parentPermission[0] || !parentPermission[1] || !parentPermission[2])
+                    {
+                        Console.WriteLine($"{args[0]}: failed to remove '{arg}': No such file or directory");
                         return;
                     }
 

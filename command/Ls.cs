@@ -10,6 +10,7 @@ namespace VirtualTerminal.Commands
             Tree<FileNode>? file;
             List<Tree<FileNode>>? fileChildren;
             string? absolutePath;
+            bool[] permission;
             
             Dictionary<string, bool> options = new(){
                 { "l", false }
@@ -48,6 +49,13 @@ namespace VirtualTerminal.Commands
                     if (file.Data.FileType != FileType.D)
                     {
                         Console.WriteLine(arg);
+                        return;
+                    }
+
+                    permission = VT.fileSystem.CheckFilePermission(VT.USER, file, VT.root);
+
+                    if (!permission[0]){
+                        Console.WriteLine($"{args[0]}: {arg}: Permission denied");
                         return;
                     }
 
