@@ -36,18 +36,6 @@ namespace VirtualTerminal
 
             pwdNode = fileSystem.FindFile(PWD, root);
 
-            if (homeNode == null)
-            {
-                Console.WriteLine($"homeNode err");
-                Environment.Exit(0);
-            }
-
-            if (pwdNode == null)
-            {
-                Console.WriteLine("pwdNode err");
-                Environment.Exit(0);
-            }
-
             // 명령어와 메서드를 매핑하는 사전 초기화
             commandMap = new Dictionary<string, ICommand>
             {
