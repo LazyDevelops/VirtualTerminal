@@ -9,7 +9,7 @@ namespace VirtualTerminal.Commands
         {
             Tree<FileNode>? file;
             string? absolutePath;
-            bool[] permissions;
+            bool[] permission;
 
             foreach (string arg in args)
             {
@@ -30,9 +30,9 @@ namespace VirtualTerminal.Commands
                         return;
                     }
 
-                    permissions = VT.fileSystem.CheckFilePermission(VT.USER, file, VT.root);
+                    permission = VT.fileSystem.CheckFilePermission(VT.USER, file, VT.root);
                     
-                    if(!permissions[0] || !permissions[2])
+                    if(!permission[0] || !permission[2])
                     {
                         Console.WriteLine($"bash: {args[0]}: {arg}: Permission denied");
                         return;

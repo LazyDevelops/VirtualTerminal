@@ -12,7 +12,7 @@ namespace VirtualTerminal.Commands
             string? absolutePath;
             string? parentPath;
             string? fileName;
-            bool[] parentPermission;
+            bool[] permission;
 
             foreach (string arg in args)
             {
@@ -35,9 +35,9 @@ namespace VirtualTerminal.Commands
                         return;
                     }
 
-                    parentPermission = VT.fileSystem.CheckFilePermission(VT.USER, parentFile, VT.root);
+                    permission = VT.fileSystem.CheckFilePermission(VT.USER, parentFile, VT.root);
 
-                    if(!parentPermission[0] || !parentPermission[1] || !parentPermission[2]){
+                    if(!permission[0] || !permission[1] || !permission[2]){
                         Console.WriteLine($"{args[0]}: '{arg}' 디렉터리를 만들 수 없습니다: Permission denied");
                         return;
                     }

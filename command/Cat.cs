@@ -17,8 +17,7 @@ namespace VirtualTerminal.Commands
 
             string? fileName;
             
-            bool[] permissions;
-            bool[] parentPermission;
+            bool[] permission;
 
             foreach (string arg in args)
             {
@@ -39,14 +38,14 @@ namespace VirtualTerminal.Commands
 
                     if (file == null)
                     {
-                        parentPermission = VT.fileSystem.CheckFilePermission(VT.USER, parentFile, VT.root);
+                        permission = VT.fileSystem.CheckFilePermission(VT.USER, parentFile, VT.root);
 
                         if(parentFile.Data.FileType != FileType.D){
                             Console.WriteLine(ErrorsMassage.NotD(args[0], ErrorsMassage.DefaultErrorComment(arg)));
                             return;
                         }
 
-                        if(!parentPermission[0] || !parentPermission[1] || !parentPermission[2])
+                        if(!permission[0] || !permission[1] || !permission[2])
                         {
                             Console.WriteLine(ErrorsMassage.PermissionDenied(args[0], ErrorsMassage.DefaultErrorComment(arg)));
                             return;
@@ -64,9 +63,9 @@ namespace VirtualTerminal.Commands
                         return;
                     }
 
-                    permissions = VT.fileSystem.CheckFilePermission(VT.USER, file, VT.root);
+                    permission = VT.fileSystem.CheckFilePermission(VT.USER, file, VT.root);
 
-                    if(!permissions[0])
+                    if(!permission[0])
                     {
                         Console.WriteLine(ErrorsMassage.PermissionDenied(args[0], ErrorsMassage.DefaultErrorComment(arg)));
                         return;

@@ -11,7 +11,7 @@ namespace VirtualTerminal.Commands
             string[]? splitPath;
             string? absolutePath;
             string? fileName;
-            bool[] parentPermission;
+            bool[] permission;
 
             foreach (string arg in args)
             {
@@ -35,9 +35,9 @@ namespace VirtualTerminal.Commands
                         return;
                     }
 
-                    parentPermission = VT.fileSystem.CheckFilePermission(VT.USER, file.Parents, VT.root);
+                    permission = VT.fileSystem.CheckFilePermission(VT.USER, file.Parents, VT.root);
 
-                    if (parentPermission[0] || !parentPermission[1] || !parentPermission[2])
+                    if (permission[0] || !permission[1] || !permission[2])
                     {
                         Console.WriteLine($"{args[0]}: '{arg}' 디렉터리를 삭제할 수 없습니다: 권한이 부족합니다.");
                         return;
