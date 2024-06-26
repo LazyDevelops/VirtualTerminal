@@ -4,7 +4,7 @@
     {
         public void Execute(string[] args, VirtualTerminal VT)
         {
-            Console.WriteLine("man [명령어]를 이용해 더 자세한 내용을 볼 수 있습니다.\n");
+            Console.WriteLine("\"man 명령어\"를 이용해 더 자세한 내용을 볼 수 있습니다.\n");
             Console.WriteLine("명령어 목록:");
 
             foreach (VirtualTerminal.ICommand action in VT.commandMap.Values){

@@ -94,6 +94,15 @@ namespace VirtualTerminal
         {
             string[] args = command.Split(' ');
 
+            foreach (string arg in args)
+            {
+                if (arg == "--help")
+                {
+                    Console.WriteLine("\"man 명령어\"를 이용해 하십시오");
+                    return;
+                }
+            }
+
             if (commandMap.TryGetValue(args[0], out var action))
             {
                 action.Execute(args, this);

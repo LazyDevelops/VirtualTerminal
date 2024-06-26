@@ -8,7 +8,7 @@ namespace VirtualTerminal.Commands
         {
             if (VT.commandMap.TryGetValue(args[1], out var action))
             {
-                Console.WriteLine(action.Description(true));
+                Console.Write(action.Description(true));
             }
             else
             {
