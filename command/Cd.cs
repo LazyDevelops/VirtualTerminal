@@ -1,5 +1,6 @@
 ﻿using Tree;
 using static FileSystem.FileSystem;
+using VirtualTerminal.Errors;
 
 namespace VirtualTerminal.Commands
 {
@@ -20,13 +21,8 @@ namespace VirtualTerminal.Commands
 
                     if (file == null)
                     {
-                        Console.WriteLine($"bash: {args[0]}: {arg}: 그런 파일이나 디렉터리가 없습니다.");
-                        return;
-                    }
-
-                    if (file.Data.FileType != FileType.D)
-                    {
-                        Console.WriteLine($"bash: {args[0]}: {arg}: Not a directory");
+                        Console.Write("bash: ");
+                        Console.WriteLine(ErrorsMassage.NoSuchForD(args[0], ErrorsMassage.DefaultErrorComment(arg)));
                         return;
                     }
 
@@ -34,7 +30,15 @@ namespace VirtualTerminal.Commands
                     
                     if(!permission[0] || !permission[2])
                     {
-                        Console.WriteLine($"bash: {args[0]}: {arg}: Permission denied");
+                        Console.Write("bash: ");
+                        Console.WriteLine(ErrorsMassage.PermissionDenied(args[0], ErrorsMassage.DefaultErrorComment(arg)));
+                        return;
+                    }
+
+                    if (file.Data.FileType != FileType.D)
+                    {
+                        Console.Write("bash: ");
+                        Console.WriteLine(ErrorsMassage.NotD(args[0], ErrorsMassage.DefaultErrorComment(arg)));
                         return;
                     }
 
