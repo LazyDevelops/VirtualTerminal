@@ -37,6 +37,11 @@ namespace VirtualTerminal.Commands
                     {
                         parentPermission = VT.fileSystem.CheckFilePermission(VT.USER, parentFile, VT.root);
 
+                        if(parentFile.Data.FileType != FileType.D){
+                            Console.WriteLine($"bash: {args[0]}: {arg}: Not a directory");
+                            return;
+                        }
+
                         if(!parentPermission[0] || !parentPermission[1] || !parentPermission[2])
                         {
                             Console.WriteLine($"{args[0]}: {arg}: Permission denied");

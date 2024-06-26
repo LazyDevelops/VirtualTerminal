@@ -30,6 +30,11 @@ namespace VirtualTerminal.Commands
                         return;
                     }
 
+                    if(parentFile.Data.FileType != FileType.D){
+                        Console.WriteLine($"bash: {args[0]}: {arg}: Not a directory");
+                        return;
+                    }
+
                     parentPermission = VT.fileSystem.CheckFilePermission(VT.USER, parentFile, VT.root);
 
                     if(!parentPermission[0] || !parentPermission[1] || !parentPermission[2]){
