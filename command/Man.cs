@@ -6,7 +6,7 @@
         {
             if (VT.commandMap.TryGetValue(args[1], out var action))
             {
-                Console.Write(action.Description());
+                Console.WriteLine(action.Description());
             }
             else
             {
