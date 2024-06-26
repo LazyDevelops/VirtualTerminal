@@ -1,5 +1,6 @@
 ﻿using Tree;
 using static FileSystem.FileSystem;
+using VirtualTerminal.Errors;
 
 namespace VirtualTerminal.Commands
 {
@@ -25,13 +26,7 @@ namespace VirtualTerminal.Commands
 
                     if (file == null || file.Parents == null)
                     {
-                        Console.WriteLine($"{args[0]}: '{arg}' 디렉터리를 삭제할 수 없습니다: 파일이나 디렉터리를 찾을 수 없습니다.");
-                        return;
-                    }
-
-                    if (file.Data.FileType == FileType.F)
-                    {
-                        Console.WriteLine($"{args[0]}: '{arg}' 디렉터리를 삭제할 수 없습니다: 디렉터리가 아닙니다.");
+                        Console.WriteLine(ErrorsMassage.NoSuchForD(args[0], ErrorsMassage.DefaultErrorComment(arg)));
                         return;
                     }
 
@@ -39,13 +34,19 @@ namespace VirtualTerminal.Commands
 
                     if (permission[0] || !permission[1] || !permission[2])
                     {
-                        Console.WriteLine($"{args[0]}: '{arg}' 디렉터리를 삭제할 수 없습니다: 권한이 부족합니다.");
+                        Console.WriteLine(ErrorsMassage.PermissionDenied(args[0], ErrorsMassage.DefaultErrorComment(arg)));
+                        return;
+                    }
+
+                    if (file.Data.FileType == FileType.F)
+                    {
+                        Console.WriteLine(ErrorsMassage.NotD(args[0], ErrorsMassage.DefaultErrorComment(arg)));
                         return;
                     }
 
                     if (VT.fileSystem.RemoveFile(absolutePath, VT.root) != 0)
                     {
-                        Console.WriteLine($"{args[0]}: '{arg}' 디렉터리를 삭제할 수 없습니다: 디렉터리가 비어어있지 않습니다.");
+                        Console.WriteLine(ErrorsMassage.DNotEmpty(args[0], ErrorsMassage.DefaultErrorComment(arg)));
                         return;
                     }
                 }

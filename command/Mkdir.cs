@@ -1,5 +1,6 @@
 ﻿using Tree;
 using static FileSystem.FileSystem;
+using VirtualTerminal.Errors;
 
 namespace VirtualTerminal.Commands
 {
@@ -26,25 +27,25 @@ namespace VirtualTerminal.Commands
 
                     if (parentFile == null)
                     {
-                        Console.WriteLine($"{args[0]}: '{arg}' 디렉터리를 만들 수 없습니다: No such file or directory");
-                        return;
-                    }
-
-                    if(parentFile.Data.FileType != FileType.D){
-                        Console.WriteLine($"{args[0]}: {arg}: Not a directory");
+                        Console.WriteLine(ErrorsMassage.NoSuchForD(args[0], ErrorsMassage.DefaultErrorComment(arg)));
                         return;
                     }
 
                     permission = VT.fileSystem.CheckFilePermission(VT.USER, parentFile, VT.root);
 
                     if(!permission[0] || !permission[1] || !permission[2]){
-                        Console.WriteLine($"{args[0]}: '{arg}' 디렉터리를 만들 수 없습니다: Permission denied");
+                        Console.WriteLine(ErrorsMassage.PermissionDenied(args[0], ErrorsMassage.DefaultErrorComment(arg)));
+                        return;
+                    }
+
+                    if(parentFile.Data.FileType != FileType.D){
+                        Console.WriteLine(ErrorsMassage.NotD(args[0], ErrorsMassage.DefaultErrorComment(arg)));
                         return;
                     }
 
                     if (VT.fileSystem.FindFile(absolutePath, VT.root) != null)
                     {
-                        Console.WriteLine($"{args[0]}: '{arg}' 디렉터리를 만들 수 없습니다: File exists");
+                        Console.WriteLine(ErrorsMassage.FExists(args[0], ErrorsMassage.DefaultErrorComment(arg)));
                         return;
                     }
 

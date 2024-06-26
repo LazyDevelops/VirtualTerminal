@@ -1,5 +1,6 @@
 ﻿using Tree;
 using static FileSystem.FileSystem;
+using VirtualTerminal.Errors;
 
 namespace VirtualTerminal.Commands
 {
@@ -42,20 +43,20 @@ namespace VirtualTerminal.Commands
 
                     if (file == null)
                     {
-                        Console.WriteLine($"{args[0]}: cannot access '{arg}': No such file or directory");
-                        return;
-                    }
-
-                    if (file.Data.FileType != FileType.D)
-                    {
-                        Console.WriteLine(arg);
+                        Console.WriteLine(ErrorsMassage.NoSuchForD(args[0], ErrorsMassage.DefaultErrorComment(arg)));
                         return;
                     }
 
                     permission = VT.fileSystem.CheckFilePermission(VT.USER, file, VT.root);
 
                     if (!permission[0]){
-                        Console.WriteLine($"{args[0]}: {arg}: Permission denied");
+                        Console.WriteLine(ErrorsMassage.PermissionDenied(args[0], ErrorsMassage.DefaultErrorComment(arg)));
+                        return;
+                    }
+
+                    if (file.Data.FileType != FileType.D)
+                    {
+                        Console.WriteLine(arg);
                         return;
                     }
 
