@@ -146,7 +146,7 @@ err메세지 따로 분리
     - cp
     - mv
     - rm
-    -chmod
+    - chmod
 
 # 추가 고려중
     - wc
