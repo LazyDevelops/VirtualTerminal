@@ -8,7 +8,7 @@ namespace VirtualTerminal.Commands
         public void Execute(string[] args, VirtualTerminal VT)
         {
             Tree<FileNode>? file;
-            string[]? path;
+            string[]? splitPath;
             string? absolutePath;
             string? fileName;
             bool[] parentPermission;
@@ -18,8 +18,8 @@ namespace VirtualTerminal.Commands
                 if (arg != args[0] && !arg.Contains('-') && !arg.Contains("--"))
                 {
                     absolutePath = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
-                    path = absolutePath.Split('/');
-                    fileName = path[^1]; // path.Length - 1
+                    splitPath = absolutePath.Split('/');
+                    fileName = splitPath[^1]; // path.Length - 1
 
                     file = VT.fileSystem.FindFile(arg, VT.root);
 
