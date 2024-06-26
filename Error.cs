@@ -30,6 +30,14 @@ namespace VirtualTerminal.Errors{
             return $"{command}:{comment}: 디렉터리가 비어어있지 않습니다";
         }
 
+        public static string CmdNotFound(string command, string comment){
+            return $"{command}:{comment}: 명렁어를 찾을 수 없습니다";
+        }
+
+        public static string CmdNotFound(string comment){
+            return $"명렁어를 찾을 수 없습니다: {comment}";
+        }
+
         public static string DefaultErrorComment(string input){
             return $" {input}";
         }

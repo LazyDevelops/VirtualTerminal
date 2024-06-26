@@ -1,5 +1,6 @@
 ﻿using Tree;
 using VirtualTerminal.Commands;
+using VirtualTerminal.Errors;
 using static FileSystem.FileSystem;
 
 namespace VirtualTerminal
@@ -99,7 +100,7 @@ namespace VirtualTerminal
             }
             else
             {
-                Console.WriteLine($"Command not found: {args[0]}");
+                Console.WriteLine(ErrorsMassage.CmdNotFound(args[0]));
             }
         }
 

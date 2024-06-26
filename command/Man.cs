@@ -1,4 +1,6 @@
-﻿namespace VirtualTerminal.Commands
+﻿using VirtualTerminal.Errors;
+
+namespace VirtualTerminal.Commands
 {
     public class ManCommand : VirtualTerminal.ICommand
     {
@@ -10,7 +12,7 @@
             }
             else
             {
-                Console.WriteLine($"{args[0]}: {args[1]}: 명렁어를 찾을 수 없습니다.");
+                Console.WriteLine(ErrorsMassage.CmdNotFound(args[0], ErrorsMassage.DefaultErrorComment(args[1])));
             }
         }
 
