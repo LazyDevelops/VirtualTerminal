@@ -53,7 +53,7 @@ namespace VirtualTerminal.Commands
             }
         }
 
-        public string Description()
+        public string Description(bool detail)
         {
             return "rmdir - 비어있는 디렉터리를 삭제";
         }

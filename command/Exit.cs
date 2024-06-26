@@ -7,7 +7,7 @@
             Environment.Exit(0);
         }
 
-        public string Description()
+        public string Description(bool detail)
         {
             return "exit - 터미널 종료";
         }

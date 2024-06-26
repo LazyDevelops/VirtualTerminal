@@ -76,9 +76,42 @@ namespace VirtualTerminal.Commands
             }
         }
 
-        public string Description()
+        public string Description(bool detail)
         {
-            return "cat - 파일 내용 출력";
+            var description = new string[6];
+
+            description[0] = "cat - 파일 내용 출력";
+
+            description[1] = "\u001b[1m간략한 설명\x1b[22m\n" +
+                "   cat - 파일 내용 출력\n\n";
+
+            description[2] = "\u001b[1m사용법\u001b[22m\n" +
+                "   cat [옵션] 파일명*\n\n";
+
+            description[3] = "\u001b[1m설명\u001b[22m\n" +
+                "   위에 사용법을 이용하여 파일 내용을 출력 할 수 있으며\n" +
+                "   입출력 제지정자를 이용해 파일 생성 및 내용 작성 및 수정이 가능합니다.\n" +
+                "   (사용법은 예시 참조)\n\n";
+
+            description[4] = "\u001b[1m옵션\u001b[22m\n" +
+                "   -f\n" +
+                "       강제로 실행합니다.\n" +
+                "       (입출력 제지정자 일 때 사용 가능)\n\n";
+
+            description[5] = "\u001b[1m예시\u001b[22m\n" +
+                "   파일 내용 출력 예시\n" +
+                "       cat file.txt\n" +
+                "   입출력 지정자 예시\n" +
+                "       cat > file.txt\n" +
+                "       cat -f > file.txt\n" +
+                "       (-f를 이용해 파일 덮어쓰기 가능)\n";
+
+            if (detail)
+            {
+                return description[1] + description[2] + description[3] + description[4] + description[5];
+            }else{
+                return description[0];
+            }
         }
     }
 }

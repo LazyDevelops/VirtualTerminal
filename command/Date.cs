@@ -11,7 +11,7 @@ namespace VirtualTerminal.Commands
             Console.WriteLine(currentTime.ToString("yyyy. MM. dd. (ddd) HH:mm:ss"));
         }
 
-        public string Description()
+        public string Description(bool detail)
         {
             return "date - 현제 날짜 및 시간 출력";
         }

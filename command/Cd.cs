@@ -48,7 +48,7 @@ namespace VirtualTerminal.Commands
             }
         }
 
-        public string Description()
+        public string Description(bool detail)
         {
             return "cd - 현제 디렉터리 위치 변경";
         }

@@ -91,7 +91,7 @@ namespace VirtualTerminal.Commands
             }
         }
 
-        public string Description()
+        public string Description(bool detail)
         {
             return "ls - 현제 디렉터리에 있는 디렉터리 및 파일 목록 출력";
         }

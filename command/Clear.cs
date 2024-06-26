@@ -7,7 +7,7 @@
             Console.Clear();
         }
 
-        public string Description()
+        public string Description(bool detail)
         {
             return "clear - 터미널 창 정리";
         }

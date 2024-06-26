@@ -8,11 +8,11 @@
             Console.WriteLine("명령어 목록:");
 
             foreach (VirtualTerminal.ICommand action in VT.commandMap.Values){
-                Console.WriteLine(action.Description());
+                Console.WriteLine(action.Description(false));
             }
         }
 
-        public string Description()
+        public string Description(bool detail)
         {
             return "help - 모든 명령어의 간단한 사용방법 출력";
         }

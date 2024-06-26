@@ -8,7 +8,7 @@ namespace VirtualTerminal.Commands
         {
             if (VT.commandMap.TryGetValue(args[1], out var action))
             {
-                Console.WriteLine(action.Description());
+                Console.WriteLine(action.Description(true));
             }
             else
             {
@@ -16,7 +16,7 @@ namespace VirtualTerminal.Commands
             }
         }
 
-        public string Description()
+        public string Description(bool detail)
         {
             return "man - 명령어에 대한 자세한 설명 출력";
         }
