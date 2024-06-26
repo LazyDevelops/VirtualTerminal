@@ -1,5 +1,6 @@
 ﻿using Tree;
 using static FileSystem.FileSystem;
+using VirtualTerminal.Errors;
 
 namespace VirtualTerminal.Commands
 {
@@ -9,10 +10,13 @@ namespace VirtualTerminal.Commands
         {
             Tree<FileNode>? file;
             Tree<FileNode>? parentFile;
+
             string[]? path;
             string? absolutePath;
             string? parentPath;
+
             string? fileName;
+            
             bool[] permissions;
             bool[] parentPermission;
 
@@ -29,7 +33,7 @@ namespace VirtualTerminal.Commands
                     parentFile = VT.fileSystem.FindFile(parentPath, VT.root);
 
                     if(parentFile == null){
-                        Console.WriteLine($"{args[0]}: {arg}: No such file or directory");
+                        Console.WriteLine(ErrorsMassage.NoSuchForD(args[0], ErrorsMassage.DefaultErrorComment(arg)));
                         return;
                     }
 
@@ -38,13 +42,13 @@ namespace VirtualTerminal.Commands
                         parentPermission = VT.fileSystem.CheckFilePermission(VT.USER, parentFile, VT.root);
 
                         if(parentFile.Data.FileType != FileType.D){
-                            Console.WriteLine($"bash: {args[0]}: {arg}: Not a directory");
+                            Console.WriteLine(ErrorsMassage.NotD(args[0], ErrorsMassage.DefaultErrorComment(arg)));
                             return;
                         }
 
                         if(!parentPermission[0] || !parentPermission[1] || !parentPermission[2])
                         {
-                            Console.WriteLine($"{args[0]}: {arg}: Permission denied");
+                            Console.WriteLine(ErrorsMassage.PermissionDenied(args[0], ErrorsMassage.DefaultErrorComment(arg)));
                             return;
                         }
 
@@ -56,7 +60,7 @@ namespace VirtualTerminal.Commands
 
                     if (file.Data.FileType == FileType.D)
                     {
-                        Console.WriteLine($"{args[0]}: {arg}: Not a file");
+                        Console.WriteLine(ErrorsMassage.NotF(args[0], ErrorsMassage.DefaultErrorComment(arg)));
                         return;
                     }
 
@@ -64,7 +68,7 @@ namespace VirtualTerminal.Commands
 
                     if(!permissions[0])
                     {
-                        Console.WriteLine($"{args[0]}: {arg}: Permission denied");
+                        Console.WriteLine(ErrorsMassage.PermissionDenied(args[0], ErrorsMassage.DefaultErrorComment(arg)));
                         return;
                     }
 

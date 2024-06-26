@@ -26,25 +26,25 @@ namespace VirtualTerminal.Commands
 
                     if (parentFile == null)
                     {
-                        Console.WriteLine($"{args[0]}: cannot create directory '{arg}': No such file or directory");
+                        Console.WriteLine($"{args[0]}: '{arg}' 디렉터리를 만들 수 없습니다: No such file or directory");
                         return;
                     }
 
                     if(parentFile.Data.FileType != FileType.D){
-                        Console.WriteLine($"bash: {args[0]}: {arg}: Not a directory");
+                        Console.WriteLine($"{args[0]}: {arg}: Not a directory");
                         return;
                     }
 
                     parentPermission = VT.fileSystem.CheckFilePermission(VT.USER, parentFile, VT.root);
 
                     if(!parentPermission[0] || !parentPermission[1] || !parentPermission[2]){
-                        Console.WriteLine($"{args[0]}: cannot create directory '{arg}': Permission denied");
+                        Console.WriteLine($"{args[0]}: '{arg}' 디렉터리를 만들 수 없습니다: Permission denied");
                         return;
                     }
 
                     if (VT.fileSystem.FindFile(absolutePath, VT.root) != null)
                     {
-                        Console.WriteLine($"{args[0]}: cannot create directory '{arg}': File exists");
+                        Console.WriteLine($"{args[0]}: '{arg}' 디렉터리를 만들 수 없습니다: File exists");
                         return;
                     }
 

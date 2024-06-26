@@ -10,7 +10,7 @@
             //}
             //else
             //{
-            //    Console.WriteLine($"Command not found: {args[0]}");
+            //    Console.WriteLine($"{args[0]}: {arg}: 명렁어를 찾을 수 없습니다.");
             //}
         }
     }

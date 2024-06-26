@@ -63,7 +63,8 @@ namespace VirtualTerminal
                 { "mkdir", new MkdirCommand() },
                 { "pwd", new PwdCommand() },
                 // { "rm", new RmCommand() },
-                { "rmdir", new RmdirCommand() }
+                { "rmdir", new RmdirCommand() },
+                { "whoami", new WhoamiCommand() }
             };
         }
         

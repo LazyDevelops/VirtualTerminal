@@ -20,7 +20,7 @@ namespace VirtualTerminal.Commands
 
                     if (file == null)
                     {
-                        Console.WriteLine($"bash: {args[0]}: {arg}: No such file or directory");
+                        Console.WriteLine($"bash: {args[0]}: {arg}: 그런 파일이나 디렉터리가 없습니다.");
                         return;
                     }
 

@@ -25,13 +25,13 @@ namespace VirtualTerminal.Commands
 
                     if (file == null || file.Parents == null)
                     {
-                        Console.WriteLine($"{args[0]}: failed to remove '{arg}': No such file or directory");
+                        Console.WriteLine($"{args[0]}: '{arg}' 디렉터리를 삭제할 수 없습니다: 파일이나 디렉터리를 찾을 수 없습니다.");
                         return;
                     }
 
                     if (file.Data.FileType == FileType.F)
                     {
-                        Console.WriteLine($"{args[0]}: failed to remove '{arg}': Not a directory");
+                        Console.WriteLine($"{args[0]}: '{arg}' 디렉터리를 삭제할 수 없습니다: 디렉터리가 아닙니다.");
                         return;
                     }
 
@@ -39,13 +39,13 @@ namespace VirtualTerminal.Commands
 
                     if (parentPermission[0] || !parentPermission[1] || !parentPermission[2])
                     {
-                        Console.WriteLine($"{args[0]}: failed to remove '{arg}': No such file or directory");
+                        Console.WriteLine($"{args[0]}: '{arg}' 디렉터리를 삭제할 수 없습니다: 권한이 부족합니다.");
                         return;
                     }
 
                     if (VT.fileSystem.RemoveFile(absolutePath, VT.root) != 0)
                     {
-                        Console.WriteLine($"{args[0]}: failed to remove '{arg}': Directory not empty");
+                        Console.WriteLine($"{args[0]}: '{arg}' 디렉터리를 삭제할 수 없습니다: 디렉터리가 비어어있지 않습니다.");
                         return;
                     }
                 }
