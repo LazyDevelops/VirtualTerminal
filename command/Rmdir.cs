@@ -29,7 +29,7 @@ namespace VirtualTerminal.Commands
                         return;
                     }
 
-                    parentPermission = VT.fileSystem.CheckFilePermission(VT.USER, file.Parents.Data);
+                    parentPermission = VT.fileSystem.CheckFilePermission(VT.USER, file.Parents, VT.root);
 
                     if (parentPermission[1])
                     {

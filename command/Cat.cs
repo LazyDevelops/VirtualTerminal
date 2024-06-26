@@ -35,7 +35,7 @@ namespace VirtualTerminal.Commands
 
                     if (file == null)
                     {
-                        parentPermission = VT.fileSystem.CheckFilePermission(VT.USER, parentFile.Data);
+                        parentPermission = VT.fileSystem.CheckFilePermission(VT.USER, parentFile, VT.root);
 
                         if(!parentPermission[1])
                         {
@@ -55,7 +55,7 @@ namespace VirtualTerminal.Commands
                         return;
                     }
 
-                    permissions = VT.fileSystem.CheckFilePermission(VT.USER, file.Data);
+                    permissions = VT.fileSystem.CheckFilePermission(VT.USER, file, VT.root);
 
                     if(!permissions[0])
                     {

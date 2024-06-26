@@ -116,38 +116,42 @@ namespace FileSystem
             return result;
         }
 
-        public bool[] CheckFilePermission(string username, FileNode file)
+        public bool[] CheckFilePermission(string username, Tree<FileNode> file, Tree<FileNode> root)
         {
-            var permissions = new bool[6];
+            Tree<FileNode>? curFile = file.Parents;
+            var permissions = new bool[3] { false, false, false };
+            int min, max;
 
-            for (int i = 0; i < 6; i++)
+            while(curFile != null && curFile != root)
             {
-                permissions[i] = (file.Permission & (1 << i)) != 0;
-                // Console.WriteLine((file.Permission & (1 << i)) != 0);
+                min = curFile?.Data.UID == username ? 3 : 0;
+                max = curFile?.Data.UID == username ? 5 : 2;
+
+                while(min <= max)
+                {
+                    permissions[max - min] = (curFile?.Data.Permission & (1 << min)) != 0;
+                    min++;
+                }
+
+                if(!permissions[2] && !permissions[0])
+                {
+                    return permissions;
+                }
+
+                curFile = curFile?.Parents;
             }
 
-            bool[] returnPermissions = new bool[3];
+            min = file.Data.UID == username ? 3 : 0;
+            max = file.Data.UID == username ? 5 : 2;
 
-            int executeIndex = file.UID == username ? 3 : 0;
-            int writeIndex = file.UID == username ? 4 : 1;
-            int readIndex = file.UID == username ? 5 : 2;
 
-            if (permissions[readIndex])
+            while(min <= max)
             {
-                returnPermissions[0] = true;
+                permissions[max - min] = (file.Data.Permission & (1 << min)) != 0;
+                min++;
             }
 
-            if (permissions[writeIndex])
-            {
-                returnPermissions[1] = true;
-            }
-
-            if (permissions[executeIndex])
-            {
-                returnPermissions[2] = true;
-            }
-
-            return returnPermissions;
+            return permissions;
         }
 
         // path stack이나 list로 수정 고려
