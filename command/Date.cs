@@ -10,5 +10,10 @@ namespace VirtualTerminal.Commands
 
             Console.WriteLine(currentTime.ToString("yyyy. MM. dd. (ddd) HH:mm:ss"));
         }
+
+        public string Description()
+        {
+            return "test";
+        }
     }
 }

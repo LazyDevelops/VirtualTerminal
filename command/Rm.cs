@@ -24,5 +24,10 @@ namespace VirtualTerminal.Commands
         //         Console.WriteLine($"File removed: {file}");
         //     }
         }
+
+        public string Description()
+        {
+            return "test";
+        }
     }
 }

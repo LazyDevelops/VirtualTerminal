@@ -6,5 +6,10 @@
         {
             Console.WriteLine(VT.PWD);
         }
+
+        public string Description()
+        {
+            return "test";
+        }
     }
 }

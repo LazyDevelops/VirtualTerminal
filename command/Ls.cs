@@ -90,5 +90,10 @@ namespace VirtualTerminal.Commands
                 Console.WriteLine();
             }
         }
+
+        public string Description()
+        {
+            return "test";
+        }
     }
 }

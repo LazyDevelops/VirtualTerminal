@@ -6,5 +6,10 @@ namespace VirtualTerminal.Commands
         {
             Console.WriteLine(VT.USER);
         }
+
+        public string Description()
+        {
+            return "test";
+        }
     }
 }

@@ -14,5 +14,10 @@
             Console.WriteLine("rm - Remove a file");
             Console.WriteLine("exit - Exit the terminal");
         }
+
+        public string Description()
+        {
+            return "test";
+        }
     }
 }

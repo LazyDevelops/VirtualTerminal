@@ -52,5 +52,10 @@ namespace VirtualTerminal.Commands
                 }
             }
         }
+
+        public string Description()
+        {
+            return "test";
+        }
     }
 }

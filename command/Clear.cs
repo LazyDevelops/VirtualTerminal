@@ -6,5 +6,10 @@
         {
             Console.Clear();
         }
+
+        public string Description()
+        {
+            return "test";
+        }
     }
 }

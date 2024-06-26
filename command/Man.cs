@@ -13,5 +13,10 @@
             //    Console.WriteLine($"{args[0]}: {arg}: 명렁어를 찾을 수 없습니다.");
             //}
         }
+
+        public string Description()
+        {
+            return "test";
+        }
     }
 }

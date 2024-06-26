@@ -6,5 +6,10 @@
         {
             Environment.Exit(0);
         }
+
+        public string Description()
+        {
+            return "test";
+        }
     }
 }
