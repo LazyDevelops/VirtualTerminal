@@ -51,18 +51,21 @@ namespace VirtualTerminal
             // 명령어와 메서드를 매핑하는 사전 초기화
             commandMap = new Dictionary<string, ICommand>
             {
-                { "cd", new CdCommand() },
                 { "cat", new CatCommand() },
+                { "cd", new CdCommand() },
+                { "chmod", new ChmodCommand() }, // 제작 전
                 { "clear", new ClearCommand() },
+                { "cp", new CpCommand() }, // 제작 전
                 { "date", new DateCommand() },
                 { "echo", new EchoCommand() },
                 { "exit", new ExitCommand() },
                 { "help", new HelpCommand() },
                 { "ls", new LsCommand() },
-                // { "mv", new MvCommand() },
+                { "man", new ManCommand() },
                 { "mkdir", new MkdirCommand() },
+                { "mv", new MvCommand() }, // 제작 전
                 { "pwd", new PwdCommand() },
-                // { "rm", new RmCommand() },
+                { "rm", new RmCommand() }, // 제작 전
                 { "rmdir", new RmdirCommand() },
                 { "whoami", new WhoamiCommand() }
             };
