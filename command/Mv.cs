@@ -7,7 +7,13 @@ namespace VirtualTerminal.Commands
     {
         public void Execute(string[] args, VirtualTerminal VT)
         {
-
+            foreach (string arg in args)
+            {
+                if (arg != args[0] && !arg.Contains('-') && !arg.Contains("--"))
+                {
+                    
+                }
+            }
         }
 
         public string Description(bool detail)

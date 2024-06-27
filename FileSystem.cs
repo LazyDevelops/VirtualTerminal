@@ -40,7 +40,7 @@ namespace FileSystem
             return newFile;
         }
 
-        public int RemoveFile(string path, Tree<FileNode> root)
+        public int RemoveFile(string path, Tree<FileNode> root, char? option)
         {
             Tree<FileNode>? current = FindFile(path, root);
             Tree<FileNode> parents;
@@ -57,7 +57,7 @@ namespace FileSystem
 
             parents = current.Parents;
 
-            if (current.LeftChild == null)
+            if (option == 'r' || current.LeftChild == null)
             {
                 parents.RemoveChildNode(current);
                 return 0;
