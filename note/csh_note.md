@@ -199,3 +199,7 @@ gedit 고려
     - whoami
 
 touch 명령어 제작 고려
+
+입력 제지정자를 위해 command는  
+string값을 반환하고 그걸 VirtualTerminal에에서  
+출력하게 코드 변경
