@@ -18,7 +18,7 @@ namespace VirtualTerminal.Commands
             }
             else
             {
-                Console.WriteLine(ErrorsMassage.InvalidMode(args[0], ErrorsMassage.DefaultErrorComment(args[1])));
+                Console.WriteLine(ErrorsMessage.InvalidMode(args[0], ErrorsMessage.DefaultErrorComment(args[1])));
                 return;
             }
 
@@ -31,12 +31,12 @@ namespace VirtualTerminal.Commands
 
                     if (file == null)
                     {
-                        Console.WriteLine(ErrorsMassage.NoSuchForD(args[0], ErrorsMassage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorsMessage.NoSuchForD(args[0], ErrorsMessage.DefaultErrorComment(arg)));
                         return;
                     }
 
                     if(file.Data.UID != VT.USER){
-                        Console.WriteLine(ErrorsMassage.PermissionDenied(args[0], ErrorsMassage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorsMessage.PermissionDenied(args[0], ErrorsMessage.DefaultErrorComment(arg)));
                         return;
                     }
                 }
@@ -44,7 +44,7 @@ namespace VirtualTerminal.Commands
 
             if (file == null)
             {
-                Console.WriteLine(ErrorsMassage.MissingOperandAfter(args[0], args[1]));
+                Console.WriteLine(ErrorsMessage.MissingOperandAfter(args[0], args[1]));
                 return;
             }
 

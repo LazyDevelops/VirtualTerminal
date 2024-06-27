@@ -23,7 +23,7 @@ namespace VirtualTerminal.Commands
                     if (file == null)
                     {
                         Console.Write("bash: ");
-                        Console.WriteLine(ErrorsMassage.NoSuchForD(args[0], ErrorsMassage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorsMessage.NoSuchForD(args[0], ErrorsMessage.DefaultErrorComment(arg)));
                         return;
                     }
 
@@ -32,14 +32,14 @@ namespace VirtualTerminal.Commands
                     if(!permission[0] || !permission[2])
                     {
                         Console.Write("bash: ");
-                        Console.WriteLine(ErrorsMassage.PermissionDenied(args[0], ErrorsMassage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorsMessage.PermissionDenied(args[0], ErrorsMessage.DefaultErrorComment(arg)));
                         return;
                     }
 
                     if (file.Data.FileType != FileType.D)
                     {
                         Console.Write("bash: ");
-                        Console.WriteLine(ErrorsMassage.NotD(args[0], ErrorsMassage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorsMessage.NotD(args[0], ErrorsMessage.DefaultErrorComment(arg)));
                         return;
                     }
 
