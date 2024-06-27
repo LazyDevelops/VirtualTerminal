@@ -1,4 +1,4 @@
-namespace VirtualTerminal.Commands
+namespace VirtualTerminal.Command
 {
     public class WhoAmICommand : VirtualTerminal.ICommand
     {
@@ -9,7 +9,7 @@ namespace VirtualTerminal.Commands
 
         public string Description(bool detail)
         {
-            return "whoami - Á¢¼ÓÁßÀÎ À¯Àú ÀÌ¸§ Ãâ·Â";
+            return "whoami - ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½";
         }
     }
 }

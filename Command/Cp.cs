@@ -1,4 +1,4 @@
-namespace VirtualTerminal.Commands
+namespace VirtualTerminal.Command
 {
     public class CpCommand : VirtualTerminal.ICommand
     {
@@ -9,7 +9,7 @@ namespace VirtualTerminal.Commands
 
         public string Description(bool detail)
         {
-            return "cp - ÆÄÀÏÀÌ³ª µð·ºÅÍ¸® º¹»ç";
+            return "cp - ï¿½ï¿½ï¿½ï¿½ï¿½Ì³ï¿½ ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½";
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace VirtualTerminal.Commands
+﻿namespace VirtualTerminal.Command
 {
     public class ClearCommand : VirtualTerminal.ICommand
     {

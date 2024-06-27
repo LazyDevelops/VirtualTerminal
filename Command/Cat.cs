@@ -1,8 +1,8 @@
 ﻿using Tree;
-using VirtualTerminal.Errors;
+using VirtualTerminal.Error;
 using static FileSystem.FileSystem;
 
-namespace VirtualTerminal.Commands
+namespace VirtualTerminal.Command
 {
     public class CatCommand : VirtualTerminal.ICommand
     {
@@ -35,7 +35,7 @@ namespace VirtualTerminal.Commands
                         parentFile = VT.fileSystem.FindFile(parentPath, VT.root);
 
                         if(parentFile == null){
-                            Console.WriteLine(ErrorsMessage.NoSuchForD(args[0], ErrorsMessage.DefaultErrorComment(arg)));
+                            Console.WriteLine(ErrorMessage.NoSuchForD(args[0], ErrorMessage.DefaultErrorComment(arg)));
                             return;
                         }
                         
@@ -43,12 +43,12 @@ namespace VirtualTerminal.Commands
 
                         if(!permission[0] || !permission[1] || !permission[2])
                         {
-                            Console.WriteLine(ErrorsMessage.PermissionDenied(args[0], ErrorsMessage.DefaultErrorComment(arg)));
+                            Console.WriteLine(ErrorMessage.PermissionDenied(args[0], ErrorMessage.DefaultErrorComment(arg)));
                             return;
                         }
 
                         if(parentFile.Data.FileType != FileType.D){
-                            Console.WriteLine(ErrorsMessage.NotD(args[0], ErrorsMessage.DefaultErrorComment(arg)));
+                            Console.WriteLine(ErrorMessage.NotD(args[0], ErrorMessage.DefaultErrorComment(arg)));
                             return;
                         }
 
@@ -62,13 +62,13 @@ namespace VirtualTerminal.Commands
 
                     if(!permission[0])
                     {
-                        Console.WriteLine(ErrorsMessage.PermissionDenied(args[0], ErrorsMessage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorMessage.PermissionDenied(args[0], ErrorMessage.DefaultErrorComment(arg)));
                         return;
                     }
 
                     if (file.Data.FileType == FileType.D)
                     {
-                        Console.WriteLine(ErrorsMessage.NotF(args[0], ErrorsMessage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorMessage.NotF(args[0], ErrorMessage.DefaultErrorComment(arg)));
                         return;
                     }
 

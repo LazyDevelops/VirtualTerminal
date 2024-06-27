@@ -1,8 +1,8 @@
 ﻿using Tree;
-using VirtualTerminal.Errors;
+using VirtualTerminal.Error;
 using static FileSystem.FileSystem;
 
-namespace VirtualTerminal.Commands
+namespace VirtualTerminal.Command
 {
     public class RmDirCommand : VirtualTerminal.ICommand
     {
@@ -22,7 +22,7 @@ namespace VirtualTerminal.Commands
 
                     if (file == null || file.Parents == null)
                     {
-                        Console.WriteLine(ErrorsMessage.NoSuchForD(args[0], ErrorsMessage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorMessage.NoSuchForD(args[0], ErrorMessage.DefaultErrorComment(arg)));
                         return;
                     }
 
@@ -30,19 +30,19 @@ namespace VirtualTerminal.Commands
 
                     if (permission[0] || !permission[1] || !permission[2])
                     {
-                        Console.WriteLine(ErrorsMessage.PermissionDenied(args[0], ErrorsMessage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorMessage.PermissionDenied(args[0], ErrorMessage.DefaultErrorComment(arg)));
                         return;
                     }
 
                     if (file.Data.FileType != FileType.D)
                     {
-                        Console.WriteLine(ErrorsMessage.NotD(args[0], ErrorsMessage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorMessage.NotD(args[0], ErrorMessage.DefaultErrorComment(arg)));
                         return;
                     }
 
                     if (VT.fileSystem.RemoveFile(absolutePath, VT.root, null) != 0)
                     {
-                        Console.WriteLine(ErrorsMessage.DNotEmpty(args[0], ErrorsMessage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorMessage.DNotEmpty(args[0], ErrorMessage.DefaultErrorComment(arg)));
                         return;
                     }
                 }

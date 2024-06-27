@@ -1,5 +1,5 @@
-namespace VirtualTerminal.Errors{
-    public class ErrorsMessage
+namespace VirtualTerminal.Error{
+    public class ErrorMessage
     {
         public static string NoSuchForD(string command, string comment)
         {

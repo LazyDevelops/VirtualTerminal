@@ -1,8 +1,8 @@
 ﻿using Tree;
-using VirtualTerminal.Errors;
+using VirtualTerminal.Error;
 using static FileSystem.FileSystem;
 
-namespace VirtualTerminal.Commands
+namespace VirtualTerminal.Command
 {
     public class MkDirCommand : VirtualTerminal.ICommand
     {
@@ -30,25 +30,25 @@ namespace VirtualTerminal.Commands
 
                     if (parentFile == null)
                     {
-                        Console.WriteLine(ErrorsMessage.NoSuchForD(args[0], ErrorsMessage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorMessage.NoSuchForD(args[0], ErrorMessage.DefaultErrorComment(arg)));
                         return;
                     }
 
                     permission = VT.fileSystem.CheckFilePermission(VT.USER, parentFile, VT.root);
 
                     if(!permission[0] || !permission[1] || !permission[2]){
-                        Console.WriteLine(ErrorsMessage.PermissionDenied(args[0], ErrorsMessage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorMessage.PermissionDenied(args[0], ErrorMessage.DefaultErrorComment(arg)));
                         return;
                     }
 
                     if(parentFile.Data.FileType != FileType.D){
-                        Console.WriteLine(ErrorsMessage.NotD(args[0], ErrorsMessage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorMessage.NotD(args[0], ErrorMessage.DefaultErrorComment(arg)));
                         return;
                     }
 
                     if (VT.fileSystem.FindFile(absolutePath, VT.root) != null)
                     {
-                        Console.WriteLine(ErrorsMessage.FExists(args[0], ErrorsMessage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorMessage.FExists(args[0], ErrorMessage.DefaultErrorComment(arg)));
                         return;
                     }
 

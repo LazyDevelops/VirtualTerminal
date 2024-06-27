@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace VirtualTerminal.Commands
+namespace VirtualTerminal.Command
 {
     public class DateCommand : VirtualTerminal.ICommand
     {

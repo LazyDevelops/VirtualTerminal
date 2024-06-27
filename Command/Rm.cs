@@ -1,8 +1,8 @@
 ﻿using Tree;
-using VirtualTerminal.Errors;
+using VirtualTerminal.Error;
 using static FileSystem.FileSystem;
 
-namespace VirtualTerminal.Commands
+namespace VirtualTerminal.Command
 {
     public class RmCommand : VirtualTerminal.ICommand
     {
@@ -45,19 +45,19 @@ namespace VirtualTerminal.Commands
                     file = VT.fileSystem.FindFile(absolutePath, VT.root);
 
                     if(file == null){
-                        Console.WriteLine(ErrorsMessage.NoSuchForD(args[0], ErrorsMessage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorMessage.NoSuchForD(args[0], ErrorMessage.DefaultErrorComment(arg)));
                         return;
                     }
 
                     permission = VT.fileSystem.CheckFilePermission(VT.USER, file, VT.root);
 
                     if(!permission[0] || !permission[1] || !permission[2]){
-                        Console.WriteLine(ErrorsMessage.PermissionDenied(args[0], ErrorsMessage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorMessage.PermissionDenied(args[0], ErrorMessage.DefaultErrorComment(arg)));
                         return;
                     }
 
                     if(!options["r"] && file.Data.FileType == FileType.D){
-                        Console.WriteLine(ErrorsMessage.NotF(args[0], ErrorsMessage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorMessage.NotF(args[0], ErrorMessage.DefaultErrorComment(arg)));
                         return;
                     }
 

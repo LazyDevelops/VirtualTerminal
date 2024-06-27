@@ -1,6 +1,6 @@
-﻿using VirtualTerminal.Errors;
+﻿using VirtualTerminal.Error;
 
-namespace VirtualTerminal.Commands
+namespace VirtualTerminal.Command
 {
     public class ManCommand : VirtualTerminal.ICommand
     {
@@ -12,7 +12,7 @@ namespace VirtualTerminal.Commands
             }
             else
             {
-                Console.WriteLine(ErrorsMessage.CmdNotFound(args[0], ErrorsMessage.DefaultErrorComment(args[1])));
+                Console.WriteLine(ErrorMessage.CmdNotFound(args[0], ErrorMessage.DefaultErrorComment(args[1])));
             }
         }
 

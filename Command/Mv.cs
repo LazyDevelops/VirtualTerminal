@@ -1,7 +1,7 @@
 ﻿using Tree;
 using static FileSystem.FileSystem;
 
-namespace VirtualTerminal.Commands
+namespace VirtualTerminal.Command
 {
     public class MvCommand : VirtualTerminal.ICommand
     {

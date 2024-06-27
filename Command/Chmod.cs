@@ -1,8 +1,8 @@
 using Tree;
-using VirtualTerminal.Errors;
+using VirtualTerminal.Error;
 using static FileSystem.FileSystem;
 
-namespace VirtualTerminal.Commands
+namespace VirtualTerminal.Command
 {
     public class ChModCommand : VirtualTerminal.ICommand
     {
@@ -18,7 +18,7 @@ namespace VirtualTerminal.Commands
             }
             else
             {
-                Console.WriteLine(ErrorsMessage.InvalidMode(args[0], ErrorsMessage.DefaultErrorComment(args[1])));
+                Console.WriteLine(ErrorMessage.InvalidMode(args[0], ErrorMessage.DefaultErrorComment(args[1])));
                 return;
             }
 
@@ -31,12 +31,12 @@ namespace VirtualTerminal.Commands
 
                     if (file == null)
                     {
-                        Console.WriteLine(ErrorsMessage.NoSuchForD(args[0], ErrorsMessage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorMessage.NoSuchForD(args[0], ErrorMessage.DefaultErrorComment(arg)));
                         return;
                     }
 
                     if(file.Data.UID != VT.USER){
-                        Console.WriteLine(ErrorsMessage.PermissionDenied(args[0], ErrorsMessage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorMessage.PermissionDenied(args[0], ErrorMessage.DefaultErrorComment(arg)));
                         return;
                     }
                 }
@@ -44,7 +44,7 @@ namespace VirtualTerminal.Commands
 
             if (file == null)
             {
-                Console.WriteLine(ErrorsMessage.MissingOperandAfter(args[0], args[1]));
+                Console.WriteLine(ErrorMessage.MissingOperandAfter(args[0], args[1]));
                 return;
             }
 
