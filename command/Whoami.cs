@@ -1,6 +1,6 @@
 namespace VirtualTerminal.Commands
 {
-    public class WhoamiCommand : VirtualTerminal.ICommand
+    public class WhoAmICommand : VirtualTerminal.ICommand
     {
         public void Execute(string[] args, VirtualTerminal VT)
         {

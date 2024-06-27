@@ -42,7 +42,7 @@ namespace VirtualTerminal
             {
                 { "cat", new CatCommand() },
                 { "cd", new CdCommand() },
-                { "chmod", new ChmodCommand() }, // 제작 전
+                { "chmod", new ChModCommand() }, // 제작 전
                 { "clear", new ClearCommand() },
                 { "cp", new CpCommand() }, // 제작 전
                 { "date", new DateCommand() },
@@ -51,12 +51,12 @@ namespace VirtualTerminal
                 { "help", new HelpCommand() },
                 { "ls", new LsCommand() },
                 { "man", new ManCommand() },
-                { "mkdir", new MkdirCommand() },
+                { "mkdir", new MkDirCommand() },
                 { "mv", new MvCommand() }, // 제작 전
                 { "pwd", new PwdCommand() },
                 { "rm", new RmCommand() }, // 제작 전
-                { "rmdir", new RmdirCommand() },
-                { "whoami", new WhoamiCommand() }
+                { "rmdir", new RmDirCommand() },
+                { "whoami", new WhoAmICommand() }
             };
         }
         

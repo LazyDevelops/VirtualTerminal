@@ -4,7 +4,7 @@ using static FileSystem.FileSystem;
 
 namespace VirtualTerminal.Commands
 {
-    public class MkdirCommand : VirtualTerminal.ICommand
+    public class MkDirCommand : VirtualTerminal.ICommand
     {
         public void Execute(string[] args, VirtualTerminal VT)
         {

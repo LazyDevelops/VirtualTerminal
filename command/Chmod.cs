@@ -4,7 +4,7 @@ using static FileSystem.FileSystem;
 
 namespace VirtualTerminal.Commands
 {
-    public class ChmodCommand : VirtualTerminal.ICommand
+    public class ChModCommand : VirtualTerminal.ICommand
     {
         public void Execute(string[] args, VirtualTerminal VT)
         {
