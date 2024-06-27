@@ -38,6 +38,14 @@ namespace VirtualTerminal.Errors{
             return $"명렁어를 찾을 수 없습니다: {comment}";
         }
 
+        public static string InvalidMode(string command, string comment){
+            return $"{command}:{comment}: 잘못된 모드 입니다";
+        }
+
+        public static string MissingOperandAfter(string command, string comment){
+            return $"{command}: '{comment}' 뒤에 파일 경로가 빠짐";
+        }
+
         public static string DefaultErrorComment(string input){
             return $" {input}";
         }

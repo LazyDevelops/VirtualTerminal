@@ -8,34 +8,23 @@ namespace VirtualTerminal.Commands
     {
         public void Execute(string[] args, VirtualTerminal VT)
         {
-            Tree<FileNode>? file;
+            Tree<FileNode>? file = null;
             string? absolutePath;
-            bool[] permission;
             byte? inputPermission;
+
+            if (args[1].Length == 6 && (args[1].Contains('1') || args[1].Contains('0')))
+            {
+                inputPermission = Convert.ToByte(args[1].PadLeft(8, '0'), 2);
+            }
+            else
+            {
+                Console.WriteLine(ErrorsMassage.InvalidMode(args[0], ErrorsMassage.DefaultErrorComment(args[1])));
+                return;
+            }
 
             foreach (string arg in args)
             {
-                if(arg.Length == 6){
-                    if(arg.Contains('1') || arg.Contains('0')){
-                        // int count = 0;
-                        // foreach(char c in arg){
-                        //     inputPermission[count] = Convert.ToBoolean(c);
-                        //     count++;
-                        //     byte result = 0;
-                        // for (int i = 0; i < boolArray.Length; i++)
-                        // {
-                        //     if (boolArray[i])
-                        //     {
-                        //         result |= (byte)(1 << i);
-                        //     }
-                        // }
-                        // }
-
-                        inputPermission = Convert.ToByte(arg.PadLeft(8, '0'), 2);
-                        Console.WriteLine(inputPermission);
-                    }
-                }
-                else if (arg != args[0] && !arg.Contains('-') && !arg.Contains("--"))
+                if (arg != args[0] && arg != args[1] && !arg.Contains('-') && !arg.Contains("--"))
                 {
                     absolutePath = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
                     file = VT.fileSystem.FindFile(absolutePath, VT.root);
@@ -46,16 +35,20 @@ namespace VirtualTerminal.Commands
                         return;
                     }
 
-                    permission = VT.fileSystem.CheckFilePermission(VT.USER, file, VT.root);
-
-                    if(file.Data.UID != VT.USER || !permission[0] || !permission[1] || !permission[2]){
+                    if(file.Data.UID != VT.USER){
                         Console.WriteLine(ErrorsMassage.PermissionDenied(args[0], ErrorsMassage.DefaultErrorComment(arg)));
                         return;
                     }
                 }
             }
 
-            // file?.Data.Permission = inputPermission;
+            if (file == null)
+            {
+                Console.WriteLine(ErrorsMassage.MissingOperandAfter(args[0], args[1]));
+                return;
+            }
+
+            file.Data.Permission = inputPermission.Value;
         }
 
         public string Description(bool detail)
