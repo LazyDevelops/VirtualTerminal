@@ -111,7 +111,7 @@ namespace VirtualTerminal
             }
             else
             {
-                Console.WriteLine(ErrorsMassage.CmdNotFound(args[0]));
+                Console.WriteLine(ErrorsMessage.CmdNotFound(args[0]));
             }
         }
 

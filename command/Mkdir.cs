@@ -30,25 +30,25 @@ namespace VirtualTerminal.Commands
 
                     if (parentFile == null)
                     {
-                        Console.WriteLine(ErrorsMassage.NoSuchForD(args[0], ErrorsMassage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorsMessage.NoSuchForD(args[0], ErrorsMessage.DefaultErrorComment(arg)));
                         return;
                     }
 
                     permission = VT.fileSystem.CheckFilePermission(VT.USER, parentFile, VT.root);
 
                     if(!permission[0] || !permission[1] || !permission[2]){
-                        Console.WriteLine(ErrorsMassage.PermissionDenied(args[0], ErrorsMassage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorsMessage.PermissionDenied(args[0], ErrorsMessage.DefaultErrorComment(arg)));
                         return;
                     }
 
                     if(parentFile.Data.FileType != FileType.D){
-                        Console.WriteLine(ErrorsMassage.NotD(args[0], ErrorsMassage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorsMessage.NotD(args[0], ErrorsMessage.DefaultErrorComment(arg)));
                         return;
                     }
 
                     if (VT.fileSystem.FindFile(absolutePath, VT.root) != null)
                     {
-                        Console.WriteLine(ErrorsMassage.FExists(args[0], ErrorsMassage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorsMessage.FExists(args[0], ErrorsMessage.DefaultErrorComment(arg)));
                         return;
                     }
 

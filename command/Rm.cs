@@ -45,19 +45,19 @@ namespace VirtualTerminal.Commands
                     file = VT.fileSystem.FindFile(absolutePath, VT.root);
 
                     if(file == null){
-                        Console.WriteLine(ErrorsMassage.NoSuchForD(args[0], ErrorsMassage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorsMessage.NoSuchForD(args[0], ErrorsMessage.DefaultErrorComment(arg)));
                         return;
                     }
 
                     permission = VT.fileSystem.CheckFilePermission(VT.USER, file, VT.root);
 
                     if(!permission[0] || !permission[1] || !permission[2]){
-                        Console.WriteLine(ErrorsMassage.PermissionDenied(args[0], ErrorsMassage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorsMessage.PermissionDenied(args[0], ErrorsMessage.DefaultErrorComment(arg)));
                         return;
                     }
 
                     if(!options["r"] && file.Data.FileType == FileType.D){
-                        Console.WriteLine(ErrorsMassage.NotF(args[0], ErrorsMassage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorsMessage.NotF(args[0], ErrorsMessage.DefaultErrorComment(arg)));
                         return;
                     }
 

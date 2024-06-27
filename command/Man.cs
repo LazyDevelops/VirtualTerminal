@@ -12,7 +12,7 @@ namespace VirtualTerminal.Commands
             }
             else
             {
-                Console.WriteLine(ErrorsMassage.CmdNotFound(args[0], ErrorsMassage.DefaultErrorComment(args[1])));
+                Console.WriteLine(ErrorsMessage.CmdNotFound(args[0], ErrorsMessage.DefaultErrorComment(args[1])));
             }
         }
 

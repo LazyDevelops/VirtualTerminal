@@ -22,7 +22,7 @@ namespace VirtualTerminal.Commands
 
                     if (file == null || file.Parents == null)
                     {
-                        Console.WriteLine(ErrorsMassage.NoSuchForD(args[0], ErrorsMassage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorsMessage.NoSuchForD(args[0], ErrorsMessage.DefaultErrorComment(arg)));
                         return;
                     }
 
@@ -30,19 +30,19 @@ namespace VirtualTerminal.Commands
 
                     if (permission[0] || !permission[1] || !permission[2])
                     {
-                        Console.WriteLine(ErrorsMassage.PermissionDenied(args[0], ErrorsMassage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorsMessage.PermissionDenied(args[0], ErrorsMessage.DefaultErrorComment(arg)));
                         return;
                     }
 
                     if (file.Data.FileType != FileType.D)
                     {
-                        Console.WriteLine(ErrorsMassage.NotD(args[0], ErrorsMassage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorsMessage.NotD(args[0], ErrorsMessage.DefaultErrorComment(arg)));
                         return;
                     }
 
                     if (VT.fileSystem.RemoveFile(absolutePath, VT.root, null) != 0)
                     {
-                        Console.WriteLine(ErrorsMassage.DNotEmpty(args[0], ErrorsMassage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorsMessage.DNotEmpty(args[0], ErrorsMessage.DefaultErrorComment(arg)));
                         return;
                     }
                 }
