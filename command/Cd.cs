@@ -17,6 +17,7 @@ namespace VirtualTerminal.Commands
                 if (arg != args[0] && !arg.Contains('-') && !arg.Contains("--"))
                 {
                     absolutePath = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
+                    
                     file = VT.fileSystem.FindFile(absolutePath, VT.root);
 
                     if (file == null)

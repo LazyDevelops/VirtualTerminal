@@ -26,12 +26,12 @@ namespace VirtualTerminal.Commands
                     absolutePath = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
                     splitPath = absolutePath.Split('/');
                     fileName = splitPath[^1]; // path.Length - 1
-                    parentPath = absolutePath.Replace('/' + fileName, "");
 
                     file = VT.fileSystem.FindFile(absolutePath, VT.root);
 
                     if (file == null)
                     {
+                        parentPath = absolutePath.Replace('/' + fileName, "");
                         parentFile = VT.fileSystem.FindFile(parentPath, VT.root);
 
                         if(parentFile == null){

@@ -10,7 +10,9 @@ namespace VirtualTerminal.Commands
         {
             Tree<FileNode>? file;
             List<Tree<FileNode>>? fileChildren;
+
             string? absolutePath;
+            
             bool[] permission;
             
             Dictionary<string, bool> options = new(){

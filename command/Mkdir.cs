@@ -9,10 +9,12 @@ namespace VirtualTerminal.Commands
         public void Execute(string[] args, VirtualTerminal VT)
         {
             Tree<FileNode>? parentFile;
+            
             string[]? splitPath;
             string? absolutePath;
             string? parentPath;
             string? fileName;
+
             bool[] permission;
 
             foreach (string arg in args)
@@ -23,6 +25,7 @@ namespace VirtualTerminal.Commands
                     splitPath = absolutePath.Split('/');
                     fileName = splitPath[^1]; // path.Length - 1
                     parentPath = absolutePath.Replace('/' + fileName, "");
+
                     parentFile = VT.fileSystem.FindFile(parentPath, VT.root);
 
                     if (parentFile == null)
