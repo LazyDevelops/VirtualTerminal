@@ -201,7 +201,7 @@ gedit 고려
 touch 명령어 제작 고려
 
 입력 제지정자를 위해 command는  
-string값을 반환하고 그걸 VirtualTerminal에에서  
+string값을 반환하고 그걸 VirtualTerminal에서
 출력하게 코드 변경
 
 옵션 검사 코드 수정 필요  
