@@ -59,11 +59,23 @@ namespace FileSystem
 
             if (option == 'r' || current.LeftChild == null)
             {
+                if(current.LeftChild != null){
+                    RemoveAllChildren(current);
+                }
                 parents.RemoveChildNode(current);
                 return 0;
             }
 
             return 3;
+        }
+
+        private void RemoveAllChildren(Tree<FileNode> node)
+        {
+            foreach (var child in node.GetChildren().ToList())
+            {
+                RemoveAllChildren(child); // 재귀적으로 하위 노드 삭제
+                node.RemoveChildNode(child);
+            }
         }
 
         public Tree<FileNode>? FindFile(string path, Tree<FileNode> root)
