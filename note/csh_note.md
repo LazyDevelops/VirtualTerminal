@@ -78,37 +78,6 @@ Tree<FileSystemNode> FindFile("상대 주소 or 절대 주소")
 ## TODO
 - 경로 스택으로 관리하게 전부 변경하기
 
-# 기본 명력어 목록
-    - cat
-    - cd
-    - clear
-    - exit
-    - help
-    - ls
-    - mkdir
-    - man
-    - mv
-    - rm
-    - rmdir
-
-# 게임 조작 명령어
-    - go
-    - get
-    - unlock
-    - mapping
-
-# 구현중 or 구현 완료된 명령어
-    - cat
-    - cd
-    - clear
-    - exit
-    - help
-    - ls
-    - mkdir
-    - mv
-    - rm
-    - rmdir
-
 cp 명령어 만들고  
 logout 명령어도 목록에 추가하기  
 만든 명령어들 목록에 추가하기
@@ -191,3 +160,40 @@ gedit 고려
 
 *은 필수 인자
 []는 옵션
+
+# 기본 명력어 목록
+    - chmod
+    - clear
+    - cp
+    - date
+    - echo
+    - exit
+    - help
+    - ls
+    - man
+    - mkdir
+    - mv
+    - pwd
+    - rm
+    - rmdir
+    - whoami
+
+# 게임 조작 명령어
+    - go
+    - get
+    - unlock
+    - mapping
+
+# 구현중 or 구현 완료된 명령어
+    - chmod
+    - clear
+    - date
+    - echo
+    - exit
+    - help
+    - ls
+    - man
+    - mkdir
+    - pwd
+    - rmdir
+    - whoami
