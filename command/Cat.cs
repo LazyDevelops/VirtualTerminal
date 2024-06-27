@@ -29,21 +29,17 @@ namespace VirtualTerminal.Commands
                     parentPath = absolutePath.Replace('/' + fileName, "");
 
                     file = VT.fileSystem.FindFile(absolutePath, VT.root);
-                    parentFile = VT.fileSystem.FindFile(parentPath, VT.root);
-
-                    if(parentFile == null){
-                        Console.WriteLine(ErrorsMassage.NoSuchForD(args[0], ErrorsMassage.DefaultErrorComment(arg)));
-                        return;
-                    }
 
                     if (file == null)
                     {
-                        permission = VT.fileSystem.CheckFilePermission(VT.USER, parentFile, VT.root);
+                        parentFile = VT.fileSystem.FindFile(parentPath, VT.root);
 
-                        if(parentFile.Data.FileType != FileType.D){
-                            Console.WriteLine(ErrorsMassage.NotD(args[0], ErrorsMassage.DefaultErrorComment(arg)));
+                        if(parentFile == null){
+                            Console.WriteLine(ErrorsMassage.NoSuchForD(args[0], ErrorsMassage.DefaultErrorComment(arg)));
                             return;
                         }
+                        
+                        permission = VT.fileSystem.CheckFilePermission(VT.USER, parentFile, VT.root);
 
                         if(!permission[0] || !permission[1] || !permission[2])
                         {
@@ -51,15 +47,14 @@ namespace VirtualTerminal.Commands
                             return;
                         }
 
-                        Console.WriteLine($"File not found: {fileName}. Creating new file. Enter content (end with a single dot on a line):");
+                        if(parentFile.Data.FileType != FileType.D){
+                            Console.WriteLine(ErrorsMassage.NotD(args[0], ErrorsMassage.DefaultErrorComment(arg)));
+                            return;
+                        }
+
+                        Console.WriteLine($"파일 찾기 실패: {fileName}. 새로운 파일 만들기. 내용을 입력해주십시오. (점(.)만 찍고 엔터 치면 입력 종료):");
                         string content = VT.ReadMultiLineInput();
                         VT.fileSystem.CreateFile(parentPath, new FileNode(fileName, VT.USER, 0b110100, FileType.F, content), VT.root);
-                        return;
-                    }
-
-                    if (file.Data.FileType == FileType.D)
-                    {
-                        Console.WriteLine(ErrorsMassage.NotF(args[0], ErrorsMassage.DefaultErrorComment(arg)));
                         return;
                     }
 
@@ -71,19 +66,33 @@ namespace VirtualTerminal.Commands
                         return;
                     }
 
+                    if (file.Data.FileType == FileType.D)
+                    {
+                        Console.WriteLine(ErrorsMassage.NotF(args[0], ErrorsMassage.DefaultErrorComment(arg)));
+                        return;
+                    }
+
                     Console.WriteLine(file.Data.Content);
+                    return;
                 }
+            }
+            
+            string? line;
+            while ((line = Console.ReadLine()) != ".")
+            {
+                Console.WriteLine(line);
             }
         }
 
         public string Description(bool detail)
         {
+            // 설명 약간의 수정 필요
             if (detail)
             {
                 return "\u001b[1m간략한 설명\x1b[22m\n" +
                        "   cat - 파일 내용 출력\n\n" +
                        "\u001b[1m사용법\u001b[22m\n" +
-                       "   cat [옵션] 파일명*\n\n" +
+                       "   cat [옵션] 파일명\n\n" +
                        "\u001b[1m설명\u001b[22m\n" +
                        "   위에 사용법을 이용하여 파일 내용을 출력 할 수 있으며\n" +
                        "   입출력 제지정자를 이용해 파일 생성 및 내용 작성 및 수정이 가능합니다.\n" +

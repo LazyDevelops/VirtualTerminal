@@ -92,7 +92,7 @@ namespace VirtualTerminal
 
         private void ProcessCommand(string command)
         {
-            string[] args = command.Split(' ');
+            string[] args = command.Split(' ').Where(arg => !string.IsNullOrWhiteSpace(arg)).ToArray();
 
             foreach (string arg in args)
             {
