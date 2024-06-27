@@ -182,7 +182,7 @@ gedit 고려
     - go
     - get
     - unlock
-    - mapping
+    - mapping 
 
 # 구현중 or 구현 완료된 명령어
     - chmod
