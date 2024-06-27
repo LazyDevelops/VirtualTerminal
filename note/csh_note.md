@@ -197,3 +197,5 @@ gedit 고려
     - pwd
     - rmdir
     - whoami
+
+touch 명령어 제작 고려
