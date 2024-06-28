@@ -7,7 +7,7 @@ namespace VirtualTerminal.Command
         public void Execute(int argc, string[] argv, VirtualTerminal VT)
         {
             if(argc < 2){
-                ErrorMessage.ArgLack(argv[0]);
+                Console.WriteLine(ErrorMessage.ArgLack(argv[0]));
                 return;
             }
 
