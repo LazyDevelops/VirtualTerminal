@@ -6,7 +6,7 @@ namespace VirtualTerminal.Command
 {
     public class RmCommand : VirtualTerminal.ICommand
     {
-        public void Execute(string[] args, VirtualTerminal VT)
+        public void Execute(int argc, string[] argv, VirtualTerminal VT)
         {
             Tree<FileNode>? file;
 
@@ -21,7 +21,7 @@ namespace VirtualTerminal.Command
                 // { "f", false } // 사용 용도 고민중
             };
 
-            foreach (string arg in args)
+            foreach (string arg in argv)
             {
                 if (arg.Contains('-'))
                 {
@@ -35,9 +35,9 @@ namespace VirtualTerminal.Command
                 }
             }
 
-            foreach (string arg in args)
+            foreach (string arg in argv)
             {
-                if (arg != args[0] && !arg.Contains('-') && !arg.Contains("--"))
+                if (arg != argv[0] && !arg.Contains('-') && !arg.Contains("--"))
                 {
                     absolutePath = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
                     splitPath = absolutePath.Split('/');
@@ -45,19 +45,19 @@ namespace VirtualTerminal.Command
                     file = VT.fileSystem.FindFile(absolutePath, VT.root);
 
                     if(file == null){
-                        Console.WriteLine(ErrorMessage.NoSuchForD(args[0], ErrorMessage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(arg)));
                         return;
                     }
 
                     permission = VT.fileSystem.CheckFilePermission(VT.USER, file, VT.root);
 
                     if(!permission[0] || !permission[1] || !permission[2]){
-                        Console.WriteLine(ErrorMessage.PermissionDenied(args[0], ErrorMessage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(arg)));
                         return;
                     }
 
                     if(!options["r"] && file.Data.FileType == FileType.D){
-                        Console.WriteLine(ErrorMessage.NotF(args[0], ErrorMessage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorMessage.NotF(argv[0], ErrorMessage.DefaultErrorComment(arg)));
                         return;
                     }
 

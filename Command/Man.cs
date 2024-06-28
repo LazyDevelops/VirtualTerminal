@@ -4,15 +4,15 @@ namespace VirtualTerminal.Command
 {
     public class ManCommand : VirtualTerminal.ICommand
     {
-        public void Execute(string[] args, VirtualTerminal VT)
+        public void Execute(int argc, string[] argv, VirtualTerminal VT)
         {
-            if (VT.commandMap.TryGetValue(args[1], out var action))
+            if (VT.commandMap.TryGetValue(argv[1], out var action))
             {
                 Console.Write(action.Description(true));
             }
             else
             {
-                Console.WriteLine(ErrorMessage.CmdNotFound(args[0], ErrorMessage.DefaultErrorComment(args[1])));
+                Console.WriteLine(ErrorMessage.CmdNotFound(argv[0], ErrorMessage.DefaultErrorComment(argv[1])));
             }
         }
 

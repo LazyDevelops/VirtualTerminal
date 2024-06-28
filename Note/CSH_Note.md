@@ -164,7 +164,7 @@ gedit 고려
 # 기본 명력어 목록
     - chmod
     - clear
-    - cp
+    - cp*
     - date
     - echo
     - exit
@@ -172,7 +172,7 @@ gedit 고려
     - ls
     - man
     - mkdir
-    - mv
+    - mv*
     - pwd
     - rm
     - rmdir

@@ -6,7 +6,7 @@ namespace VirtualTerminal.Command
 {
     public class MkDirCommand : VirtualTerminal.ICommand
     {
-        public void Execute(string[] args, VirtualTerminal VT)
+        public void Execute(int argc, string[] argv, VirtualTerminal VT)
         {
             Tree<FileNode>? parentFile;
             
@@ -17,9 +17,9 @@ namespace VirtualTerminal.Command
 
             bool[] permission;
 
-            foreach (string arg in args)
+            foreach (string arg in argv)
             {
-                if (arg != args[0] && !arg.Contains('-') && !arg.Contains("--"))
+                if (arg != argv[0] && !arg.Contains('-') && !arg.Contains("--"))
                 {
                     absolutePath = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
                     splitPath = absolutePath.Split('/');
@@ -30,25 +30,25 @@ namespace VirtualTerminal.Command
 
                     if (parentFile == null)
                     {
-                        Console.WriteLine(ErrorMessage.NoSuchForD(args[0], ErrorMessage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(arg)));
                         return;
                     }
 
                     permission = VT.fileSystem.CheckFilePermission(VT.USER, parentFile, VT.root);
 
                     if(!permission[0] || !permission[1] || !permission[2]){
-                        Console.WriteLine(ErrorMessage.PermissionDenied(args[0], ErrorMessage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(arg)));
                         return;
                     }
 
                     if(parentFile.Data.FileType != FileType.D){
-                        Console.WriteLine(ErrorMessage.NotD(args[0], ErrorMessage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorMessage.NotD(argv[0], ErrorMessage.DefaultErrorComment(arg)));
                         return;
                     }
 
                     if (VT.fileSystem.FindFile(absolutePath, VT.root) != null)
                     {
-                        Console.WriteLine(ErrorMessage.FExists(args[0], ErrorMessage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorMessage.FExists(argv[0], ErrorMessage.DefaultErrorComment(arg)));
                         return;
                     }
 

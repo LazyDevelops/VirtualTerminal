@@ -2,7 +2,7 @@ namespace VirtualTerminal.Command
 {
     public class CpCommand : VirtualTerminal.ICommand
     {
-        public void Execute(string[] args, VirtualTerminal VT)
+        public void Execute(int argc, string[] argv, VirtualTerminal VT)
         {
             
         }

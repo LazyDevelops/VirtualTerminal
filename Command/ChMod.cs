@@ -6,37 +6,37 @@ namespace VirtualTerminal.Command
 {
     public class ChModCommand : VirtualTerminal.ICommand
     {
-        public void Execute(string[] args, VirtualTerminal VT)
+        public void Execute(int argc, string[] argv, VirtualTerminal VT)
         {
             Tree<FileNode>? file = null;
             string? absolutePath;
             byte? inputPermission;
 
-            if (args[1].Length == 6 && (args[1].Contains('1') || args[1].Contains('0')))
+            if (argv[1].Length == 6 && (argv[1].Contains('1') || argv[1].Contains('0')))
             {
-                inputPermission = Convert.ToByte(args[1].PadLeft(8, '0'), 2);
+                inputPermission = Convert.ToByte(argv[1].PadLeft(8, '0'), 2);
             }
             else
             {
-                Console.WriteLine(ErrorMessage.InvalidMode(args[0], ErrorMessage.DefaultErrorComment(args[1])));
+                Console.WriteLine(ErrorMessage.InvalidMode(argv[0], ErrorMessage.DefaultErrorComment(argv[1])));
                 return;
             }
 
-            foreach (string arg in args)
+            foreach (string arg in argv)
             {
-                if (arg != args[0] && arg != args[1] && !arg.Contains('-') && !arg.Contains("--"))
+                if (arg != argv[0] && arg != argv[1] && !arg.Contains('-') && !arg.Contains("--"))
                 {
                     absolutePath = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
                     file = VT.fileSystem.FindFile(absolutePath, VT.root);
 
                     if (file == null)
                     {
-                        Console.WriteLine(ErrorMessage.NoSuchForD(args[0], ErrorMessage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(arg)));
                         return;
                     }
 
                     if(file.Data.UID != VT.USER){
-                        Console.WriteLine(ErrorMessage.PermissionDenied(args[0], ErrorMessage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(arg)));
                         return;
                     }
                 }
@@ -44,7 +44,7 @@ namespace VirtualTerminal.Command
 
             if (file == null)
             {
-                Console.WriteLine(ErrorMessage.MissingOperandAfter(args[0], args[1]));
+                Console.WriteLine(ErrorMessage.MissingOperandAfter(argv[0], argv[1]));
                 return;
             }
 
@@ -53,7 +53,7 @@ namespace VirtualTerminal.Command
 
         public string Description(bool detail)
         {
-            return "chmod - ������ ���� ����";
+            return "chmod - 소유하고 있는 파일의 권한을 변경";
         }
     }
 }

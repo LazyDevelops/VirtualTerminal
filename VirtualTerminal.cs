@@ -78,7 +78,7 @@ namespace VirtualTerminal
 
         internal interface ICommand
         {
-            void Execute(string[] args, VirtualTerminal VT);
+            void Execute(int argc, string[] argv, VirtualTerminal VT);
             string Description(bool detail);
         }
 
@@ -92,26 +92,26 @@ namespace VirtualTerminal
 
         private void ProcessCommand(string command)
         {
-            string[] args = command.Split(' ').Where(arg => !string.IsNullOrWhiteSpace(arg)).ToArray();
+            string[] argv = command.Split(' ').Where(arg => !string.IsNullOrWhiteSpace(arg)).ToArray();
 
-            foreach (string arg in args)
+            foreach (string arg in argv)
             {
                 if (arg == "--help")
                 {
-                    var manArgs = new string[] { "man", args[0] };
+                    var manArgs = new string[] { "man", argv[0] };
                     commandMap.TryGetValue(manArgs[0], out var man);
-                    man?.Execute(manArgs, this);
+                    man?.Execute(manArgs.Length, manArgs, this);
                     return;
                 }
             }
 
-            if (commandMap.TryGetValue(args[0], out var action))
+            if (commandMap.TryGetValue(argv[0], out var action))
             {
-                action.Execute(args, this);
+                action.Execute(argv.Length, argv, this);
             }
             else
             {
-                Console.WriteLine(ErrorMessage.CmdNotFound(args[0]));
+                Console.WriteLine(ErrorMessage.CmdNotFound(argv[0]));
             }
         }
 

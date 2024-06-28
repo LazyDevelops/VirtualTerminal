@@ -6,15 +6,15 @@ namespace VirtualTerminal.Command
 {
     public class RmDirCommand : VirtualTerminal.ICommand
     {
-        public void Execute(string[] args, VirtualTerminal VT)
+        public void Execute(int argc, string[] argv, VirtualTerminal VT)
         {
             Tree<FileNode>? file;
             string? absolutePath;
             bool[] permission;
 
-            foreach (string arg in args)
+            foreach (string arg in argv)
             {
-                if (arg != args[0] && !arg.Contains('-') && !arg.Contains("--"))
+                if (arg != argv[0] && !arg.Contains('-') && !arg.Contains("--"))
                 {
                     absolutePath = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
 
@@ -22,7 +22,7 @@ namespace VirtualTerminal.Command
 
                     if (file == null || file.Parents == null)
                     {
-                        Console.WriteLine(ErrorMessage.NoSuchForD(args[0], ErrorMessage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(arg)));
                         return;
                     }
 
@@ -30,19 +30,19 @@ namespace VirtualTerminal.Command
 
                     if (permission[0] || !permission[1] || !permission[2])
                     {
-                        Console.WriteLine(ErrorMessage.PermissionDenied(args[0], ErrorMessage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(arg)));
                         return;
                     }
 
                     if (file.Data.FileType != FileType.D)
                     {
-                        Console.WriteLine(ErrorMessage.NotD(args[0], ErrorMessage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorMessage.NotD(argv[0], ErrorMessage.DefaultErrorComment(arg)));
                         return;
                     }
 
                     if (VT.fileSystem.RemoveFile(absolutePath, VT.root, null) != 0)
                     {
-                        Console.WriteLine(ErrorMessage.DNotEmpty(args[0], ErrorMessage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorMessage.DNotEmpty(argv[0], ErrorMessage.DefaultErrorComment(arg)));
                         return;
                     }
                 }

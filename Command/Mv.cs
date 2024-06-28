@@ -5,11 +5,11 @@ namespace VirtualTerminal.Command
 {
     public class MvCommand : VirtualTerminal.ICommand
     {
-        public void Execute(string[] args, VirtualTerminal VT)
+        public void Execute(int argc, string[] argv, VirtualTerminal VT)
         {
-            foreach (string arg in args)
+            foreach (string arg in argv)
             {
-                if (arg != args[0] && !arg.Contains('-') && !arg.Contains("--"))
+                if (arg != argv[0] && !arg.Contains('-') && !arg.Contains("--"))
                 {
                     
                 }

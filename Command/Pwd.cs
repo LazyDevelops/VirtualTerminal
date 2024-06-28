@@ -2,7 +2,7 @@
 {
     public class PwdCommand : VirtualTerminal.ICommand
     {
-        public void Execute(string[] args, VirtualTerminal VT)
+        public void Execute(int argc, string[] argv, VirtualTerminal VT)
         {
             Console.WriteLine(VT.PWD);
         }
