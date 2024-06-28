@@ -1,4 +1,5 @@
 ﻿using Tree;
+using VirtualTerminal.Error;
 using static FileSystem.FileSystem;
 
 namespace VirtualTerminal.Command
@@ -7,6 +8,11 @@ namespace VirtualTerminal.Command
     {
         public void Execute(int argc, string[] argv, VirtualTerminal VT)
         {
+            if(argc < 3){
+                ErrorMessage.ArgLack(argv[0]);
+                return;
+            }
+
             foreach (string arg in argv)
             {
                 if (arg != argv[0] && !arg.Contains('-') && !arg.Contains("--"))

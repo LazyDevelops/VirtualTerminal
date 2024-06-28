@@ -8,6 +8,11 @@ namespace VirtualTerminal.Command
     {
         public void Execute(int argc, string[] argv, VirtualTerminal VT)
         {
+            if(argc < 2){
+                ErrorMessage.ArgLack(argv[0]);
+                return;
+            }
+
             Tree<FileNode>? file;
             string? absolutePath;
             bool[] permission;
