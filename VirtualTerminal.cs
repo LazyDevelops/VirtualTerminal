@@ -1,4 +1,4 @@
-﻿using Tree;
+using Tree;
 using VirtualTerminal.Command;
 using VirtualTerminal.Error;
 using static FileSystem.FileSystem;
@@ -31,7 +31,7 @@ namespace VirtualTerminal
             fileSystem.CreateFile("/", new FileNode("root", "root", 0b111000, FileType.D), root);
 
             homeNode = fileSystem.CreateFile("/home", new FileNode(USER, USER, 0b111101, FileType.D), root);
-            
+
             fileSystem.CreateFile(HOME, new FileNode("Item", "root", 0b111101, FileType.D), root);
             fileSystem.CreateFile(HOME, new FileNode($"Hello_{USER}.txt", "root", 0b111111, FileType.F, $"Hello, {USER}!"), root);
 
@@ -59,7 +59,7 @@ namespace VirtualTerminal
                 { "whoami", new WhoAmICommand() }
             };
         }
-        
+
         public void Run()
         {
             while (true)
@@ -124,6 +124,27 @@ namespace VirtualTerminal
                 content += line + Environment.NewLine;
             }
             return content.TrimEnd('\n');
+        }
+
+        internal void OptionCheck(ref Dictionary<string, bool> option, in string[] argv)
+        {
+            foreach (string arg in argv)
+            {
+                if(arg.Contains("--"))
+                {
+                    option[arg.Replace("--", "")] = true;
+                }
+                else if (arg.Contains('-'))
+                {
+                    foreach (char c in arg)
+                    {
+                        if (c != '-')
+                        {
+                            option[c.ToString()] = true;
+                        }
+                    }
+                }
+            }
         }
 
         internal void WriteColoredText(string text, ConsoleColor color)

@@ -1,4 +1,4 @@
-﻿using Tree;
+using Tree;
 using VirtualTerminal.Error;
 using static FileSystem.FileSystem;
 
@@ -19,19 +19,7 @@ namespace VirtualTerminal.Command
                 { "l", false }
             };
 
-            foreach (string arg in argv)
-            {
-                if (arg.Contains('-'))
-                {
-                    foreach (char c in arg)
-                    {
-                        if (c != '-')
-                        {
-                            options[c.ToString()] = true;
-                        }
-                    }
-                }
-            }
+            VT.OptionCheck(ref options, in argv);
 
             fileChildren = VT.pwdNode?.GetChildren();
 
