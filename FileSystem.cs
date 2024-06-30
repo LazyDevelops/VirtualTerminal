@@ -1,4 +1,4 @@
-﻿using Tree;
+using Tree;
 
 namespace FileSystem
 {
@@ -127,6 +127,39 @@ namespace FileSystem
             result += (permissions & 001) != 0 ? "x" : "-";
             return result;
         }
+
+        //public Tree<FileNode>? FileOpen(in string path, in string? fileMode, in VirtualTerminal.VirtualTerminal VT, out int error)
+        //{
+        //    if(path == null || VT == null)
+        //    {
+        //        error = 1;
+        //        return null;
+        //    }
+            
+        //    string absolutePath = GetAbsolutePath(path, VT.HOME, VT.PWD);
+        //    Tree<FileNode>? file = FindFile(absolutePath, VT.root);
+
+        //    if (file == null)
+        //    {
+        //        error = 2;
+        //        return null;
+        //    }
+
+        //    if (fileMode != null)
+        //    {
+        //        var openPermission = new bool[] { fileMode.Contains('r'), fileMode.Contains('w'), fileMode.Contains('x') };
+        //        bool[] permission = CheckFilePermission(VT.USER, file, VT.root);
+
+        //        if ((openPermission[0] && !permission[0]) || (openPermission[1] && !permission[1]) || (openPermission[2] && !permission[2]))
+        //        {
+        //            error = 3;
+        //            return null;
+        //        }
+        //    }
+
+        //    error = 0;
+        //    return file;
+        //}
 
         public bool[] CheckFilePermission(string username, Tree<FileNode> file, Tree<FileNode> root)
         {

@@ -1,4 +1,4 @@
-﻿using Tree;
+using Tree;
 using VirtualTerminal.Error;
 using static FileSystem.FileSystem;
 
@@ -10,13 +10,9 @@ namespace VirtualTerminal.Command
         {
             Tree<FileNode>? file;
             Tree<FileNode>? parentFile;
-
-            string[]? splitPath;
             string? absolutePath;
             string? parentPath;
-
             string? fileName;
-            
             bool[] permission;
 
             foreach (string arg in argv)
@@ -24,8 +20,7 @@ namespace VirtualTerminal.Command
                 if (arg != argv[0] && !arg.Contains('-') && !arg.Contains("--"))
                 {
                     absolutePath = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
-                    splitPath = absolutePath.Split('/');
-                    fileName = splitPath[^1]; // path.Length - 1
+                    fileName = absolutePath.Split('/')[^1]; // path.Length - 1
 
                     file = VT.fileSystem.FindFile(absolutePath, VT.root);
 

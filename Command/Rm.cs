@@ -1,4 +1,4 @@
-﻿using Tree;
+using Tree;
 using VirtualTerminal.Error;
 using static FileSystem.FileSystem;
 
@@ -14,31 +14,15 @@ namespace VirtualTerminal.Command
             }
 
             Tree<FileNode>? file;
-
             string[]? splitPath;
             string? absolutePath;
-
             bool[] permission;
-            // bool[] parentPermission;
 
             Dictionary<string, bool> options = new(){
                 { "r", false },
-                // { "f", false } // 사용 용도 고민중
             };
 
-            foreach (string arg in argv)
-            {
-                if (arg.Contains('-'))
-                {
-                    foreach (char c in arg)
-                    {
-                        if (c != '-')
-                        {
-                            options[c.ToString()] = true;
-                        }
-                    }
-                }
-            }
+            VT.OptionCheck(ref options, in argv);
 
             foreach (string arg in argv)
             {

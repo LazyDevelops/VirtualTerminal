@@ -1,4 +1,4 @@
-﻿using Tree;
+using Tree;
 using VirtualTerminal.Error;
 using static FileSystem.FileSystem;
 
