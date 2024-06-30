@@ -1,7 +1,7 @@
 using Tree;
 using VirtualTerminal.Command;
 using VirtualTerminal.Error;
-using static FileSystem.FileSystem;
+using static VirtualTerminal.FileSystem.FileSystem;
 
 namespace VirtualTerminal
 {

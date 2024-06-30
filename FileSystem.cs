@@ -1,6 +1,6 @@
 using Tree;
 
-namespace FileSystem
+namespace VirtualTerminal.FileSystem
 {
     public class FileSystem
     {
