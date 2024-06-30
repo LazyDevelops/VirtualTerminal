@@ -80,7 +80,7 @@ namespace FileSystem
 
         public Tree<FileNode>? FindFile(string path, Tree<FileNode> root)
         {
-            Tree<FileNode> current = root;
+            Tree<FileNode> currentNode = root;
             var files = new List<string>();
             string? fileName;
 
@@ -95,24 +95,24 @@ namespace FileSystem
             }
             else
             {
-                foreach (string temp in files)
+                foreach (string file in files)
                 {
-                    foreach (Tree<FileNode> tempNode in current.GetChildren())
+                    foreach (Tree<FileNode> child in currentNode.GetChildren())
                     {
-                        if (tempNode.Data.Name == temp)
+                        if (child.Data.Name == file)
                         {
-                            current = tempNode;
+                            currentNode = child;
                             break;
                         }
                     }
                 }
 
-                if (current.Data.Name != fileName)
+                if (currentNode.Data.Name != fileName)
                 {
                     return null;
                 }
 
-                return current;
+                return currentNode;
             }
         }
 
@@ -164,8 +164,21 @@ namespace FileSystem
         public bool[] CheckFilePermission(string username, Tree<FileNode> file, Tree<FileNode> root)
         {
             Tree<FileNode>? curFile = file.Parents;
-            var permissions = new bool[3] { false, false, false };
+            var permissions = new bool[6] { false, false, false, false, false, false };
             int min, max;
+
+            if(curFile?.Parents != null)
+            {
+                curFile = curFile?.Parents;
+                min = curFile?.Data.UID == username ? 3 : 0;
+                max = curFile?.Data.UID == username ? 5 : 2;
+
+                while (min <= max)
+                {
+                    permissions[max - min + 3] = (curFile?.Data.Permission & (1 << min)) != 0;
+                    min++;
+                }
+            }
 
             while(curFile != null && curFile != root)
             {

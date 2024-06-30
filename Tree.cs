@@ -38,6 +38,30 @@ namespace Tree
             child.Parents = this;
         }
 
+        //public Tree<T> CopyNode()
+        //{
+        //    if (Data == null)
+        //    {
+        //        return new Tree<T>();
+        //    }
+
+        //    var newNode = new Tree<T>(Data);
+
+        //    if (LeftChild != null)
+        //    {
+        //        newNode.LeftChild = LeftChild.CopyNode();
+        //        newNode.LeftChild.Parents = newNode;
+        //    }
+
+        //    if (RightSibling != null)
+        //    {
+        //        newNode.RightSibling = RightSibling.CopyNode();
+        //        newNode.RightSibling.Parents = newNode.Parents;
+        //    }
+
+        //    return newNode;
+        //}
+
         public List<Tree<T>> GetChildren()
         {
             var children = new List<Tree<T>>();
