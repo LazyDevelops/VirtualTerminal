@@ -42,27 +42,27 @@ namespace FileSystem
 
         public int RemoveFile(string path, Tree<FileNode> root, char? option)
         {
-            Tree<FileNode>? current = FindFile(path, root);
+            Tree<FileNode>? currentNode = FindFile(path, root);
             Tree<FileNode> parents;
 
-            if (current == null)
+            if (currentNode == null)
             {
                 return 1;
             }
 
-            if (current.Parents == null)
+            if (currentNode.Parents == null)
             {
                 return 2;
             }
 
-            parents = current.Parents;
+            parents = currentNode.Parents;
 
-            if (option == 'r' || current.LeftChild == null)
+            if (option == 'r' || currentNode.LeftChild == null)
             {
-                if(current.LeftChild != null){
-                    RemoveAllChildren(current);
+                if(currentNode.LeftChild != null){
+                    RemoveAllChildren(currentNode);
                 }
-                parents.RemoveChildNode(current);
+                parents.RemoveChildNode(currentNode);
                 return 0;
             }
 
@@ -127,39 +127,6 @@ namespace FileSystem
             result += (permissions & 001) != 0 ? "x" : "-";
             return result;
         }
-
-        //public Tree<FileNode>? FileOpen(in string path, in string? fileMode, in VirtualTerminal.VirtualTerminal VT, out int error)
-        //{
-        //    if(path == null || VT == null)
-        //    {
-        //        error = 1;
-        //        return null;
-        //    }
-            
-        //    string absolutePath = GetAbsolutePath(path, VT.HOME, VT.PWD);
-        //    Tree<FileNode>? file = FindFile(absolutePath, VT.root);
-
-        //    if (file == null)
-        //    {
-        //        error = 2;
-        //        return null;
-        //    }
-
-        //    if (fileMode != null)
-        //    {
-        //        var openPermission = new bool[] { fileMode.Contains('r'), fileMode.Contains('w'), fileMode.Contains('x') };
-        //        bool[] permission = CheckFilePermission(VT.USER, file, VT.root);
-
-        //        if ((openPermission[0] && !permission[0]) || (openPermission[1] && !permission[1]) || (openPermission[2] && !permission[2]))
-        //        {
-        //            error = 3;
-        //            return null;
-        //        }
-        //    }
-
-        //    error = 0;
-        //    return file;
-        //}
 
         public bool[] CheckFilePermission(string username, Tree<FileNode> file, Tree<FileNode> root)
         {
