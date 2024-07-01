@@ -8,7 +8,7 @@ namespace VirtualTerminal.Command
     {
         public void Execute(int argc, string[] argv, VirtualTerminal VT)
         {
-            Tree<FileNode>? file = null;
+            Tree<FileNode>? file;
             string? absolutePath;
             byte? inputPermission;
 
@@ -39,16 +39,10 @@ namespace VirtualTerminal.Command
                         Console.WriteLine(ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(arg)));
                         return;
                     }
+
+                    file.Data.Permission = inputPermission.Value;
                 }
             }
-
-            if (file == null)
-            {
-                Console.WriteLine(ErrorMessage.MissingOperandAfter(argv[0], argv[1]));
-                return;
-            }
-
-            file.Data.Permission = inputPermission.Value;
         }
 
         public string Description(bool detail)
