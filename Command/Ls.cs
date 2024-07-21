@@ -62,7 +62,7 @@ namespace VirtualTerminal.Command
             {
                 if (options["l"])
                 {
-                    string permissions = VT.fileSystem.ConvertPermissionsToString(fileChild.Data.Permission);
+                    string permissions = VT.fileSystem.PermissionsToString(fileChild.Data.Permission);
                     Console.Write($"{Convert.ToChar(fileChild.Data.FileType)}{permissions} {fileChild.Data.UID} ");
                 }
 

@@ -3,6 +3,8 @@ using VirtualTerminal.Command;
 using VirtualTerminal.Error;
 using VirtualTerminal.FileSystem;
 
+// path stack이나 list로 수정 고려
+
 namespace VirtualTerminal
 {
     public class VirtualTerminal
