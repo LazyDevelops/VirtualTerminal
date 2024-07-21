@@ -21,40 +21,42 @@ namespace VirtualTerminal.Command
 
             foreach (string arg in argv)
             {
-                if (arg != argv[0] && !arg.Contains('-') && !arg.Contains("--"))
+                if (arg == argv[0] || arg.Contains('-') || arg.Contains("--"))
                 {
-                    absolutePath = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
-                    fileName = absolutePath.Split('/')[^1]; // path.Length - 1
-                    parentPath = absolutePath.Replace('/' + fileName, "");
-
-                    parentFile = VT.fileSystem.FindFile(parentPath, VT.root);
-
-                    if (parentFile == null)
-                    {
-                        Console.WriteLine(ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(arg)));
-                        return;
-                    }
-
-                    permission = VT.fileSystem.CheckFilePermission(VT.USER, parentFile, VT.root);
-
-                    if(!permission[0] || !permission[1] || !permission[2]){
-                        Console.WriteLine(ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(arg)));
-                        return;
-                    }
-
-                    if(parentFile.Data.FileType != FileType.D){
-                        Console.WriteLine(ErrorMessage.NotD(argv[0], ErrorMessage.DefaultErrorComment(arg)));
-                        return;
-                    }
-
-                    if (VT.fileSystem.FindFile(absolutePath, VT.root) != null)
-                    {
-                        Console.WriteLine(ErrorMessage.FExists(argv[0], ErrorMessage.DefaultErrorComment(arg)));
-                        return;
-                    }
-
-                    VT.fileSystem.CreateFile(parentPath, new FileNode(fileName, VT.USER, 0b111101, FileType.D), VT.root);
+                    continue;
                 }
+
+                absolutePath = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
+                fileName = absolutePath.Split('/')[^1]; // path.Length - 1
+                parentPath = absolutePath.Replace('/' + fileName, "");
+
+                parentFile = VT.fileSystem.FindFile(parentPath, VT.root);
+
+                if (parentFile == null)
+                {
+                    Console.WriteLine(ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(arg)));
+                    return;
+                }
+
+                permission = VT.fileSystem.CheckFilePermission(VT.USER, parentFile, VT.root);
+
+                if(!permission[0] || !permission[1] || !permission[2]){
+                    Console.WriteLine(ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(arg)));
+                    return;
+                }
+
+                if(parentFile.Data.FileType != FileType.D){
+                    Console.WriteLine(ErrorMessage.NotD(argv[0], ErrorMessage.DefaultErrorComment(arg)));
+                    return;
+                }
+
+                if (VT.fileSystem.FindFile(absolutePath, VT.root) != null)
+                {
+                    Console.WriteLine(ErrorMessage.FExists(argv[0], ErrorMessage.DefaultErrorComment(arg)));
+                    return;
+                }
+
+                VT.fileSystem.CreateFile(parentPath, new FileNode(fileName, VT.USER, 0b111101, FileType.D), VT.root);
             }
         }
 

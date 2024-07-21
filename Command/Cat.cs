@@ -17,59 +17,61 @@ namespace VirtualTerminal.Command
 
             foreach (string arg in argv)
             {
-                if (arg != argv[0] && !arg.Contains('-') && !arg.Contains("--"))
+                if (arg == argv[0] || arg.Contains('-') || arg.Contains("--"))
                 {
-                    absolutePath = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
-                    fileName = absolutePath.Split('/')[^1]; // path.Length - 1
+                    continue;
+                }
 
-                    file = VT.fileSystem.FindFile(absolutePath, VT.root);
+                absolutePath = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
+                fileName = absolutePath.Split('/')[^1]; // path.Length - 1
 
-                    if (file == null)
-                    {
-                        parentPath = absolutePath.Replace('/' + fileName, "");
-                        parentFile = VT.fileSystem.FindFile(parentPath, VT.root);
+                file = VT.fileSystem.FindFile(absolutePath, VT.root);
 
-                        if(parentFile == null){
-                            Console.WriteLine(ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(arg)));
-                            return;
-                        }
-                        
-                        permission = VT.fileSystem.CheckFilePermission(VT.USER, parentFile, VT.root);
+                if (file == null)
+                {
+                    parentPath = absolutePath.Replace('/' + fileName, "");
+                    parentFile = VT.fileSystem.FindFile(parentPath, VT.root);
 
-                        if(!permission[0] || !permission[1] || !permission[2])
-                        {
-                            Console.WriteLine(ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(arg)));
-                            return;
-                        }
-
-                        if(parentFile.Data.FileType != FileType.D){
-                            Console.WriteLine(ErrorMessage.NotD(argv[0], ErrorMessage.DefaultErrorComment(arg)));
-                            return;
-                        }
-
-                        Console.WriteLine($"파일 찾기 실패: {fileName}. 새로운 파일 만들기. 내용을 입력해주십시오. (점(.)만 찍고 엔터 치면 입력 종료):");
-                        string content = VT.ReadMultiLineInput();
-                        VT.fileSystem.CreateFile(parentPath, new FileNode(fileName, VT.USER, 0b110100, FileType.F, content), VT.root);
+                    if(parentFile == null){
+                        Console.WriteLine(ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(arg)));
                         return;
                     }
+                        
+                    permission = VT.fileSystem.CheckFilePermission(VT.USER, parentFile, VT.root);
 
-                    permission = VT.fileSystem.CheckFilePermission(VT.USER, file, VT.root);
-
-                    if(!permission[0])
+                    if(!permission[0] || !permission[1] || !permission[2])
                     {
                         Console.WriteLine(ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(arg)));
                         return;
                     }
 
-                    if (file.Data.FileType == FileType.D)
-                    {
-                        Console.WriteLine(ErrorMessage.NotF(argv[0], ErrorMessage.DefaultErrorComment(arg)));
+                    if(parentFile.Data.FileType != FileType.D){
+                        Console.WriteLine(ErrorMessage.NotD(argv[0], ErrorMessage.DefaultErrorComment(arg)));
                         return;
                     }
 
-                    Console.WriteLine(file.Data.Content);
+                    Console.WriteLine($"파일 찾기 실패: {fileName}. 새로운 파일 만들기. 내용을 입력해주십시오. (점(.)만 찍고 엔터 치면 입력 종료):");
+                    string content = VT.ReadMultiLineInput();
+                    VT.fileSystem.CreateFile(parentPath, new FileNode(fileName, VT.USER, 0b110100, FileType.F, content), VT.root);
                     return;
                 }
+
+                permission = VT.fileSystem.CheckFilePermission(VT.USER, file, VT.root);
+
+                if(!permission[0])
+                {
+                    Console.WriteLine(ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(arg)));
+                    return;
+                }
+
+                if (file.Data.FileType == FileType.D)
+                {
+                    Console.WriteLine(ErrorMessage.NotF(argv[0], ErrorMessage.DefaultErrorComment(arg)));
+                    return;
+                }
+
+                Console.WriteLine(file.Data.Content);
+                return;
             }
             
             string? line;

@@ -30,28 +30,30 @@ namespace VirtualTerminal.Command
 
             foreach (string arg in argv)
             {
-                if (arg != argv[0] && !arg.Contains('-') && !arg.Contains("--"))
+                if (arg == argv[0] || arg.Contains('-') || arg.Contains("--"))
                 {
-                    if(fileCounter + 1 > file.Length){
-                        Console.WriteLine(ErrorMessage.ArgLack(argv[0]));
-                        return;
-                    }
-
-                    absolutePath[fileCounter] = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
-
-                    if(fileCounter == 0)
-                    {
-                        file[fileCounter] = VT.fileSystem.FindFile(absolutePath[fileCounter], VT.root);
-                    }
-                    else
-                    {
-                        fileName = absolutePath[fileCounter]?.Split('/')[^1];
-                        absolutePath[fileCounter] = absolutePath[fileCounter]?.Replace('/' + fileName, "");
-                        file[fileCounter] = VT.fileSystem.FindFile(absolutePath[fileCounter], VT.root);
-                    }
-
-                    fileCounter++;
+                    continue;
                 }
+
+                if(fileCounter + 1 > file.Length){
+                    Console.WriteLine(ErrorMessage.ArgLack(argv[0]));
+                    return;
+                }
+
+                absolutePath[fileCounter] = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
+
+                if(fileCounter == 0)
+                {
+                    file[fileCounter] = VT.fileSystem.FindFile(absolutePath[fileCounter], VT.root);
+                }
+                else
+                {
+                    fileName = absolutePath[fileCounter]?.Split('/')[^1];
+                    absolutePath[fileCounter] = absolutePath[fileCounter]?.Replace('/' + fileName, "");
+                    file[fileCounter] = VT.fileSystem.FindFile(absolutePath[fileCounter], VT.root);
+                }
+
+                fileCounter++;
             }
         }
 

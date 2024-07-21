@@ -23,33 +23,35 @@ namespace VirtualTerminal.Command
 
             foreach (string arg in argv)
             {
-                if (arg != argv[0] && !arg.Contains('-') && !arg.Contains("--"))
+                if (arg == argv[0] || arg.Contains('-') || arg.Contains("--"))
                 {
-                    absolutePath = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
-
-                    file = VT.fileSystem.FindFile(absolutePath, VT.root);
-
-                    if (file == null)
-                    {
-                        Console.WriteLine(ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(arg)));
-                        return;
-                    }
-
-                    permission = VT.fileSystem.CheckFilePermission(VT.USER, file, VT.root);
-
-                    if (!permission[0]){
-                        Console.WriteLine(ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(arg)));
-                        return;
-                    }
-
-                    if (file.Data.FileType != FileType.D)
-                    {
-                        Console.WriteLine(arg);
-                        return;
-                    }
-
-                    fileChildren = file.GetChildren();
+                    continue;
                 }
+
+                absolutePath = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
+
+                file = VT.fileSystem.FindFile(absolutePath, VT.root);
+
+                if (file == null)
+                {
+                    Console.WriteLine(ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(arg)));
+                    return;
+                }
+
+                permission = VT.fileSystem.CheckFilePermission(VT.USER, file, VT.root);
+
+                if (!permission[0]){
+                    Console.WriteLine(ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(arg)));
+                    return;
+                }
+
+                if (file.Data.FileType != FileType.D)
+                {
+                    Console.WriteLine(arg);
+                    return;
+                }
+
+                fileChildren = file.GetChildren();
             }
 
             if (fileChildren == null)

@@ -17,7 +17,7 @@
 
         public string Description(bool detail)
         {
-            return "ehco - 입력한 테스트 출력";
+            return "echo - 입력한 테스트 출력";
         }
     }
 }

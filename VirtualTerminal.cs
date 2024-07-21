@@ -5,7 +5,7 @@ using static VirtualTerminal.FileSystem.FileSystem;
 
 namespace VirtualTerminal
 {
-    public partial class VirtualTerminal
+    public class VirtualTerminal
     {
         internal FileSystem.FileSystem fileSystem = new();
         internal Tree<FileNode> root;
@@ -18,7 +18,7 @@ namespace VirtualTerminal
         internal string HOME;
         internal string USER;
 
-        internal Dictionary<string, ICommand> commandMap;
+        internal readonly Dictionary<string, ICommand> commandMap;
 
         public VirtualTerminal()
         {
@@ -96,13 +96,15 @@ namespace VirtualTerminal
 
             foreach (string arg in argv)
             {
-                if (arg == "--help")
+                if (arg != "--help")
                 {
-                    var manArgs = new string[] { "man", argv[0] };
-                    commandMap.TryGetValue(manArgs[0], out var man);
-                    man?.Execute(manArgs.Length, manArgs, this);
-                    return;
+                    continue;
                 }
+
+                var manArgs = new string[] { "man", argv[0] };
+                commandMap.TryGetValue(manArgs[0], out var man);
+                man?.Execute(manArgs.Length, manArgs, this);
+                return;
             }
 
             if (commandMap.TryGetValue(argv[0], out var action))

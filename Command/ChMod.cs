@@ -24,24 +24,26 @@ namespace VirtualTerminal.Command
 
             foreach (string arg in argv)
             {
-                if (arg != argv[0] && arg != argv[1] && !arg.Contains('-') && !arg.Contains("--"))
+                if (arg == argv[0] || arg == argv[1] || arg.Contains('-') || arg.Contains("--"))
                 {
-                    absolutePath = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
-                    file = VT.fileSystem.FindFile(absolutePath, VT.root);
-
-                    if (file == null)
-                    {
-                        Console.WriteLine(ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(arg)));
-                        return;
-                    }
-
-                    if(file.Data.UID != VT.USER){
-                        Console.WriteLine(ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(arg)));
-                        return;
-                    }
-
-                    file.Data.Permission = inputPermission.Value;
+                    continue;
                 }
+
+                absolutePath = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
+                file = VT.fileSystem.FindFile(absolutePath, VT.root);
+
+                if (file == null)
+                {
+                    Console.WriteLine(ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(arg)));
+                    return;
+                }
+
+                if(file.Data.UID != VT.USER){
+                    Console.WriteLine(ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(arg)));
+                    return;
+                }
+
+                file.Data.Permission = inputPermission.Value;
             }
         }
 

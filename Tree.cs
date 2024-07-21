@@ -38,30 +38,6 @@ namespace Tree
             child.Parents = this;
         }
 
-        //public Tree<T> CopyNode()
-        //{
-        //    if (Data == null)
-        //    {
-        //        return new Tree<T>();
-        //    }
-
-        //    var newNode = new Tree<T>(Data);
-
-        //    if (LeftChild != null)
-        //    {
-        //        newNode.LeftChild = LeftChild.CopyNode();
-        //        newNode.LeftChild.Parents = newNode;
-        //    }
-
-        //    if (RightSibling != null)
-        //    {
-        //        newNode.RightSibling = RightSibling.CopyNode();
-        //        newNode.RightSibling.Parents = newNode.Parents;
-        //    }
-
-        //    return newNode;
-        //}
-
         public List<Tree<T>> GetChildren()
         {
             var children = new List<Tree<T>>();
@@ -78,11 +54,6 @@ namespace Tree
 
         public void RemoveChildNode(Tree<T> nodeToRemove)
         {
-            if (nodeToRemove == null)
-            {
-                return; // 삭제할 노드가 null인 경우 종료
-            }
-
             if (LeftChild == nodeToRemove)
             {
                 // 삭제할 노드가 첫 번째 자식인 경우
@@ -118,7 +89,7 @@ namespace Tree
             RightSibling?.PrintTree(depth);
         }
 
-        public void TestPrintTree(int depth)
+        /*public void TestPrintTree(int depth)
         {
             for (int i = 0; i < depth - 1; i++)
             {
@@ -143,6 +114,6 @@ namespace Tree
 
             LeftChild?.TestPrintTree(depth + 1);
             RightSibling?.TestPrintTree(depth);
-        }
+        }*/
     }
 }

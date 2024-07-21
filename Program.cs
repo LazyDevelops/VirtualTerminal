@@ -1,6 +1,6 @@
 ﻿class Program
 {
-    static void Main()
+    private static void Main()
     {
         VirtualTerminal.VirtualTerminal terminal = new();
         terminal.Run();

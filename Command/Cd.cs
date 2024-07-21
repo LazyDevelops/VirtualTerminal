@@ -20,38 +20,40 @@ namespace VirtualTerminal.Command
 
             foreach (string arg in argv)
             {
-                if (arg != argv[0] && !arg.Contains('-') && !arg.Contains("--"))
+                if (arg == argv[0] || arg.Contains('-') || arg.Contains("--"))
                 {
-                    absolutePath = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
-                    
-                    file = VT.fileSystem.FindFile(absolutePath, VT.root);
-
-                    if (file == null)
-                    {
-                        Console.Write("bash: ");
-                        Console.WriteLine(ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(arg)));
-                        return;
-                    }
-
-                    permission = VT.fileSystem.CheckFilePermission(VT.USER, file, VT.root);
-                    
-                    if(!permission[0] || !permission[2])
-                    {
-                        Console.Write("bash: ");
-                        Console.WriteLine(ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(arg)));
-                        return;
-                    }
-
-                    if (file.Data.FileType != FileType.D)
-                    {
-                        Console.Write("bash: ");
-                        Console.WriteLine(ErrorMessage.NotD(argv[0], ErrorMessage.DefaultErrorComment(arg)));
-                        return;
-                    }
-
-                    VT.pwdNode = file;
-                    VT.PWD = absolutePath;
+                    continue;
                 }
+
+                absolutePath = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
+                    
+                file = VT.fileSystem.FindFile(absolutePath, VT.root);
+
+                if (file == null)
+                {
+                    Console.Write("bash: ");
+                    Console.WriteLine(ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(arg)));
+                    return;
+                }
+
+                permission = VT.fileSystem.CheckFilePermission(VT.USER, file, VT.root);
+                    
+                if(!permission[0] || !permission[2])
+                {
+                    Console.Write("bash: ");
+                    Console.WriteLine(ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(arg)));
+                    return;
+                }
+
+                if (file.Data.FileType != FileType.D)
+                {
+                    Console.Write("bash: ");
+                    Console.WriteLine(ErrorMessage.NotD(argv[0], ErrorMessage.DefaultErrorComment(arg)));
+                    return;
+                }
+
+                VT.pwdNode = file;
+                VT.PWD = absolutePath;
             }
         }
 

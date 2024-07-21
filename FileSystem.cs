@@ -57,16 +57,18 @@ namespace VirtualTerminal.FileSystem
 
             parents = currentNode.Parents;
 
-            if (option == 'r' || currentNode.LeftChild == null)
+            if (option != 'r' && currentNode.LeftChild != null)
             {
-                if(currentNode.LeftChild != null){
-                    RemoveAllChildren(currentNode);
-                }
-                parents.RemoveChildNode(currentNode);
-                return 0;
+                return 3;
             }
 
-            return 3;
+            if(currentNode.LeftChild != null){
+                RemoveAllChildren(currentNode);
+            }
+            
+            parents.RemoveChildNode(currentNode);
+            return 0;
+
         }
 
         private void RemoveAllChildren(Tree<FileNode> node)
@@ -104,20 +106,17 @@ namespace VirtualTerminal.FileSystem
                 {
                     foreach (Tree<FileNode> child in currentNode.GetChildren())
                     {
-                        if (child.Data.Name == file)
+                        if (child.Data.Name != file)
                         {
-                            currentNode = child;
-                            break;
+                            continue;
                         }
+
+                        currentNode = child;
+                        break;
                     }
                 }
 
-                if (currentNode.Data.Name != fileName)
-                {
-                    return null;
-                }
-
-                return currentNode;
+                return currentNode.Data.Name != fileName ? null : currentNode;
             }
         }
 
@@ -219,16 +218,7 @@ namespace VirtualTerminal.FileSystem
             {
                 // 부모 디렉터리를 나타내는 경우
                 int lastSlashIndex = CurrentDirectory.LastIndexOf('/');
-
-                if (lastSlashIndex > 0)
-                {
-                    return CurrentDirectory.Remove(lastSlashIndex);
-                }
-                else
-                {
-                    // 루트 디렉터리인 경우
-                    return "/";
-                }
+                return lastSlashIndex > 0 ? CurrentDirectory.Remove(lastSlashIndex) : "/";
             }
 
             // 파일 이름만 주어진 경우, 현재 디렉터리를 기준으로 절대 경로 생성
@@ -242,23 +232,25 @@ namespace VirtualTerminal.FileSystem
 
             foreach (var part in parts)
             {
-                if (part == ".")
+                switch (part)
                 {
-                    // 현재 디렉터리, 무시
-                    continue;
-                }
-                else if (part == "..")
-                {
-                    // 부모 디렉터리, 스택에서 하나 제거
-                    if (stack.Count > 0)
-                    {
-                        stack.Pop();
-                    }
-                }
-                else
-                {
-                    // 일반 디렉터리 이름, 스택에 추가
-                    stack.Push(part);
+                    case ".":
+                        // 현재 디렉터리, 무시
+                        continue;
+                    case "..":
+                        {
+                            // 부모 디렉터리, 스택에서 하나 제거
+                            if (stack.Count > 0)
+                            {
+                                stack.Pop();
+                            }
+
+                            break;
+                        }
+                    default:
+                        // 일반 디렉터리 이름, 스택에 추가
+                        stack.Push(part);
+                        break;
                 }
             }
 
