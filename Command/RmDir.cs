@@ -1,6 +1,6 @@
 using Tree;
 using VirtualTerminal.Error;
-using static VirtualTerminal.FileSystem.FileSystem;
+using VirtualTerminal.FileSystem;
 
 namespace VirtualTerminal.Command
 {

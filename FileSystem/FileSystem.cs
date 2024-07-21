@@ -4,13 +4,6 @@ namespace VirtualTerminal.FileSystem
 {
     public class FileSystem
     {
-        public enum FileType
-        {
-            F = '-', // 일반 파일
-            D = 'd', // 디렉터리 파일
-            I = 'i' // 아이템 파일
-        }
-
         public Tree<FileNode>? CreateFile(string path, FileNode entry, Tree<FileNode> root)
         {
             Tree<FileNode>? current = FindFile(path, root);
@@ -231,20 +224,6 @@ namespace VirtualTerminal.FileSystem
             List<string> result = [..stack];
             result.Reverse();
             return "/" + string.Join("/", result);
-        }
-
-        public struct FileNode(string name, string UID, byte permission, FileType fileType, string? content = null)
-        {
-            public string Name { get; set; } = name;
-            public byte Permission { get; set; } = permission;
-            public string UID { get; set; } = UID;
-            public FileType FileType { get; set; } = fileType;
-            public string? Content { get; set; } = content;
-
-            public override string ToString()
-            {
-                return Name;
-            }
         }
     }
 }
