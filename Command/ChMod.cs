@@ -38,7 +38,8 @@ namespace VirtualTerminal.Command
                     return;
                 }
 
-                if(file.Data.UID != VT.USER){
+                if (file.Data.UID != VT.USER)
+                {
                     Console.WriteLine(ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(arg)));
                     return;
                 }

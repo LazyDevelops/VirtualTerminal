@@ -12,10 +12,8 @@ namespace VirtualTerminal.Command
             List<Tree<FileNode>>? fileChildren;
             string? absolutePath;
             bool[] permission;
-            
-            Dictionary<string, bool> options = new(){
-                { "l", false }
-            };
+
+            Dictionary<string, bool> options = new() { { "l", false } };
 
             VT.OptionCheck(ref options, in argv);
 
@@ -40,7 +38,8 @@ namespace VirtualTerminal.Command
 
                 permission = VT.fileSystem.CheckFilePermission(VT.USER, file, VT.root);
 
-                if (!permission[0]){
+                if (!permission[0])
+                {
                     Console.WriteLine(ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(arg)));
                     return;
                 }
@@ -66,9 +65,9 @@ namespace VirtualTerminal.Command
                     string permissions = VT.fileSystem.ConvertPermissionsToString(fileChild.Data.Permission);
                     Console.Write($"{Convert.ToChar(fileChild.Data.FileType)}{permissions} {fileChild.Data.UID} ");
                 }
-                
-                
-                if(fileChild?.Data.FileType == FileType.D)
+
+
+                if (fileChild?.Data.FileType == FileType.D)
                 {
                     VT.WriteColoredText($"{fileChild?.Data.Name}", ConsoleColor.Blue);
                 }

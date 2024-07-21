@@ -8,7 +8,8 @@ namespace VirtualTerminal.Command
     {
         public void Execute(int argc, string[] argv, VirtualTerminal VT)
         {
-            if(argc < 2){
+            if (argc < 2)
+            {
                 Console.WriteLine(ErrorMessage.ArgLack(argv[0]));
                 return;
             }

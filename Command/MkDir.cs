@@ -8,7 +8,8 @@ namespace VirtualTerminal.Command
     {
         public void Execute(int argc, string[] argv, VirtualTerminal VT)
         {
-            if(argc < 2){
+            if (argc < 2)
+            {
                 Console.WriteLine(ErrorMessage.ArgLack(argv[0]));
                 return;
             }
@@ -40,12 +41,14 @@ namespace VirtualTerminal.Command
 
                 permission = VT.fileSystem.CheckFilePermission(VT.USER, parentFile, VT.root);
 
-                if(!permission[0] || !permission[1] || !permission[2]){
+                if (!permission[0] || !permission[1] || !permission[2])
+                {
                     Console.WriteLine(ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(arg)));
                     return;
                 }
 
-                if(parentFile.Data.FileType != FileType.D){
+                if (parentFile.Data.FileType != FileType.D)
+                {
                     Console.WriteLine(ErrorMessage.NotD(argv[0], ErrorMessage.DefaultErrorComment(arg)));
                     return;
                 }

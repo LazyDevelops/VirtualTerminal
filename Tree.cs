@@ -3,8 +3,8 @@ namespace Tree
     public class Tree<T>
     {
         public T? Data;
-        public Tree<T>? Parents;
         public Tree<T>? LeftChild;
+        public Tree<T>? Parents;
         public Tree<T>? RightSibling;
 
         public Tree() { }
@@ -40,8 +40,8 @@ namespace Tree
 
         public List<Tree<T>> GetChildren()
         {
-            var children = new List<Tree<T>>();
-            var child = LeftChild;
+            List<Tree<T>> children = new List<Tree<T>>();
+            Tree<T>? child = LeftChild;
 
             while (child != null)
             {
@@ -71,6 +71,7 @@ namespace Tree
                         currentChild.RightSibling = nodeToRemove.RightSibling;
                         return;
                     }
+
                     currentChild = currentChild.RightSibling;
                 }
             }

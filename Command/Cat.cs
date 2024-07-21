@@ -32,33 +32,37 @@ namespace VirtualTerminal.Command
                     parentPath = absolutePath.Replace('/' + fileName, "");
                     parentFile = VT.fileSystem.FindFile(parentPath, VT.root);
 
-                    if(parentFile == null){
+                    if (parentFile == null)
+                    {
                         Console.WriteLine(ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(arg)));
                         return;
                     }
-                        
+
                     permission = VT.fileSystem.CheckFilePermission(VT.USER, parentFile, VT.root);
 
-                    if(!permission[0] || !permission[1] || !permission[2])
+                    if (!permission[0] || !permission[1] || !permission[2])
                     {
-                        Console.WriteLine(ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(arg)));
+                        Console.WriteLine(ErrorMessage.PermissionDenied(argv[0],
+                            ErrorMessage.DefaultErrorComment(arg)));
                         return;
                     }
 
-                    if(parentFile.Data.FileType != FileType.D){
+                    if (parentFile.Data.FileType != FileType.D)
+                    {
                         Console.WriteLine(ErrorMessage.NotD(argv[0], ErrorMessage.DefaultErrorComment(arg)));
                         return;
                     }
 
                     Console.WriteLine($"파일 찾기 실패: {fileName}. 새로운 파일 만들기. 내용을 입력해주십시오. (점(.)만 찍고 엔터 치면 입력 종료):");
                     string content = VT.ReadMultiLineInput();
-                    VT.fileSystem.CreateFile(parentPath, new FileNode(fileName, VT.USER, 0b110100, FileType.F, content), VT.root);
+                    VT.fileSystem.CreateFile(parentPath, new FileNode(fileName, VT.USER, 0b110100, FileType.F, content),
+                        VT.root);
                     return;
                 }
 
                 permission = VT.fileSystem.CheckFilePermission(VT.USER, file, VT.root);
 
-                if(!permission[0])
+                if (!permission[0])
                 {
                     Console.WriteLine(ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(arg)));
                     return;
@@ -73,7 +77,7 @@ namespace VirtualTerminal.Command
                 Console.WriteLine(file.Data.Content);
                 return;
             }
-            
+
             string? line;
             while ((line = Console.ReadLine()) != ".")
             {
@@ -106,10 +110,8 @@ namespace VirtualTerminal.Command
                        "       cat -f > file.txt\n" +
                        "       (-f를 이용해 파일 덮어쓰기 가능)\n";
             }
-            else
-            {
-                return "cat - 파일 내용 출력";
-            }
+
+            return "cat - 파일 내용 출력";
         }
     }
 }

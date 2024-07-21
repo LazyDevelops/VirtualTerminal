@@ -55,13 +55,11 @@ bool RemoveFile("상대 주소 or 절대 주소")
 Tree<FileSystemNode> FindFile("상대 주소 or 절대 주소")
 ```
 
-
 상대 주소 예시  
 ./ : 현제 디렉터리  
 예)  
 "pwd는 /home/user라고 가정"  
 ./Hello.sh = Hello.sh = /home/user/Hello.sh
-
 
 ../ : 이전 디렉터리  
 예)  
@@ -69,13 +67,13 @@ Tree<FileSystemNode> FindFile("상대 주소 or 절대 주소")
 ../ = /home  
 ../../ = /
 
-
 ~/ = home 디렉터리  
 예)  
 "pwd는 /home라고 가정"  
 ./user = /home/user = ~
 
 ## TODO
+
 - 경로 스택으로 관리하게 전부 변경하기
 
 cp 명령어 만들고  
@@ -111,6 +109,7 @@ logout 명령어도 목록에 추가하기
 err메세지 따로 분리
 
 # 추가 명령어
+
     - whoami
     - cp
     - mv
@@ -118,8 +117,8 @@ err메세지 따로 분리
     - chmod
 
 # 추가 고려중
-    - wc
 
+    - wc
 
 입출력 제지정자 추가 고려 <, >
 
@@ -130,7 +129,7 @@ err메세지 따로 분리
 
 지금 cat에 파일 없으면  
 자동으로 파일 생성하는  
-기능 대신  
+기능 대신
 
 cat > F
 
@@ -140,6 +139,7 @@ cat > F
 gedit 고려
 
 # 예상 명령어 사용 방법 작성 양식
+
     - cat [옵션] 파일명*  
     - cd [옵션] 경로*  
     - chmod [옵션] 권한* 파일명*  
@@ -162,6 +162,7 @@ gedit 고려
 []는 옵션
 
 # 기본 명력어 목록
+
     - chmod
     - clear
     - cp*
@@ -179,12 +180,14 @@ gedit 고려
     - whoami
 
 # 게임 조작 명령어
+
     - go
     - get
     - unlock
     - mappin
 
 # 구현중 or 구현 완료된 명령어
+
     - chmod
     - clear
     - date
@@ -205,7 +208,7 @@ string값을 반환하고 그걸 VirtualTerminal에서
 출력하게 코드 변경
 
 옵션 검사 코드 수정 필요  
-(없는 옵션까지 받고 있음) 
+(없는 옵션까지 받고 있음)
 
 Ctrl + D = EOF
 Ctrl + C = 강제 종료

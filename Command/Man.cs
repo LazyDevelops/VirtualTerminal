@@ -6,12 +6,13 @@ namespace VirtualTerminal.Command
     {
         public void Execute(int argc, string[] argv, VirtualTerminal VT)
         {
-            if(argc < 2){
+            if (argc < 2)
+            {
                 Console.WriteLine(ErrorMessage.ArgLack(argv[0]));
                 return;
             }
 
-            if (VT.commandMap.TryGetValue(argv[1], out var action))
+            if (VT.commandMap.TryGetValue(argv[1], out VirtualTerminal.ICommand? action))
             {
                 Console.Write(action.Description(true));
             }

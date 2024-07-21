@@ -8,7 +8,8 @@ namespace VirtualTerminal.Command
     {
         public void Execute(int argc, string[] argv, VirtualTerminal VT)
         {
-            if(argc < 2){
+            if (argc < 2)
+            {
                 VT.pwdNode = VT.homeNode;
                 VT.PWD = VT.HOME;
                 return;
@@ -26,7 +27,7 @@ namespace VirtualTerminal.Command
                 }
 
                 absolutePath = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
-                    
+
                 file = VT.fileSystem.FindFile(absolutePath, VT.root);
 
                 if (file == null)
@@ -37,8 +38,8 @@ namespace VirtualTerminal.Command
                 }
 
                 permission = VT.fileSystem.CheckFilePermission(VT.USER, file, VT.root);
-                    
-                if(!permission[0] || !permission[2])
+
+                if (!permission[0] || !permission[2])
                 {
                     Console.Write("bash: ");
                     Console.WriteLine(ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(arg)));

@@ -1,4 +1,5 @@
-namespace VirtualTerminal.Error{
+namespace VirtualTerminal.Error
+{
     public class ErrorMessage
     {
         public static string NoSuchForD(string command, string comment)
@@ -26,32 +27,39 @@ namespace VirtualTerminal.Error{
             return $"{command}:{comment}: 파일이 이미 있습니다";
         }
 
-        public static string DNotEmpty(string command, string comment){
+        public static string DNotEmpty(string command, string comment)
+        {
             return $"{command}:{comment}: 디렉터리가 비어어있지 않습니다";
         }
 
-        public static string CmdNotFound(string command, string comment){
+        public static string CmdNotFound(string command, string comment)
+        {
             return $"{command}:{comment}: 명렁어를 찾을 수 없습니다";
         }
 
-        public static string CmdNotFound(string comment){
+        public static string CmdNotFound(string comment)
+        {
             return $"명렁어를 찾을 수 없습니다: {comment}";
         }
 
-        public static string InvalidMode(string command, string comment){
+        public static string InvalidMode(string command, string comment)
+        {
             return $"{command}:{comment}: 잘못된 모드 입니다";
         }
 
-        public static string MissingOperandAfter(string command, string comment){
+        public static string MissingOperandAfter(string command, string comment)
+        {
             return $"{command}: '{comment}' 뒤에 파일 경로가 빠짐";
         }
 
-        public static string ArgLack(string command){
-            return $"{command}: 인수 부족\n"+
+        public static string ArgLack(string command)
+        {
+            return $"{command}: 인수 부족\n" +
                    $"자세한 사용법은 \"man {command}\"를 입력하십시오.";
         }
 
-        public static string DefaultErrorComment(string input){
+        public static string DefaultErrorComment(string input)
+        {
             return $" {input}";
         }
     }

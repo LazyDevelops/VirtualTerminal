@@ -4,20 +4,6 @@ namespace VirtualTerminal.FileSystem
 {
     public class FileSystem
     {
-        public struct FileNode(string name, string UID, byte permission, FileType fileType, string? content = null)
-        {
-            public string Name { get; set; } = name;
-            public byte Permission { get; set; } = permission;
-            public string UID { get; set; } = UID;
-            public FileType FileType { get; set; } = fileType;
-            public string? Content { get; set; } = content;
-
-            public override string ToString()
-            {
-                return Name;
-            }
-        }
-
         public enum FileType
         {
             F = '-', // 일반 파일
@@ -62,13 +48,13 @@ namespace VirtualTerminal.FileSystem
                 return 3;
             }
 
-            if(currentNode.LeftChild != null){
+            if (currentNode.LeftChild != null)
+            {
                 RemoveAllChildren(currentNode);
             }
-            
+
             parents.RemoveChildNode(currentNode);
             return 0;
-
         }
 
         private void RemoveAllChildren(Tree<FileNode> node)
@@ -82,11 +68,11 @@ namespace VirtualTerminal.FileSystem
 
         public Tree<FileNode>? FindFile(string? path, Tree<FileNode> root)
         {
-            if(path == null)
+            if (path == null)
             {
                 return null;
             }
-            
+
             Tree<FileNode> currentNode = root;
             List<string> files = [];
             string? fileName;
@@ -100,19 +86,17 @@ namespace VirtualTerminal.FileSystem
             {
                 return root;
             }
-            else
-            {
-                foreach (string file in files)
-                {
-                    foreach (Tree<FileNode> child in currentNode.GetChildren().Where(child => child.Data.Name == file))
-                    {
-                        currentNode = child;
-                        break;
-                    }
-                }
 
-                return currentNode.Data.Name != fileName ? null : currentNode;
+            foreach (string file in files)
+            {
+                foreach (Tree<FileNode> child in currentNode.GetChildren().Where(child => child.Data.Name == file))
+                {
+                    currentNode = child;
+                    break;
+                }
             }
+
+            return currentNode.Data.Name != fileName ? null : currentNode;
         }
 
         public string ConvertPermissionsToString(short permissions)
@@ -133,7 +117,7 @@ namespace VirtualTerminal.FileSystem
             bool[] permissions = [false, false, false, false, false, false];
             int min, max;
 
-            if(curFile?.Parents != null)
+            if (curFile?.Parents != null)
             {
                 curFile = curFile?.Parents;
                 min = curFile?.Data.UID == username ? 3 : 0;
@@ -146,18 +130,18 @@ namespace VirtualTerminal.FileSystem
                 }
             }
 
-            while(curFile != null && curFile != root)
+            while (curFile != null && curFile != root)
             {
                 min = curFile?.Data.UID == username ? 3 : 0;
                 max = curFile?.Data.UID == username ? 5 : 2;
 
-                while(min <= max)
+                while (min <= max)
                 {
                     permissions[max - min] = (curFile?.Data.Permission & (1 << min)) != 0;
                     min++;
                 }
 
-                if(!permissions[2] && !permissions[0])
+                if (!permissions[2] && !permissions[0])
                 {
                     return permissions;
                 }
@@ -169,7 +153,7 @@ namespace VirtualTerminal.FileSystem
             max = file.Data.UID == username ? 5 : 2;
 
 
-            while(min <= max)
+            while (min <= max)
             {
                 permissions[max - min] = (file.Data.Permission & (1 << min)) != 0;
                 min++;
@@ -252,6 +236,20 @@ namespace VirtualTerminal.FileSystem
             List<string> result = [..stack];
             result.Reverse();
             return "/" + string.Join("/", result);
+        }
+
+        public struct FileNode(string name, string UID, byte permission, FileType fileType, string? content = null)
+        {
+            public string Name { get; set; } = name;
+            public byte Permission { get; set; } = permission;
+            public string UID { get; set; } = UID;
+            public FileType FileType { get; set; } = fileType;
+            public string? Content { get; set; } = content;
+
+            public override string ToString()
+            {
+                return Name;
+            }
         }
     }
 }

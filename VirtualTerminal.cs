@@ -7,18 +7,19 @@ namespace VirtualTerminal
 {
     public class VirtualTerminal
     {
-        internal FileSystem.FileSystem fileSystem = new();
-        internal Tree<FileNode> root;
-        internal Tree<FileNode>? pwdNode;
-        internal Tree<FileNode>? homeNode;
+        internal readonly Dictionary<string, ICommand> commandMap;
 
-        internal string PWD;
+        internal FileSystem.FileSystem fileSystem = new();
+
         // private List<string> PWD;
         // private List<FileNode> PWD;
         internal string HOME;
-        internal string USER;
+        internal Tree<FileNode>? homeNode;
 
-        internal readonly Dictionary<string, ICommand> commandMap;
+        internal string PWD;
+        internal Tree<FileNode>? pwdNode;
+        internal Tree<FileNode> root;
+        internal string USER;
 
         public VirtualTerminal()
         {
@@ -33,7 +34,8 @@ namespace VirtualTerminal
             homeNode = fileSystem.CreateFile("/home", new FileNode(USER, USER, 0b111101, FileType.D), root);
 
             fileSystem.CreateFile(HOME, new FileNode("Item", "root", 0b111101, FileType.D), root);
-            fileSystem.CreateFile(HOME, new FileNode($"Hello_{USER}.txt", "root", 0b111111, FileType.F, $"Hello, {USER}!"), root);
+            fileSystem.CreateFile(HOME,
+                new FileNode($"Hello_{USER}.txt", "root", 0b111111, FileType.F, $"Hello, {USER}!"), root);
 
             pwdNode = fileSystem.FindFile(PWD, root);
 
@@ -76,12 +78,6 @@ namespace VirtualTerminal
             }
         }
 
-        internal interface ICommand
-        {
-            void Execute(int argc, string[] argv, VirtualTerminal VT);
-            string Description(bool detail);
-        }
-
         private void DisplayPrompt()
         {
             WriteColoredText("\x1b[1muser\x1b[22m", ConsoleColor.Green);
@@ -120,6 +116,7 @@ namespace VirtualTerminal
             {
                 content += line + Environment.NewLine;
             }
+
             return content.TrimEnd('\n');
         }
 
@@ -127,7 +124,7 @@ namespace VirtualTerminal
         {
             foreach (string arg in argv)
             {
-                if(arg.Contains("--"))
+                if (arg.Contains("--"))
                 {
                     option[arg.Replace("--", "")] = true;
                 }
@@ -146,6 +143,12 @@ namespace VirtualTerminal
             Console.ForegroundColor = color;
             Console.Write(text);
             Console.ResetColor();
+        }
+
+        internal interface ICommand
+        {
+            void Execute(int argc, string[] argv, VirtualTerminal VT);
+            string Description(bool detail);
         }
     }
 }
