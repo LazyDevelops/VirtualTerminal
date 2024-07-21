@@ -5,7 +5,6 @@ namespace VirtualTerminal.Command
         public void Execute(int argc, string[] argv, VirtualTerminal VT)
         {
             DateTime currentTime = DateTime.Now;
-
             Console.WriteLine(currentTime.ToString("yyyy. MM. dd. (ddd) HH:mm:ss"));
         }
 

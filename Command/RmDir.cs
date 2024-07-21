@@ -28,7 +28,7 @@ namespace VirtualTerminal.Command
 
                 file = VT.fileSystem.FindFile(arg, VT.root);
 
-                if (file == null || file.Parents == null)
+                if (file?.Parents == null)
                 {
                     Console.WriteLine(ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(arg)));
                     return;

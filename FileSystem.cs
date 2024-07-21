@@ -73,7 +73,7 @@ namespace VirtualTerminal.FileSystem
 
         private void RemoveAllChildren(Tree<FileNode> node)
         {
-            foreach (var child in node.GetChildren().ToList())
+            foreach (Tree<FileNode> child in node.GetChildren().ToList())
             {
                 RemoveAllChildren(child); // 재귀적으로 하위 노드 삭제
                 node.RemoveChildNode(child);
@@ -88,7 +88,7 @@ namespace VirtualTerminal.FileSystem
             }
             
             Tree<FileNode> currentNode = root;
-            var files = new List<string>();
+            List<string> files = [];
             string? fileName;
 
             path = path.TrimStart('/');
@@ -104,13 +104,8 @@ namespace VirtualTerminal.FileSystem
             {
                 foreach (string file in files)
                 {
-                    foreach (Tree<FileNode> child in currentNode.GetChildren())
+                    foreach (Tree<FileNode> child in currentNode.GetChildren().Where(child => child.Data.Name == file))
                     {
-                        if (child.Data.Name != file)
-                        {
-                            continue;
-                        }
-
                         currentNode = child;
                         break;
                     }
@@ -135,7 +130,7 @@ namespace VirtualTerminal.FileSystem
         public bool[] CheckFilePermission(string username, Tree<FileNode> file, Tree<FileNode> root)
         {
             Tree<FileNode>? curFile = file.Parents;
-            var permissions = new bool[6] { false, false, false, false, false, false };
+            bool[] permissions = [false, false, false, false, false, false];
             int min, max;
 
             if(curFile?.Parents != null)
@@ -227,10 +222,10 @@ namespace VirtualTerminal.FileSystem
 
         private string NormalizePath(string path)
         {
-            var parts = path.Split('/', StringSplitOptions.RemoveEmptyEntries);
-            var stack = new Stack<string>();
+            string[] parts = path.Split('/', StringSplitOptions.RemoveEmptyEntries);
+            Stack<string> stack = new();
 
-            foreach (var part in parts)
+            foreach (string part in parts)
             {
                 switch (part)
                 {
@@ -254,7 +249,7 @@ namespace VirtualTerminal.FileSystem
                 }
             }
 
-            var result = new List<string>(stack);
+            List<string> result = [..stack];
             result.Reverse();
             return "/" + string.Join("/", result);
         }

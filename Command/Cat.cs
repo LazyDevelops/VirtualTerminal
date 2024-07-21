@@ -23,7 +23,7 @@ namespace VirtualTerminal.Command
                 }
 
                 absolutePath = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
-                fileName = absolutePath.Split('/')[^1]; // path.Length - 1
+                fileName = absolutePath.Split('/')[^1];
 
                 file = VT.fileSystem.FindFile(absolutePath, VT.root);
 

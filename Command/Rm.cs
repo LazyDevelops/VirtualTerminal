@@ -14,7 +14,6 @@ namespace VirtualTerminal.Command
             }
 
             Tree<FileNode>? file;
-            string[]? splitPath;
             string? absolutePath;
             bool[] permission;
 
@@ -32,7 +31,7 @@ namespace VirtualTerminal.Command
                 }
 
                 absolutePath = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
-                splitPath = absolutePath.Split('/');
+                absolutePath.Split('/');
 
                 file = VT.fileSystem.FindFile(absolutePath, VT.root);
 

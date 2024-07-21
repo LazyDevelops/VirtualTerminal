@@ -14,10 +14,10 @@ namespace VirtualTerminal.Command
                 return;
             }
 
-            var file = new Tree<FileNode>?[2];
-            var tempFile = new List<Tree<FileNode>?>();
+            Tree<FileNode>?[] file = new Tree<FileNode>?[2];
+            List<Tree<FileNode>?> tempFile = [];
             byte fileCounter = 0;
-            var absolutePath = new string?[2];
+            string?[] absolutePath = new string?[2];
             string? fileName;
             bool[] permission;
 

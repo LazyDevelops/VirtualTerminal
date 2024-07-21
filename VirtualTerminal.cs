@@ -94,20 +94,15 @@ namespace VirtualTerminal
         {
             string[] argv = command.Split(' ').Where(arg => !string.IsNullOrWhiteSpace(arg)).ToArray();
 
-            foreach (string arg in argv)
+            if (argv.Any(arg => arg == "--help"))
             {
-                if (arg != "--help")
-                {
-                    continue;
-                }
-
-                var manArgs = new string[] { "man", argv[0] };
-                commandMap.TryGetValue(manArgs[0], out var man);
+                string[] manArgs = ["man", argv[0]];
+                commandMap.TryGetValue(manArgs[0], out ICommand? man);
                 man?.Execute(manArgs.Length, manArgs, this);
                 return;
             }
 
-            if (commandMap.TryGetValue(argv[0], out var action))
+            if (commandMap.TryGetValue(argv[0], out ICommand? action))
             {
                 action.Execute(argv.Length, argv, this);
             }
@@ -138,12 +133,9 @@ namespace VirtualTerminal
                 }
                 else if (arg.Contains('-'))
                 {
-                    foreach (char c in arg)
+                    foreach (char c in arg.Where(c => c != '-'))
                     {
-                        if (c != '-')
-                        {
-                            option[c.ToString()] = true;
-                        }
+                        option[c.ToString()] = true;
                     }
                 }
             }
