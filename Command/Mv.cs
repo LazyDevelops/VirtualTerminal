@@ -39,7 +39,7 @@ namespace VirtualTerminal.Command
 
                     if(fileCounter == 0)
                     {
-
+                        
                     }
                     else
                     {

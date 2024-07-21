@@ -1,3 +1,4 @@
+using System.Security.Principal;
 using Tree;
 using VirtualTerminal.Error;
 using static VirtualTerminal.FileSystem.FileSystem;
@@ -14,6 +15,7 @@ namespace VirtualTerminal.Command
             }
 
             var file = new Tree<FileNode>?[2];
+            var tempFile = new List<Tree<FileNode>?>();
             byte fileCounter = 0;
             var absolutePath = new string?[2];
             string? fileName;
@@ -39,11 +41,13 @@ namespace VirtualTerminal.Command
 
                     if(fileCounter == 0)
                     {
-
+                        file[fileCounter] = VT.fileSystem.FindFile(absolutePath[fileCounter], VT.root);
                     }
                     else
                     {
-
+                        fileName = absolutePath[fileCounter]?.Split('/')[^1];
+                        absolutePath[fileCounter] = absolutePath[fileCounter]?.Replace('/' + fileName, "");
+                        file[fileCounter] = VT.fileSystem.FindFile(absolutePath[fileCounter], VT.root);
                     }
 
                     fileCounter++;

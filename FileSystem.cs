@@ -1,4 +1,4 @@
-using Tree;
+﻿using Tree;
 
 namespace VirtualTerminal.FileSystem
 {
@@ -78,8 +78,13 @@ namespace VirtualTerminal.FileSystem
             }
         }
 
-        public Tree<FileNode>? FindFile(string path, Tree<FileNode> root)
+        public Tree<FileNode>? FindFile(string? path, Tree<FileNode> root)
         {
+            if(path == null)
+            {
+                return null;
+            }
+            
             Tree<FileNode> currentNode = root;
             var files = new List<string>();
             string? fileName;
