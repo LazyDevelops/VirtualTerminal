@@ -240,5 +240,4 @@ dotnet_diagnostic.IDE0251.severity = none
 dotnet_diagnostic.IDE0044.severity = none
 
 # static 경고 비활성화
-[*.{cs,vb}]
 dotnet_diagnostic.CA1822.severity = none
