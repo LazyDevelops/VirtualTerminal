@@ -163,13 +163,8 @@ namespace VirtualTerminal.FileSystem
         }
 
         // path stack이나 list로 수정 고려
-        public string GetAbsolutePath(string path, string HomeDirectory, string CurrentDirectory)
+        public string GetAbsolutePath(string path, string homeDirectory, string currentDirectory)
         {
-            if (string.IsNullOrEmpty(path))
-            {
-                throw new ArgumentException("Path cannot be null or empty.", nameof(path));
-            }
-
             if (path.StartsWith('/'))
             {
                 // 절대 경로인 경우
@@ -179,29 +174,29 @@ namespace VirtualTerminal.FileSystem
             if (path.StartsWith("~/"))
             {
                 // 홈 디렉터리(~)로 시작하는 경우
-                return NormalizePath(HomeDirectory + "/" + path.Remove(0, 2));
+                return NormalizePath(homeDirectory + "/" + path.Remove(0, 2));
             }
 
             if (path == "~")
             {
-                return HomeDirectory;
+                return homeDirectory;
             }
 
             if (path == ".")
             {
                 // 현재 디렉터리를 나타내는 경우
-                return CurrentDirectory;
+                return currentDirectory;
             }
 
             if (path == "..")
             {
                 // 부모 디렉터리를 나타내는 경우
-                int lastSlashIndex = CurrentDirectory.LastIndexOf('/');
-                return lastSlashIndex > 0 ? CurrentDirectory.Remove(lastSlashIndex) : "/";
+                int lastSlashIndex = currentDirectory.LastIndexOf('/');
+                return lastSlashIndex > 0 ? currentDirectory.Remove(lastSlashIndex) : "/";
             }
 
             // 파일 이름만 주어진 경우, 현재 디렉터리를 기준으로 절대 경로 생성
-            return NormalizePath(CurrentDirectory + "/" + path);
+            return NormalizePath(currentDirectory + "/" + path);
         }
 
         private string NormalizePath(string path)
