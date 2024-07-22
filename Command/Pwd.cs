@@ -9,7 +9,7 @@
 
         public string Description(bool detail)
         {
-            return "pwd - 현제 작업중인 디렉터리의 경로 출력";
+            return "pwd - 현제 작업중인 디렉터리의 경로 출력\n";
         }
     }
 }

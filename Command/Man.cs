@@ -24,7 +24,7 @@ namespace VirtualTerminal.Command
 
         public string Description(bool detail)
         {
-            return "man - 명령어에 대한 자세한 설명 출력";
+            return "man - 명령어에 대한 자세한 설명 출력\n";
         }
     }
 }

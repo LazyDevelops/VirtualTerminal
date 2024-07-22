@@ -50,7 +50,7 @@ namespace VirtualTerminal.Command
 
         public string Description(bool detail)
         {
-            return "chmod - 소유하고 있는 파일의 권한을 변경";
+            return "chmod - 소유하고 있는 파일의 권한을 변경\n";
         }
     }
 }

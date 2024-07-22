@@ -60,7 +60,7 @@ namespace VirtualTerminal.Command
 
         public string Description(bool detail)
         {
-            return "cd - 현제 디렉터리 위치 변경";
+            return "cd - 현제 디렉터리 위치 변경\n";
         }
     }
 }

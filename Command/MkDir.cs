@@ -65,7 +65,7 @@ namespace VirtualTerminal.Command
 
         public string Description(bool detail)
         {
-            return "mkdir - 디렉터리 생성";
+            return "mkdir - 디렉터리 생성\n";
         }
     }
 }

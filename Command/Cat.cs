@@ -110,7 +110,7 @@ namespace VirtualTerminal.Command
                        "       (-f를 이용해 파일 덮어쓰기 가능)\n";
             }
 
-            return "cat - 파일 내용 출력";
+            return "cat - 파일 내용 출력\n";
         }
     }
 }

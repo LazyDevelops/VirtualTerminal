@@ -9,7 +9,7 @@
 
         public string Description(bool detail)
         {
-            return "exit - 터미널 종료";
+            return "exit - 터미널 종료\n";
         }
     }
 }

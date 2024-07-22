@@ -10,7 +10,7 @@ namespace VirtualTerminal.Command
 
         public string Description(bool detail)
         {
-            return "date - 현제 날짜 및 시간 출력";
+            return "date - 현제 날짜 및 시간 출력\n";
         }
     }
 }
