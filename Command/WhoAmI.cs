@@ -2,7 +2,7 @@ namespace VirtualTerminal.Command
 {
     public class WhoAmICommand : VirtualTerminal.ICommand
     {
-        public void Execute(int argc, string[] argv, VirtualTerminal VT)
+        public void Execute(int argc, in string[] argv, VirtualTerminal VT)
         {
             Console.WriteLine(VT.USER);
         }
