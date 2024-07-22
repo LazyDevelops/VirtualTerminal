@@ -36,7 +36,8 @@ namespace VirtualTerminal
             HomeNode = FileSystem.CreateFile("/home", new FileNode(USER, USER, 0b111101, FileType.D), Root);
 
             FileSystem.CreateFile(HOME, new FileNode("Item", "root", 0b111101, FileType.D), Root);
-            FileSystem.CreateFile(HOME, new FileNode($"Hello_{USER}.txt", "root", 0b111111, FileType.F, $"Hello, {USER}!"), Root);
+            FileSystem.CreateFile(HOME,
+                new FileNode($"Hello_{USER}.txt", "root", 0b111111, FileType.F, $"Hello, {USER}!"), Root);
 
             PwdNode = FileSystem.FindFile(PWD, Root);
 
@@ -95,13 +96,13 @@ namespace VirtualTerminal
             {
                 string[] manArgs = ["man", argv[0]];
                 CommandMap.TryGetValue(manArgs[0], out ICommand? man);
-                man?.Execute(manArgs.Length, in manArgs, this);
+                man?.Execute(manArgs.Length, manArgs, this);
                 return;
             }
 
             if (CommandMap.TryGetValue(argv[0], out ICommand? action))
             {
-                action.Execute(argv.Length, in argv, this);
+                action.Execute(argv.Length, argv, this);
             }
             else
             {
@@ -145,7 +146,7 @@ namespace VirtualTerminal
 
         internal interface ICommand
         {
-            void Execute(int argc, in string[] argv, VirtualTerminal VT);
+            void Execute(int argc, string[] argv, VirtualTerminal VT);
             string Description(bool detail);
         }
     }
