@@ -27,7 +27,7 @@ namespace VirtualTerminal.Command
                     continue;
                 }
 
-                absolutePath = VT.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
+                absolutePath = FileSystem.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
                 fileName = absolutePath.Split('/')[^1];
                 parentPath = absolutePath.Replace('/' + fileName, "");
 
@@ -39,7 +39,7 @@ namespace VirtualTerminal.Command
                     return;
                 }
 
-                permission = VT.FileSystem.CheckFilePermission(VT.USER, parentFile, VT.Root);
+                permission = FileSystem.FileSystem.CheckFilePermission(VT.USER, parentFile, VT.Root);
 
                 if (!permission[0] || !permission[1] || !permission[2])
                 {

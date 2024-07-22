@@ -29,7 +29,7 @@ namespace VirtualTerminal.Command
                     continue;
                 }
 
-                absolutePath = VT.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
+                absolutePath = FileSystem.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
                 file = VT.FileSystem.FindFile(absolutePath, VT.Root);
 
                 if (file == null)

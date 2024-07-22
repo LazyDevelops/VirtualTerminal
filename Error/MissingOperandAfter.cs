@@ -1,6 +1,6 @@
 ﻿namespace VirtualTerminal.Error
 {
-    public partial class ErrorMessage
+    public static partial class ErrorMessage
     {
         public static string MissingOperandAfter(string command, string comment)
         {

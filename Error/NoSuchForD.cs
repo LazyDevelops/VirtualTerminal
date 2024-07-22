@@ -1,6 +1,6 @@
 ﻿namespace VirtualTerminal.Error
 {
-    public partial class ErrorMessage
+    public static partial class ErrorMessage
     {
         public static string NoSuchForD(string command, string comment)
         {

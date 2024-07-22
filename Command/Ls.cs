@@ -15,7 +15,7 @@ namespace VirtualTerminal.Command
 
             Dictionary<string, bool> options = new() { { "l", false } };
 
-            VT.OptionCheck(ref options, in argv);
+            VirtualTerminal.OptionCheck(ref options, in argv);
 
             fileChildren = VT.PwdNode?.GetChildren();
 
@@ -26,7 +26,7 @@ namespace VirtualTerminal.Command
                     continue;
                 }
 
-                absolutePath = VT.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
+                absolutePath = FileSystem.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
 
                 file = VT.FileSystem.FindFile(absolutePath, VT.Root);
 
@@ -36,7 +36,7 @@ namespace VirtualTerminal.Command
                     return;
                 }
 
-                permission = VT.FileSystem.CheckFilePermission(VT.USER, file, VT.Root);
+                permission = FileSystem.FileSystem.CheckFilePermission(VT.USER, file, VT.Root);
 
                 if (!permission[0])
                 {
@@ -62,14 +62,14 @@ namespace VirtualTerminal.Command
             {
                 if (options["l"])
                 {
-                    string permissions = VT.FileSystem.PermissionsToString(fileChild.Data.Permission);
+                    string permissions = FileSystem.FileSystem.PermissionsToString(fileChild.Data.Permission);
                     Console.Write($"{Convert.ToChar(fileChild.Data.FileType)}{permissions} {fileChild.Data.UID} ");
                 }
 
 
                 if (fileChild?.Data.FileType == FileType.D)
                 {
-                    VT.WriteColoredText($"{fileChild?.Data.Name}", ConsoleColor.Blue);
+                    VirtualTerminal.WriteColoredText($"{fileChild?.Data.Name}", ConsoleColor.Blue);
                 }
                 else
                 {

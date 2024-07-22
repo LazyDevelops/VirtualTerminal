@@ -23,7 +23,7 @@ namespace VirtualTerminal.Command
 
             Dictionary<string, bool> options = new() { { "r", false }, { "f", false } };
 
-            VT.OptionCheck(ref options, in argv);
+            VirtualTerminal.OptionCheck(ref options, in argv);
 
             foreach (string arg in argv)
             {
@@ -38,7 +38,7 @@ namespace VirtualTerminal.Command
                     return;
                 }
 
-                absolutePath[fileCounter] = VT.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
+                absolutePath[fileCounter] = FileSystem.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
 
                 if (fileCounter == 0)
                 {

@@ -4,7 +4,7 @@ namespace VirtualTerminal.FileSystem
 {
     public partial class FileSystem
     {
-        private void RemoveAllChildren(Tree<FileNode> node)
+        private static void RemoveAllChildren(Tree<FileNode> node)
         {
             foreach (Tree<FileNode> child in node.GetChildren().ToList())
             {

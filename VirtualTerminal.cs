@@ -122,7 +122,7 @@ namespace VirtualTerminal
             return content.TrimEnd('\n');
         }
 
-        internal void OptionCheck(ref Dictionary<string, bool> option, in string[] argv)
+        internal static void OptionCheck(ref Dictionary<string, bool> option, in string[] argv)
         {
             foreach (string arg in argv)
             {
@@ -137,7 +137,7 @@ namespace VirtualTerminal
             }
         }
 
-        internal void WriteColoredText(string text, ConsoleColor color)
+        internal static void WriteColoredText(string text, ConsoleColor color)
         {
             Console.ForegroundColor = color;
             Console.Write(text);

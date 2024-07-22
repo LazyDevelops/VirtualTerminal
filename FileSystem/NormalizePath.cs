@@ -2,7 +2,7 @@
 {
     public partial class FileSystem
     {
-        private string NormalizePath(string path)
+        private static string NormalizePath(string path)
         {
             string[] parts = path.Split('/', StringSplitOptions.RemoveEmptyEntries);
             Stack<string> stack = new();

@@ -20,7 +20,7 @@ namespace VirtualTerminal.Command
 
             Dictionary<string, bool> options = new() { { "r", false } };
 
-            VT.OptionCheck(ref options, in argv);
+            VirtualTerminal.OptionCheck(ref options, in argv);
 
             foreach (string arg in argv)
             {
@@ -29,7 +29,7 @@ namespace VirtualTerminal.Command
                     continue;
                 }
 
-                absolutePath = VT.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
+                absolutePath = FileSystem.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
                 absolutePath.Split('/');
 
                 file = VT.FileSystem.FindFile(absolutePath, VT.Root);
@@ -40,7 +40,7 @@ namespace VirtualTerminal.Command
                     return;
                 }
 
-                permission = VT.FileSystem.CheckFilePermission(VT.USER, file, VT.Root);
+                permission = FileSystem.FileSystem.CheckFilePermission(VT.USER, file, VT.Root);
 
                 if (!permission[0] || !permission[1] || !permission[2])
                 {
