@@ -38,17 +38,17 @@ namespace VirtualTerminal.Command
                     return;
                 }
 
-                absolutePath[fileCounter] = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
+                absolutePath[fileCounter] = VT.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
 
                 if (fileCounter == 0)
                 {
-                    file[fileCounter] = VT.fileSystem.FindFile(absolutePath[fileCounter], VT.root);
+                    file[fileCounter] = VT.FileSystem.FindFile(absolutePath[fileCounter], VT.Root);
                 }
                 else
                 {
                     fileName = absolutePath[fileCounter]?.Split('/')[^1];
                     absolutePath[fileCounter] = absolutePath[fileCounter]?.Replace('/' + fileName, "");
-                    file[fileCounter] = VT.fileSystem.FindFile(absolutePath[fileCounter], VT.root);
+                    file[fileCounter] = VT.FileSystem.FindFile(absolutePath[fileCounter], VT.Root);
                 }
 
                 fileCounter++;

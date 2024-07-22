@@ -12,7 +12,7 @@ namespace VirtualTerminal.Command
                 return;
             }
 
-            if (VT.commandMap.TryGetValue(argv[1], out VirtualTerminal.ICommand? action))
+            if (VT.CommandMap.TryGetValue(argv[1], out VirtualTerminal.ICommand? action))
             {
                 Console.Write(action.Description(true));
             }

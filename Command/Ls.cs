@@ -17,7 +17,7 @@ namespace VirtualTerminal.Command
 
             VT.OptionCheck(ref options, in argv);
 
-            fileChildren = VT.pwdNode?.GetChildren();
+            fileChildren = VT.PwdNode?.GetChildren();
 
             foreach (string arg in argv)
             {
@@ -26,9 +26,9 @@ namespace VirtualTerminal.Command
                     continue;
                 }
 
-                absolutePath = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
+                absolutePath = VT.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
 
-                file = VT.fileSystem.FindFile(absolutePath, VT.root);
+                file = VT.FileSystem.FindFile(absolutePath, VT.Root);
 
                 if (file == null)
                 {
@@ -36,7 +36,7 @@ namespace VirtualTerminal.Command
                     return;
                 }
 
-                permission = VT.fileSystem.CheckFilePermission(VT.USER, file, VT.root);
+                permission = VT.FileSystem.CheckFilePermission(VT.USER, file, VT.Root);
 
                 if (!permission[0])
                 {
@@ -62,7 +62,7 @@ namespace VirtualTerminal.Command
             {
                 if (options["l"])
                 {
-                    string permissions = VT.fileSystem.PermissionsToString(fileChild.Data.Permission);
+                    string permissions = VT.FileSystem.PermissionsToString(fileChild.Data.Permission);
                     Console.Write($"{Convert.ToChar(fileChild.Data.FileType)}{permissions} {fileChild.Data.UID} ");
                 }
 

@@ -29,10 +29,10 @@ namespace VirtualTerminal.Command
                     continue;
                 }
 
-                absolutePath = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
+                absolutePath = VT.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
                 absolutePath.Split('/');
 
-                file = VT.fileSystem.FindFile(absolutePath, VT.root);
+                file = VT.FileSystem.FindFile(absolutePath, VT.Root);
 
                 if (file == null)
                 {
@@ -40,7 +40,7 @@ namespace VirtualTerminal.Command
                     return;
                 }
 
-                permission = VT.fileSystem.CheckFilePermission(VT.USER, file, VT.root);
+                permission = VT.FileSystem.CheckFilePermission(VT.USER, file, VT.Root);
 
                 if (!permission[0] || !permission[1] || !permission[2])
                 {
@@ -56,11 +56,11 @@ namespace VirtualTerminal.Command
 
                 if (options["r"])
                 {
-                    VT.fileSystem.RemoveFile(absolutePath, VT.root, 'r');
+                    VT.FileSystem.RemoveFile(absolutePath, VT.Root, 'r');
                     return;
                 }
 
-                VT.fileSystem.RemoveFile(absolutePath, VT.root, null);
+                VT.FileSystem.RemoveFile(absolutePath, VT.Root, null);
             }
         }
 

@@ -10,7 +10,7 @@ namespace VirtualTerminal.Command
         {
             if (argc < 2)
             {
-                VT.pwdNode = VT.homeNode;
+                VT.PwdNode = VT.HomeNode;
                 VT.PWD = VT.HOME;
                 return;
             }
@@ -26,9 +26,9 @@ namespace VirtualTerminal.Command
                     continue;
                 }
 
-                absolutePath = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
+                absolutePath = VT.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
 
-                file = VT.fileSystem.FindFile(absolutePath, VT.root);
+                file = VT.FileSystem.FindFile(absolutePath, VT.Root);
 
                 if (file == null)
                 {
@@ -37,7 +37,7 @@ namespace VirtualTerminal.Command
                     return;
                 }
 
-                permission = VT.fileSystem.CheckFilePermission(VT.USER, file, VT.root);
+                permission = VT.FileSystem.CheckFilePermission(VT.USER, file, VT.Root);
 
                 if (!permission[0] || !permission[2])
                 {
@@ -53,7 +53,7 @@ namespace VirtualTerminal.Command
                     return;
                 }
 
-                VT.pwdNode = file;
+                VT.PwdNode = file;
                 VT.PWD = absolutePath;
             }
         }

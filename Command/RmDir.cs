@@ -25,9 +25,9 @@ namespace VirtualTerminal.Command
                     continue;
                 }
 
-                absolutePath = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
+                absolutePath = VT.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
 
-                file = VT.fileSystem.FindFile(arg, VT.root);
+                file = VT.FileSystem.FindFile(arg, VT.Root);
 
                 if (file?.Parents == null)
                 {
@@ -35,7 +35,7 @@ namespace VirtualTerminal.Command
                     return;
                 }
 
-                permission = VT.fileSystem.CheckFilePermission(VT.USER, file.Parents, VT.root);
+                permission = VT.FileSystem.CheckFilePermission(VT.USER, file.Parents, VT.Root);
 
                 if (permission[0] || !permission[1] || !permission[2])
                 {
@@ -49,7 +49,7 @@ namespace VirtualTerminal.Command
                     return;
                 }
 
-                if (VT.fileSystem.RemoveFile(absolutePath, VT.root, null) != 0)
+                if (VT.FileSystem.RemoveFile(absolutePath, VT.Root, null) != 0)
                 {
                     Console.WriteLine(ErrorMessage.DNotEmpty(argv[0], ErrorMessage.DefaultErrorComment(arg)));
                     return;

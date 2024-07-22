@@ -22,15 +22,15 @@ namespace VirtualTerminal.Command
                     continue;
                 }
 
-                absolutePath = VT.fileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
+                absolutePath = VT.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
                 fileName = absolutePath.Split('/')[^1];
 
-                file = VT.fileSystem.FindFile(absolutePath, VT.root);
+                file = VT.FileSystem.FindFile(absolutePath, VT.Root);
 
                 if (file == null)
                 {
                     parentPath = absolutePath.Replace('/' + fileName, "");
-                    parentFile = VT.fileSystem.FindFile(parentPath, VT.root);
+                    parentFile = VT.FileSystem.FindFile(parentPath, VT.Root);
 
                     if (parentFile == null)
                     {
@@ -38,7 +38,7 @@ namespace VirtualTerminal.Command
                         return;
                     }
 
-                    permission = VT.fileSystem.CheckFilePermission(VT.USER, parentFile, VT.root);
+                    permission = VT.FileSystem.CheckFilePermission(VT.USER, parentFile, VT.Root);
 
                     if (!permission[0] || !permission[1] || !permission[2])
                     {
@@ -55,11 +55,11 @@ namespace VirtualTerminal.Command
 
                     Console.WriteLine($"파일 찾기 실패: {fileName}. 새로운 파일 만들기. 내용을 입력해주십시오. (점(.)만 찍고 엔터 치면 입력 종료):");
                     string content = VT.ReadMultiLineInput();
-                    VT.fileSystem.CreateFile(parentPath, new FileNode(fileName, VT.USER, 0b110100, FileType.F, content), VT.root);
+                    VT.FileSystem.CreateFile(parentPath, new FileNode(fileName, VT.USER, 0b110100, FileType.F, content), VT.Root);
                     return;
                 }
 
-                permission = VT.fileSystem.CheckFilePermission(VT.USER, file, VT.root);
+                permission = VT.FileSystem.CheckFilePermission(VT.USER, file, VT.Root);
 
                 if (!permission[0])
                 {

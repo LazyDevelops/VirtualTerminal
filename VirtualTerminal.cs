@@ -9,18 +9,18 @@ namespace VirtualTerminal
 {
     public class VirtualTerminal
     {
-        internal readonly Dictionary<string, ICommand> commandMap;
+        internal readonly Dictionary<string, ICommand> CommandMap;
 
-        internal FileSystem.FileSystem fileSystem = new();
+        internal FileSystem.FileSystem FileSystem = new();
 
         // private List<string> PWD;
         // private List<FileNode> PWD;
         internal string HOME;
-        internal Tree<FileNode>? homeNode;
+        internal Tree<FileNode>? HomeNode;
 
         internal string PWD;
-        internal Tree<FileNode>? pwdNode;
-        internal Tree<FileNode> root;
+        internal Tree<FileNode>? PwdNode;
+        internal Tree<FileNode> Root;
         internal string USER;
 
         public VirtualTerminal()
@@ -29,20 +29,20 @@ namespace VirtualTerminal
             PWD = $"/home/{USER}";
             HOME = $"/home/{USER}";
 
-            root = new Tree<FileNode>(new FileNode("/", "root", 0b111101, FileType.D));
-            fileSystem.CreateFile("/", new FileNode("home", "root", 0b111101, FileType.D), root);
-            fileSystem.CreateFile("/", new FileNode("root", "root", 0b111000, FileType.D), root);
+            Root = new Tree<FileNode>(new FileNode("/", "root", 0b111101, FileType.D));
+            FileSystem.CreateFile("/", new FileNode("home", "root", 0b111101, FileType.D), Root);
+            FileSystem.CreateFile("/", new FileNode("root", "root", 0b111000, FileType.D), Root);
 
-            homeNode = fileSystem.CreateFile("/home", new FileNode(USER, USER, 0b111101, FileType.D), root);
+            HomeNode = FileSystem.CreateFile("/home", new FileNode(USER, USER, 0b111101, FileType.D), Root);
 
-            fileSystem.CreateFile(HOME, new FileNode("Item", "root", 0b111101, FileType.D), root);
-            fileSystem.CreateFile(HOME,
-                new FileNode($"Hello_{USER}.txt", "root", 0b111111, FileType.F, $"Hello, {USER}!"), root);
+            FileSystem.CreateFile(HOME, new FileNode("Item", "root", 0b111101, FileType.D), Root);
+            FileSystem.CreateFile(HOME,
+                new FileNode($"Hello_{USER}.txt", "root", 0b111111, FileType.F, $"Hello, {USER}!"), Root);
 
-            pwdNode = fileSystem.FindFile(PWD, root);
+            PwdNode = FileSystem.FindFile(PWD, Root);
 
             // 명령어와 메서드를 매핑하는 사전 초기화
-            commandMap = new Dictionary<string, ICommand>
+            CommandMap = new Dictionary<string, ICommand>
             {
                 { "cat", new CatCommand() },
                 { "cd", new CdCommand() },
@@ -95,12 +95,12 @@ namespace VirtualTerminal
             if (argv.Any(arg => arg == "--help"))
             {
                 string[] manArgs = ["man", argv[0]];
-                commandMap.TryGetValue(manArgs[0], out ICommand? man);
+                CommandMap.TryGetValue(manArgs[0], out ICommand? man);
                 man?.Execute(manArgs.Length, manArgs, this);
                 return;
             }
 
-            if (commandMap.TryGetValue(argv[0], out ICommand? action))
+            if (CommandMap.TryGetValue(argv[0], out ICommand? action))
             {
                 action.Execute(argv.Length, argv, this);
             }
