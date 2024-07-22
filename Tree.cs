@@ -40,7 +40,7 @@ namespace Tree
 
         public List<Tree<T>> GetChildren()
         {
-            List<Tree<T>> children = new List<Tree<T>>();
+            List<Tree<T>> children = [];
             Tree<T>? child = LeftChild;
 
             while (child != null)
