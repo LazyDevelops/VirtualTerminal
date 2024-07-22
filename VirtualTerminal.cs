@@ -92,11 +92,9 @@ namespace VirtualTerminal
         {
             string[] argv = command.Split(' ').Where(arg => !string.IsNullOrWhiteSpace(arg)).ToArray();
 
-            if (argv.Any(arg => arg == "--help"))
+            if (argv.Skip(1).Any(arg => arg == "--help"))
             {
-                string[] manArgs = ["man", argv[0]];
-                CommandMap.TryGetValue(manArgs[0], out ICommand? man);
-                man?.Execute(manArgs.Length, manArgs, this);
+                new ManCommand().Execute(2, ["man", argv[0]], this);
                 return;
             }
 
