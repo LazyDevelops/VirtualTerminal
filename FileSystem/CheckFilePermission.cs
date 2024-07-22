@@ -12,7 +12,7 @@ namespace VirtualTerminal.FileSystem
 
             if (curFile?.Parents != null)
             {
-                curFile = curFile?.Parents;
+                curFile = curFile.Parents;
                 min = curFile?.Data.UID == username ? 3 : 0;
                 max = curFile?.Data.UID == username ? 5 : 2;
 
@@ -25,12 +25,12 @@ namespace VirtualTerminal.FileSystem
 
             while (curFile != null && curFile != root)
             {
-                min = curFile?.Data.UID == username ? 3 : 0;
-                max = curFile?.Data.UID == username ? 5 : 2;
+                min = curFile.Data.UID == username ? 3 : 0;
+                max = curFile.Data.UID == username ? 5 : 2;
 
                 while (min <= max)
                 {
-                    permissions[max - min] = (curFile?.Data.Permission & (1 << min)) != 0;
+                    permissions[max - min] = (curFile.Data.Permission & (1 << min)) != 0;
                     min++;
                 }
 
@@ -39,7 +39,7 @@ namespace VirtualTerminal.FileSystem
                     return permissions;
                 }
 
-                curFile = curFile?.Parents;
+                curFile = curFile.Parents;
             }
 
             min = file.Data.UID == username ? 3 : 0;
