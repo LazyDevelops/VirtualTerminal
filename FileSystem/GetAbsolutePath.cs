@@ -13,7 +13,7 @@
             if (path.StartsWith('~'))
             {
                 // 홈 디렉터리(~)로 시작하는 경우
-                return NormalizePath(homeDirectory + "/" + path.Remove(0, 1));
+                return NormalizePath(homeDirectory + path.Remove(0, 1));
             }
 
             // 파일 이름만 주어진 경우, 현재 디렉터리를 기준으로 절대 경로 생성
