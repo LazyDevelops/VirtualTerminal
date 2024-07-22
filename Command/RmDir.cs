@@ -35,7 +35,7 @@ namespace VirtualTerminal.Command
                     return;
                 }
 
-                permission = FileSystem.FileSystem.CheckFilePermission(VT.USER, file.Parents, VT.Root);
+                permission = FileSystem.FileSystem.CheckPermission(VT.USER, file.Parents, VT.Root);
 
                 if (permission[0] || !permission[1] || !permission[2])
                 {
