@@ -22,9 +22,9 @@ namespace VirtualTerminal.Command
                 return;
             }
 
-            foreach (string arg in argv)
+            foreach (string arg in argv.Skip(2))
             {
-                if (arg == argv[0] || arg == argv[1] || arg.Contains('-') || arg.Contains("--"))
+                if (arg.Contains('-') || arg.Contains("--"))
                 {
                     continue;
                 }

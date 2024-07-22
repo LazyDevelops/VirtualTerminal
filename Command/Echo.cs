@@ -4,12 +4,9 @@
     {
         public void Execute(int argc, string[] argv, VirtualTerminal VT)
         {
-            foreach (string arg in argv)
+            foreach (string arg in argv.Skip(1))
             {
-                if (arg != argv[0])
-                {
-                    Console.Write(arg + " ");
-                }
+                Console.Write(arg + " ");
             }
 
             Console.WriteLine();
