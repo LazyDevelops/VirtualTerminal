@@ -2,7 +2,7 @@
 {
     public class ClearCommand : VirtualTerminal.ICommand
     {
-        public void Execute(int argc, in string[] argv, VirtualTerminal VT)
+        public void Execute(int argc, string[] argv, VirtualTerminal VT)
         {
             Console.Clear();
         }
