@@ -94,7 +94,7 @@ namespace VirtualTerminal
 
             if (argv.Skip(1).Any(arg => arg == "--help"))
             {
-                new ManCommand().Execute(2, ["man", argv[0]], this);
+                CommandMap["man"].Execute(2, ["man", argv[0]], this);
                 return;
             }
 
