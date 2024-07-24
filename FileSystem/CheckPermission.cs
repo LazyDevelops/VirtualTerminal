@@ -45,7 +45,6 @@ namespace VirtualTerminal.FileSystem
             min = file.Data.UID == username ? 3 : 0;
             max = file.Data.UID == username ? 5 : 2;
 
-
             while (min <= max)
             {
                 permissions[max - min] = (file.Data.Permission & (1 << min)) != 0;

@@ -9,7 +9,12 @@ namespace VirtualTerminal.FileSystem
             Tree<FileNode>? current = FindFile(path, root);
             Tree<FileNode> newFile = new(entry);
 
-            current?.AppendChildNode(newFile);
+            if (current == null)
+            {
+                return null;
+            }
+
+            current.AppendChildNode(newFile);
 
             return newFile;
         }
