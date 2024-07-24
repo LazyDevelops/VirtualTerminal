@@ -62,7 +62,20 @@ namespace VirtualTerminal.Command
         {
             if (detail)
             {
-                return "cd - 현제 디렉터리 위치 변경\n";
+                return "\u001b[1m간략한 설명\x1b[22m\n" +
+                       "   cd - 현제 디렉터리 위치 변경\n\n" +
+                       "\u001b[1m사용법\u001b[22m\n" +
+                       "   cd [옵션] 폴더명\n\n" +
+                       "\u001b[1m설명\u001b[22m\n" +
+                       "   위에 사용법을 이용하여 디렉터리(폴더) 안에 들어갈 수 있습니다.\n" +
+                       "   (자세한 사용법은 예시 참조)\n\n" +
+                       "\u001b[1m옵션\u001b[22m\n" +
+                       "   (없음)\n\n" +
+                       "\u001b[1m예시\u001b[22m\n" +
+                       "   cd ..\n" +
+                       "   cd /home/user\n" +
+                       "   cd ~\n" +
+                       "   cd Item\n";
             }
 
             return "cd - 현제 디렉터리 위치 변경";
