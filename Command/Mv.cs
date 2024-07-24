@@ -49,7 +49,12 @@ namespace VirtualTerminal.Command
 
         public string Description(bool detail)
         {
-            return "mv - 파일이나 폴더 위치를 옮기거나 이름 제지정\n";
+            if (detail)
+            {
+                return "mv - 파일이나 폴더 위치를 옮기거나 이름 제지정\n";
+            }
+
+            return "mv - 파일이나 폴더 위치를 옮기거나 이름 제지정";
         }
     }
 }

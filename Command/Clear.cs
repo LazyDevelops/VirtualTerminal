@@ -9,7 +9,12 @@
 
         public string Description(bool detail)
         {
-            return "clear - 터미널 창 정리\n";
+            if (detail)
+            {
+                return "clear - 터미널 창 정리\n";
+            }
+
+            return "clear - 터미널 창 정리";
         }
     }
 }

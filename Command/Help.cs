@@ -15,7 +15,12 @@
 
         public string Description(bool detail)
         {
-            return "help - 모든 명령어의 간단한 사용방법 출력\n";
+            if (detail)
+            {
+                return "help - 모든 명령어의 간단한 사용방법 출력\n";
+            }
+
+            return "help - 모든 명령어의 간단한 사용방법 출력";
         }
     }
 }

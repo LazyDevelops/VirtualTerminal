@@ -14,7 +14,12 @@
 
         public string Description(bool detail)
         {
-            return "echo - 입력한 테스트 출력\n";
+            if (detail)
+            {
+                return "echo - 입력한 테스트 출력\n";
+            }
+
+            return "echo - 입력한 테스트 출력";
         }
     }
 }

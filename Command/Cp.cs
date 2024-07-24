@@ -57,7 +57,12 @@ namespace VirtualTerminal.Command
 
         public string Description(bool detail)
         {
-            return "cp - 파일과 디렉터리 복사\n";
+            if (detail)
+            {
+                return "cp - 파일과 디렉터리 복사\n";
+            }
+
+            return "cp - 파일과 디렉터리 복사";
         }
     }
 }
