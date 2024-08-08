@@ -42,7 +42,7 @@ namespace VirtualTerminal.Command
 
                 permission = FileSystem.FileSystem.CheckPermission(VT.USER, file, VT.Root);
 
-                if (!permission[0] || !permission[1] || !permission[2])
+                if (!permission[0])
                 {
                     Console.WriteLine(ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(arg)));
                     return;
