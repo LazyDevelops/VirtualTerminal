@@ -60,6 +60,8 @@ namespace VirtualTerminal.Command
 
             foreach (Tree<FileNode> fileChild in fileChildren)
             {
+                permission = FileSystem.FileSystem.CheckPermission(VT.USER, fileChild, VT.Root);
+
                 if (options["l"])
                 {
                     string permissions = FileSystem.FileSystem.PermissionsToString(fileChild.Data.Permission);
@@ -67,13 +69,17 @@ namespace VirtualTerminal.Command
                 }
 
 
-                if (fileChild?.Data.FileType == FileType.D)
+                if (fileChild.Data.FileType == FileType.D)
                 {
-                    VirtualTerminal.WriteColoredText($"{fileChild?.Data.Name}", ConsoleColor.Blue);
+                    VirtualTerminal.WriteColoredText($"{fileChild.Data.Name}", ConsoleColor.Blue);
+                }
+                else if (permission[2])
+                {
+                    VirtualTerminal.WriteColoredText($"{fileChild.Data.Name}", ConsoleColor.DarkGreen);
                 }
                 else
                 {
-                    Console.Write(fileChild?.Data.Name);
+                    Console.Write(fileChild.Data.Name);
                 }
 
                 Console.WriteLine();
