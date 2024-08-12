@@ -55,7 +55,8 @@ namespace VirtualTerminal.Command
 
                     Console.WriteLine($"파일 찾기 실패: {fileName}. 새로운 파일 만들기. 내용을 입력해주십시오. (점(.)만 찍고 엔터 치면 입력 종료):");
                     string content = VT.ReadMultiLineInput();
-                    VT.FileSystem.CreateFile(parentPath, new FileNode(fileName, VT.USER, 0b110100, FileType.F, content), VT.Root);
+                    VT.FileSystem.CreateFile(parentPath, new FileNode(fileName, VT.USER, 0b110100, FileType.F, content),
+                        VT.Root);
                     return;
                 }
 

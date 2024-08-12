@@ -23,9 +23,9 @@ namespace VirtualTerminal
         internal Tree<FileNode> Root;
         internal string USER;
 
-        public VirtualTerminal()
+        public VirtualTerminal(string user)
         {
-            USER = "user";
+            USER = user;
             PWD = $"/home/{USER}";
             HOME = $"/home/{USER}";
 
@@ -36,7 +36,8 @@ namespace VirtualTerminal
             HomeNode = FileSystem.CreateFile("/home", new FileNode(USER, USER, 0b111101, FileType.D), Root);
 
             FileSystem.CreateFile(HOME, new FileNode("Item", "root", 0b111101, FileType.D), Root);
-            FileSystem.CreateFile(HOME, new FileNode($"Hello_{USER}.txt", "root", 0b111111, FileType.F, $"Hello, {USER}!"), Root);
+            FileSystem.CreateFile(HOME,
+                new FileNode($"Hello_{USER}.txt", "root", 0b111111, FileType.F, $"Hello, {USER}!"), Root);
 
             PwdNode = FileSystem.FindFile(PWD, Root);
 
