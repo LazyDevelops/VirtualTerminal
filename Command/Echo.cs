@@ -26,7 +26,7 @@
                        "\u001b[1m옵션\u001b[22m\n" +
                        "   (없음)\n\n" +
                        "\u001b[1m예시\u001b[22m\n" +
-                       "   echo Hello\n"+
+                       "   echo Hello\n" +
                        "   echo Hello World!\n";
             }
 

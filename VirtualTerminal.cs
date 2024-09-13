@@ -23,9 +23,9 @@ namespace VirtualTerminal
         internal Tree<FileNode> Root;
         internal string USER;
 
-        public VirtualTerminal()
+        public VirtualTerminal(string user)
         {
-            USER = "user";
+            USER = user;
             PWD = $"/home/{USER}";
             HOME = $"/home/{USER}";
 
@@ -36,7 +36,8 @@ namespace VirtualTerminal
             HomeNode = FileSystem.CreateFile("/home", new FileNode(USER, USER, 0b111101, FileType.D), Root);
 
             FileSystem.CreateFile(HOME, new FileNode("Item", "root", 0b111101, FileType.D), Root);
-            FileSystem.CreateFile(HOME, new FileNode($"Hello_{USER}.txt", "root", 0b111111, FileType.F, $"Hello, {USER}!"), Root);
+            FileSystem.CreateFile(HOME,
+                new FileNode($"Hello_{USER}.txt", "root", 0b111111, FileType.F, $"Hello, {USER}!"), Root);
 
             PwdNode = FileSystem.FindFile(PWD, Root);
 
@@ -77,33 +78,40 @@ namespace VirtualTerminal
 
                 ProcessCommand(command);
             }
+            // 임시 코드
+            // ReSharper disable once FunctionNeverReturns
         }
 
         private void DisplayPrompt()
         {
-            WriteColoredText("\x1b[1muser\x1b[22m", ConsoleColor.Green);
+            WriteColoredText($"\x1b[1m{USER}\x1b[22m", ConsoleColor.Green);
             WriteColoredText(":", Console.ForegroundColor);
             WriteColoredText($"\x1b[1m{PWD}\x1b[22m", ConsoleColor.Blue);
             WriteColoredText("$ ", Console.ForegroundColor);
         }
 
-        private void ProcessCommand(string command)
+        private void ProcessCommand(string inputLine)
         {
-            string[] argv = command.Split(' ').Where(arg => !string.IsNullOrWhiteSpace(arg)).ToArray();
+            string[] commands = inputLine.Split(';');
 
-            if (argv.Skip(1).Any(arg => arg == "--help"))
+            foreach (var command in commands)
             {
-                CommandMap["man"].Execute(2, ["man", argv[0]], this);
-                return;
-            }
+                string[] argv = command.Split(' ').Where(arg => !string.IsNullOrWhiteSpace(arg)).ToArray();
 
-            if (CommandMap.TryGetValue(argv[0], out ICommand? action))
-            {
-                action.Execute(argv.Length, argv, this);
-            }
-            else
-            {
-                Console.WriteLine(ErrorMessage.CmdNotFound(argv[0]));
+                if (argv.Skip(1).Any(arg => arg == "--help"))
+                {
+                    CommandMap["man"].Execute(2, ["man", argv[0]], this);
+                    return;
+                }
+
+                if (CommandMap.TryGetValue(argv[0], out ICommand? action))
+                {
+                    action.Execute(argv.Length, argv, this);
+                }
+                else
+                {
+                    Console.WriteLine(ErrorMessage.CmdNotFound(argv[0]));
+                }
             }
         }
 

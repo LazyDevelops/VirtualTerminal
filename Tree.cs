@@ -7,8 +7,6 @@ namespace Tree
         public Tree<T>? Parents;
         public Tree<T>? RightSibling;
 
-        public Tree() { }
-
         public Tree(T data)
         {
             Parents = null;
@@ -77,7 +75,7 @@ namespace Tree
             }
         }
 
-        public void PrintTree(int depth)
+        /*public void PrintTree(int depth)
         {
             for (int i = 0; i < depth; i++)
             {
@@ -88,6 +86,6 @@ namespace Tree
 
             LeftChild?.PrintTree(depth + 1);
             RightSibling?.PrintTree(depth);
-        }
+        }*/
     }
 }
