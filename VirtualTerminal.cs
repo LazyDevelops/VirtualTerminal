@@ -78,8 +78,6 @@ namespace VirtualTerminal
 
                 ProcessCommand(command);
             }
-            // 임시 코드
-            // ReSharper disable once FunctionNeverReturns
         }
 
         private void DisplayPrompt()
@@ -93,15 +91,6 @@ namespace VirtualTerminal
         private void ProcessCommand(string inputLine)
         {
             string[] commands = inputLine.Split(';');
-
-            /*int cnt = 0;
-
-            foreach (string s in commands)
-            {
-                cnt++;
-                Console.WriteLine(cnt);
-                Console.WriteLine(s);
-            }*/
 
             foreach (var command in commands)
             {
