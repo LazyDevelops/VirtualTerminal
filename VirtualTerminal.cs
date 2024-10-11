@@ -94,14 +94,28 @@ namespace VirtualTerminal
         {
             string[] commands = inputLine.Split(';');
 
+            /*int cnt = 0;
+
+            foreach (string s in commands)
+            {
+                cnt++;
+                Console.WriteLine(cnt);
+                Console.WriteLine(s);
+            }*/
+
             foreach (var command in commands)
             {
                 string[] argv = command.Split(' ').Where(arg => !string.IsNullOrWhiteSpace(arg)).ToArray();
 
+                if (argv.Length == 0)
+                {
+                    continue;
+                }
+
                 if (argv.Skip(1).Any(arg => arg == "--help"))
                 {
                     CommandMap["man"].Execute(2, ["man", argv[0]], this);
-                    return;
+                    continue;
                 }
 
                 if (CommandMap.TryGetValue(argv[0], out ICommand? action))
