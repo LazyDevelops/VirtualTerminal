@@ -211,7 +211,7 @@ string값을 반환하고 그걸 VirtualTerminal에서
 (없는 옵션까지 받고 있음)
 
 Ctrl + D = EOF
-Ctrl + C = 강제 종료    
+Ctrl + C = 강제 종료
 
 위쪽 화살표 = 전에 입력한 명령어  
 아레 화살표 = 후에 입력한 명령어
@@ -248,7 +248,7 @@ wc 구현 고려
 (예: ls /h -> ls /home)
 
 grep 명령어 구현고려  
-(예: grep "Hello" hello.txt)  
+(예: grep "Hello" hello.txt)
 
 help; help;  
 위에 있는 명령어 치면 에러 뜸  

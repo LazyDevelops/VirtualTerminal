@@ -92,7 +92,7 @@ namespace VirtualTerminal
         {
             string[] commands = inputLine.Split(';');
 
-            foreach (var command in commands)
+            foreach (string command in commands)
             {
                 string[] argv = command.Split(' ').Where(arg => !string.IsNullOrWhiteSpace(arg)).ToArray();
 
