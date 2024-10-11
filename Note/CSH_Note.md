@@ -248,4 +248,8 @@ wc 구현 고려
 (예: ls /h -> ls /home)
 
 grep 명령어 구현고려  
-(예: grep "Hello" hello.txt)
+(예: grep "Hello" hello.txt)  
+
+help; help;  
+위에 있는 명령어 치면 에러 뜸  
+수정 예정
