@@ -253,3 +253,12 @@ grep 명령어 구현고려
 help; help;  
 위에 있는 명령어 치면 에러 뜸  
 수정 예정
+
+user:/home/user$ ls -al  
+[l, False]  
+[al, True]  
+Item  
+Hello_user.txt  
+오류 수정 필요
+
+- 위에 버그 수정 성공 (24-10-18)

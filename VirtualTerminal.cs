@@ -140,7 +140,10 @@ namespace VirtualTerminal
                 }
                 else if (arg.Contains('-'))
                 {
-                    option[arg.Replace("-", "")] = true;
+                    foreach (char c in arg.Replace("-", ""))
+                    {
+                        option[c.ToString()] = true;
+                    }
                 }
             }
         }
