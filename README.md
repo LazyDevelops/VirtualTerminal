@@ -4,6 +4,8 @@
 
 ## 기본 명력어 목록
 
+    - cat
+    - cd
     - chmod
     - clear
     - cp
@@ -20,15 +22,10 @@
     - rmdir
     - whoami
 
-## 게임 조작 명령어
+## 구현 완료된 명령어
 
-    - go
-    - get
-    - unlock
-    - mapping
-
-## 구현중 or 구현 완료된 명령어
-
+    - cat
+    - cd
     - chmod
     - clear
     - date
@@ -38,6 +35,7 @@
     - ls
     - man
     - mkdir
+    - mv
     - pwd
-    - rmdir
+    - rm
     - whoami
