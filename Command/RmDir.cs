@@ -29,13 +29,13 @@ namespace VirtualTerminal.Command
 
                 file = VT.FileSystem.FindFile(arg, VT.Root);
 
-                if (file?.Parents == null)
+                if (file?.Parent == null)
                 {
                     Console.WriteLine(ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(arg)));
                     return;
                 }
 
-                permission = FileSystem.FileSystem.CheckPermission(VT.USER, file.Parents, VT.Root);
+                permission = FileSystem.FileSystem.CheckPermission(VT.USER, file.Parent, VT.Root);
 
                 if (permission[0] || !permission[1] || !permission[2])
                 {

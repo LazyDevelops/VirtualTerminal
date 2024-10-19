@@ -14,12 +14,12 @@ namespace VirtualTerminal.FileSystem
                 return 1;
             }
 
-            if (currentNode.Parents == null)
+            if (currentNode.Parent == null)
             {
                 return 2;
             }
 
-            parents = currentNode.Parents;
+            parents = currentNode.Parent;
 
             if (option != 'r' && currentNode.LeftChild != null)
             {

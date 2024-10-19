@@ -6,13 +6,13 @@ namespace VirtualTerminal.FileSystem
     {
         public static bool[] CheckPermission(string username, Tree<FileNode> file, Tree<FileNode> root)
         {
-            Tree<FileNode>? curFile = file.Parents;
+            Tree<FileNode>? curFile = file.Parent;
             bool[] permissions = [false, false, false, false, false, false];
             int min, max;
 
-            if (curFile?.Parents != null)
+            if (curFile?.Parent != null)
             {
-                curFile = curFile.Parents;
+                curFile = curFile.Parent;
                 min = curFile?.Data.UID == username ? 3 : 0;
                 max = curFile?.Data.UID == username ? 5 : 2;
 
@@ -39,7 +39,7 @@ namespace VirtualTerminal.FileSystem
                     return permissions;
                 }
 
-                curFile = curFile.Parents;
+                curFile = curFile.Parent;
             }
 
             min = file.Data.UID == username ? 3 : 0;
