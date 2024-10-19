@@ -1,11 +1,20 @@
 namespace Tree
 {
+    /*public class Node<T>
+    {
+        Node<T>? Parent;
+        private T? Data;
+    }*/
+
     public class Tree<T>
     {
         public T? Data;
         public Tree<T>? LeftChild;
         public Tree<T>? Parents;
         public Tree<T>? RightSibling;
+        /*public T? LeftChild;
+        public T? RightSibling;*/
+
 
         public Tree(T data)
         {
