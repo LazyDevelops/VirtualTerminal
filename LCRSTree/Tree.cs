@@ -1,9 +1,29 @@
-namespace Tree
+namespace VirtualTerminal.LCRSTree
 {
     /*public class Node<T>
     {
-        Node<T>? Parent;
-        private T? Data;
+        public T? Data { get; set; }
+        public Node<T>? Parent { get; set; }
+        public Node<T>? LeftChild { get; set; }
+        public Node<T>? RightSibling { get; set; }
+
+        public Node(T? data)
+        {
+            Data = data;
+            Parent = null;
+            LeftChild = null;
+            RightSibling = null;
+        }
+    }
+
+    public class Tree<T>
+    {
+        private Node<T> _root;
+
+        public Tree(Node<T> root)
+        {
+            _root = root;
+        }
     }*/
 
     public class Tree<T>
@@ -12,8 +32,6 @@ namespace Tree
         public Tree<T>? LeftChild;
         public Tree<T>? Parents;
         public Tree<T>? RightSibling;
-        /*public T? LeftChild;
-        public T? RightSibling;*/
 
 
         public Tree(T data)
@@ -83,18 +101,5 @@ namespace Tree
                 }
             }
         }
-
-        /*public void PrintTree(int depth)
-        {
-            for (int i = 0; i < depth; i++)
-            {
-                Console.Write(" ");
-            }
-
-            Console.WriteLine(Data);
-
-            LeftChild?.PrintTree(depth + 1);
-            RightSibling?.PrintTree(depth);
-        }*/
     }
 }
