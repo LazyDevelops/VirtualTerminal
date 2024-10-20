@@ -1,7 +1,7 @@
 ﻿namespace VirtualTerminal.FileSystem
 {
     // 트리 고친 후 FileData 혹은 FileDataStruct로 이름 변경 예정
-    public struct FileNode(string name, string UID, byte permission, FileType fileType, string? content = null)
+    public struct FileDataStruct(string name, string UID, byte permission, FileType fileType, string? content = null)
     {
         public string Name { get; set; } = name;
         public byte Permission { get; set; } = permission;

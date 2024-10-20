@@ -4,9 +4,9 @@ namespace VirtualTerminal.FileSystem
 {
     public partial class FileSystem
     {
-        public static bool[] CheckPermission(string username, Tree<FileNode> file, Tree<FileNode> root)
+        public static bool[] CheckPermission(string username, Node<FileDataStruct> file, Node<FileDataStruct> root)
         {
-            Tree<FileNode>? curFile = file.Parent;
+            Node<FileDataStruct>? curFile = file.Parent;
             bool[] permissions = [false, false, false, false, false, false];
             int min, max;
 

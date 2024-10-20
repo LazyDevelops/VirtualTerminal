@@ -8,8 +8,8 @@ namespace VirtualTerminal.Command
     {
         public void Execute(int argc, string[] argv, VirtualTerminal VT)
         {
-            Tree<FileNode>? file;
-            List<Tree<FileNode>>? fileChildren;
+            Node<FileDataStruct>? file;
+            List<Node<FileDataStruct>>? fileChildren;
             string? absolutePath;
             bool[] permission;
 
@@ -58,7 +58,7 @@ namespace VirtualTerminal.Command
                 return;
             }
 
-            foreach (Tree<FileNode> fileChild in fileChildren)
+            foreach (Node<FileDataStruct> fileChild in fileChildren)
             {
                 permission = FileSystem.FileSystem.CheckPermission(VT.USER, fileChild, VT.Root);
 

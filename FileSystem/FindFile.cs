@@ -4,14 +4,14 @@ namespace VirtualTerminal.FileSystem
 {
     public partial class FileSystem
     {
-        public Tree<FileNode>? FindFile(string? path, Tree<FileNode> root)
+        public Node<FileDataStruct>? FindFile(string? path, Node<FileDataStruct> root)
         {
             if (path == null)
             {
                 return null;
             }
 
-            Tree<FileNode> currentNode = root;
+            Node<FileDataStruct> currentNode = root;
             List<string> files = [];
             string? fileName;
 
@@ -27,7 +27,7 @@ namespace VirtualTerminal.FileSystem
 
             foreach (string file in files)
             {
-                foreach (Tree<FileNode> child in currentNode.GetChildren().Where(child => child.Data.Name == file))
+                foreach (Node<FileDataStruct> child in currentNode.GetChildren().Where(child => child.Data.Name == file))
                 {
                     currentNode = child;
                     break;

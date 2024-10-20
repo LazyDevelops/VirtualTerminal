@@ -12,15 +12,16 @@ namespace VirtualTerminal
         internal readonly Dictionary<string, ICommand> CommandMap;
 
         internal FileSystem.FileSystem FileSystem = new();
+        internal Tree<FileDataStruct> FileTree;
 
         // private List<string> PWD;
         // private List<FileNode> PWD;
         internal string HOME;
-        internal Tree<FileNode>? HomeNode;
+        internal Node<FileDataStruct>? HomeNode;
 
         internal string PWD;
-        internal Tree<FileNode>? PwdNode;
-        internal Tree<FileNode> Root;
+        internal Node<FileDataStruct>? PwdNode;
+        internal Node<FileDataStruct> Root;
         internal string USER;
 
         public VirtualTerminal(string user)
@@ -29,15 +30,16 @@ namespace VirtualTerminal
             PWD = $"/home/{USER}";
             HOME = $"/home/{USER}";
 
-            Root = new Tree<FileNode>(new FileNode("/", "root", 0b111101, FileType.D));
-            FileSystem.CreateFile("/", new FileNode("home", "root", 0b111101, FileType.D), Root);
-            FileSystem.CreateFile("/", new FileNode("root", "root", 0b111000, FileType.D), Root);
+            FileTree = new Tree<FileDataStruct>(new Node<FileDataStruct>(new FileDataStruct("/", "root", 0b111101, FileType.D)));
+            Root = FileTree.Root;
+            FileSystem.CreateFile("/", new FileDataStruct("home", "root", 0b111101, FileType.D), Root);
+            FileSystem.CreateFile("/", new FileDataStruct("root", "root", 0b111000, FileType.D), Root);
 
-            HomeNode = FileSystem.CreateFile("/home", new FileNode(USER, USER, 0b111101, FileType.D), Root);
+            HomeNode = FileSystem.CreateFile("/home", new FileDataStruct(USER, USER, 0b111101, FileType.D), Root);
 
-            FileSystem.CreateFile(HOME, new FileNode("Item", "root", 0b111101, FileType.D), Root);
+            FileSystem.CreateFile(HOME, new FileDataStruct("Item", "root", 0b111101, FileType.D), Root);
             FileSystem.CreateFile(HOME,
-                new FileNode($"Hello_{USER}.txt", "root", 0b111111, FileType.F, $"Hello, {USER}!"), Root);
+                new FileDataStruct($"Hello_{USER}.txt", "root", 0b111111, FileType.F, $"Hello, {USER}!"), Root);
 
             PwdNode = FileSystem.FindFile(PWD, Root);
 

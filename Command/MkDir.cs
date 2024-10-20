@@ -14,7 +14,7 @@ namespace VirtualTerminal.Command
                 return;
             }
 
-            Tree<FileNode>? parentFile;
+            Node<FileDataStruct>? parentFile;
             string? absolutePath;
             string? parentPath;
             string? fileName;
@@ -59,7 +59,7 @@ namespace VirtualTerminal.Command
                     return;
                 }
 
-                VT.FileSystem.CreateFile(parentPath, new FileNode(fileName, VT.USER, 0b111101, FileType.D), VT.Root);
+                VT.FileSystem.CreateFile(parentPath, new FileDataStruct(fileName, VT.USER, 0b111101, FileType.D), VT.Root);
             }
         }
 

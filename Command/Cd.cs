@@ -15,7 +15,7 @@ namespace VirtualTerminal.Command
                 return;
             }
 
-            Tree<FileNode>? file;
+            Node<FileDataStruct>? file;
             string? absolutePath;
             bool[] permission;
 

@@ -14,7 +14,7 @@ namespace VirtualTerminal.Command
                 return;
             }
 
-            Tree<FileNode>?[] file = new Tree<FileNode>?[2];
+            Tree<FileDataStruct>?[] file = new Tree<FileDataStruct>?[2];
             byte fileCounter = 0;
             string?[] absolutePath = new string?[2];
             string? fileName;
