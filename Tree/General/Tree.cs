@@ -13,4 +13,14 @@ namespace VirtualTerminal.Tree.General
             Parent = null;
         }
     }
+
+    public class Tree<T>
+    {
+        public Node<T> Root;
+
+        public Tree(Node<T> root)
+        {
+            Root = root;
+        }
+    }
 }
