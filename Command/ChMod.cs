@@ -45,7 +45,12 @@ namespace VirtualTerminal.Command
                 }
 
                 // Error : 프로퍼티 'Data' 액세스는 임시값을 반환합니다. 액세스된 구조체가 변수로 분류되지 않는 경우 구조체 멤버를 수정할 수 없습니다
-                file.Data.Permission = inputPermission.Value;
+                //file.Data.Permission = inputPermission.Value;
+
+                // 임시 코드
+                FileDataStruct temp = file.Data;
+                temp.Permission = inputPermission.Value;
+                file.Data = temp;
             }
         }
 
