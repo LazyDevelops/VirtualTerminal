@@ -1,4 +1,4 @@
-namespace VirtualTerminal.LCRSTree
+namespace VirtualTerminal.Tree.LCRS
 {
     public class Node<T>
     {
