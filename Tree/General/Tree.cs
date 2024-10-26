@@ -12,6 +12,26 @@ namespace VirtualTerminal.Tree.General
             Data = data;
             Parent = null;
         }
+
+        public void AppendChildNode(Node<T> node)
+        {
+            node.Parent = this;
+            Children.Add(node);
+        }
+
+        public void RemoveChildWithNode(Node<T> node)
+        {
+            Children.Remove(node);
+        }
+
+        public void RemoveChildWithIndex(int index)
+        {
+            if (index < 0 || index > Children.Count - 1)
+            {
+                return;
+            }
+            Children.Remove(Children[index]);
+        }
     }
 
     public class Tree<T>
