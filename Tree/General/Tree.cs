@@ -11,6 +11,7 @@ namespace VirtualTerminal.Tree.General
         {
             Data = data;
             Parent = null;
+            Children = new List<Node<T>>();
         }
 
         public void AppendChildNode(Node<T> node)

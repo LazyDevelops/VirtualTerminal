@@ -1,4 +1,4 @@
-using VirtualTerminal.Tree.LCRS;
+using VirtualTerminal.Tree.General;
 using VirtualTerminal.Error;
 using VirtualTerminal.FileSystem;
 
@@ -17,7 +17,7 @@ namespace VirtualTerminal.Command
 
             VirtualTerminal.OptionCheck(ref options, in argv);
 
-            fileChildren = VT.PwdNode?.GetChildren();
+            fileChildren = VT.PwdNode?.Children;
 
             foreach (string arg in argv.Skip(1))
             {
@@ -50,7 +50,7 @@ namespace VirtualTerminal.Command
                     return;
                 }
 
-                fileChildren = file.GetChildren();
+                fileChildren = file.Children;
             }
 
             if (fileChildren == null)

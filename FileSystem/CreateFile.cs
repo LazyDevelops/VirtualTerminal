@@ -1,4 +1,4 @@
-﻿using VirtualTerminal.Tree.LCRS;
+﻿using VirtualTerminal.Tree.General;
 
 namespace VirtualTerminal.FileSystem
 {
@@ -7,13 +7,13 @@ namespace VirtualTerminal.FileSystem
         public Node<FileDataStruct>? CreateFile(string path, FileDataStruct entry, Node<FileDataStruct> root)
         {
             Node<FileDataStruct>? current = FindFile(path, root);
-            Node<FileDataStruct> newFile = new(entry);
 
             if (current == null)
             {
                 return null;
             }
 
+            Node<FileDataStruct> newFile = new(entry);
             current.AppendChildNode(newFile);
 
             return newFile;

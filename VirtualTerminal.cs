@@ -1,4 +1,4 @@
-using VirtualTerminal.Tree.LCRS;
+using VirtualTerminal.Tree.General;
 using VirtualTerminal.Command;
 using VirtualTerminal.Error;
 using VirtualTerminal.FileSystem;
@@ -32,6 +32,7 @@ namespace VirtualTerminal
 
             FileTree = new Tree<FileDataStruct>(new Node<FileDataStruct>(new FileDataStruct("/", "root", 0b111101, FileType.D)));
             Root = FileTree.Root;
+
             FileSystem.CreateFile("/", new FileDataStruct("home", "root", 0b111101, FileType.D), Root);
             FileSystem.CreateFile("/", new FileDataStruct("root", "root", 0b111000, FileType.D), Root);
 

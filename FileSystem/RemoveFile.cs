@@ -1,4 +1,4 @@
-﻿using VirtualTerminal.Tree.LCRS;
+﻿using VirtualTerminal.Tree.General;
 
 namespace VirtualTerminal.FileSystem
 {
@@ -21,17 +21,17 @@ namespace VirtualTerminal.FileSystem
 
             parents = currentNode.Parent;
 
-            if (option != 'r' && currentNode.LeftChild != null)
+            if (option != 'r' && currentNode.Children.Count != 0)
             {
                 return 3;
             }
 
-            if (currentNode.LeftChild != null)
+            if (currentNode.Children.Count != 0)
             {
                 RemoveAllChildren(currentNode);
             }
 
-            parents.RemoveChildNode(currentNode);
+            parents.RemoveChildWithNode(currentNode);
             return 0;
         }
     }

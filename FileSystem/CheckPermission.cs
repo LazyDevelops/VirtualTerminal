@@ -1,4 +1,4 @@
-﻿using VirtualTerminal.Tree.LCRS;
+﻿using VirtualTerminal.Tree.General;
 
 namespace VirtualTerminal.FileSystem
 {

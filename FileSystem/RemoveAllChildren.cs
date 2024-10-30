@@ -1,4 +1,4 @@
-﻿using VirtualTerminal.Tree.LCRS;
+﻿using VirtualTerminal.Tree.General;
 
 namespace VirtualTerminal.FileSystem
 {
@@ -6,10 +6,10 @@ namespace VirtualTerminal.FileSystem
     {
         private static void RemoveAllChildren(Node<FileDataStruct> node)
         {
-            foreach (Node<FileDataStruct> child in node.GetChildren())
+            foreach (Node<FileDataStruct> child in node.Children)
             {
                 RemoveAllChildren(child); // 재귀적으로 하위 노드 삭제
-                node.RemoveChildNode(child);
+                node.RemoveChildWithNode(child);
             }
         }
     }

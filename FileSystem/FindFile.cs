@@ -1,4 +1,4 @@
-﻿using VirtualTerminal.Tree.LCRS;
+﻿using VirtualTerminal.Tree.General;
 
 namespace VirtualTerminal.FileSystem
 {
@@ -27,7 +27,7 @@ namespace VirtualTerminal.FileSystem
 
             foreach (string file in files)
             {
-                foreach (Node<FileDataStruct> child in currentNode.GetChildren().Where(child => child.Data.Name == file))
+                foreach (Node<FileDataStruct> child in currentNode.Children.Where(child => child.Data.Name == file))
                 {
                     currentNode = child;
                     break;
