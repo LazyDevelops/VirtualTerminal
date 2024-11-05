@@ -6,13 +6,13 @@ namespace VirtualTerminal.Command
 {
     public class CdCommand : VirtualTerminal.ICommand
     {
-        public void Execute(int argc, string[] argv, VirtualTerminal VT)
+        public string? Execute(int argc, string[] argv, VirtualTerminal VT)
         {
             if (argc < 2)
             {
                 VT.PwdNode = VT.HomeNode;
                 VT.PWD = VT.HOME;
-                return;
+                return null;
             }
 
             Node<FileDataStruct>? file;
@@ -32,30 +32,26 @@ namespace VirtualTerminal.Command
 
                 if (file == null)
                 {
-                    Console.Write("bash: ");
-                    Console.WriteLine(ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(arg)));
-                    return;
+                    return "bash: " + ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(arg));
                 }
 
                 permission = FileSystem.FileSystem.CheckPermission(VT.USER, file, VT.Root);
 
                 if (!permission[0] || !permission[2])
                 {
-                    Console.Write("bash: ");
-                    Console.WriteLine(ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(arg)));
-                    return;
+                    return "bash: " + ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(arg));
                 }
 
                 if (file.Data.FileType != FileType.D)
                 {
-                    Console.Write("bash: ");
-                    Console.WriteLine(ErrorMessage.NotD(argv[0], ErrorMessage.DefaultErrorComment(arg)));
-                    return;
+                    return "bash: " + ErrorMessage.NotD(argv[0], ErrorMessage.DefaultErrorComment(arg));
                 }
 
                 VT.PwdNode = file;
                 VT.PWD = absolutePath;
             }
+
+            return null;
         }
 
         public string Description(bool detail)

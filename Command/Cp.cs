@@ -6,12 +6,11 @@ namespace VirtualTerminal.Command
 {
     public class CpCommand : VirtualTerminal.ICommand
     {
-        public void Execute(int argc, string[] argv, VirtualTerminal VT)
+        public string? Execute(int argc, string[] argv, VirtualTerminal VT)
         {
             if (argc < 3)
             {
-                Console.WriteLine(ErrorMessage.ArgLack(argv[0]));
-                return;
+                return ErrorMessage.ArgLack(argv[0]);
             }
 
             List<Node<FileDataStruct>?> file;
@@ -77,6 +76,8 @@ namespace VirtualTerminal.Command
 
                 VT.FileSystem.CreateFile(parentPath, new FileDataStruct(fileName, file[0].Data.UID, file[0].Data.Permission, file[0].Data.FileType, file[0].Data.Content), VT.Root);
             }*/
+
+            return null;
         }
 
         public string Description(bool detail)

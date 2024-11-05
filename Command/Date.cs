@@ -2,10 +2,10 @@ namespace VirtualTerminal.Command
 {
     public class DateCommand : VirtualTerminal.ICommand
     {
-        public void Execute(int argc, string[] argv, VirtualTerminal VT)
+        public string? Execute(int argc, string[] argv, VirtualTerminal VT)
         {
             DateTime currentTime = DateTime.Now;
-            Console.WriteLine(currentTime.ToString("yyyy. MM. dd. (ddd) HH:mm:ss"));
+            return currentTime.ToString("yyyy. MM. dd. (ddd) HH:mm:ss\n");
         }
 
         public string Description(bool detail)

@@ -6,7 +6,7 @@ namespace VirtualTerminal.Command
 {
     public class LsCommand : VirtualTerminal.ICommand
     {
-        public void Execute(int argc, string[] argv, VirtualTerminal VT)
+        public string? Execute(int argc, string[] argv, VirtualTerminal VT)
         {
             Node<FileDataStruct>? file;
             List<Node<FileDataStruct>>? fileChildren;
@@ -32,22 +32,19 @@ namespace VirtualTerminal.Command
 
                 if (file == null)
                 {
-                    Console.WriteLine(ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(arg)));
-                    return;
+                    return ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(arg));
                 }
 
                 permission = FileSystem.FileSystem.CheckPermission(VT.USER, file, VT.Root);
 
                 if (!permission[0])
                 {
-                    Console.WriteLine(ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(arg)));
-                    return;
+                    return ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(arg));
                 }
 
                 if (file.Data.FileType != FileType.D)
                 {
-                    Console.WriteLine(arg);
-                    return;
+                    return arg;
                 }
 
                 fileChildren = file.Children;
@@ -55,8 +52,10 @@ namespace VirtualTerminal.Command
 
             if (fileChildren == null)
             {
-                return;
+                return null;
             }
+
+            string? result = null;
 
             foreach (Node<FileDataStruct> fileChild in fileChildren)
             {
@@ -65,25 +64,27 @@ namespace VirtualTerminal.Command
                 if (options["l"])
                 {
                     string permissions = FileSystem.FileSystem.PermissionsToString(fileChild.Data.Permission);
-                    Console.Write($"{Convert.ToChar(fileChild.Data.FileType)}{permissions} {fileChild.Data.UID} ");
+                    result += $"{Convert.ToChar(fileChild.Data.FileType)}{permissions} {fileChild.Data.UID} ";
                 }
 
 
                 if (fileChild.Data.FileType == FileType.D)
                 {
-                    VirtualTerminal.WriteColoredText($"{fileChild.Data.Name}", ConsoleColor.Blue);
+                    result += $"\u001b[34m{fileChild.Data.Name}\u001b[0m";
                 }
                 else if (permission[2])
                 {
-                    VirtualTerminal.WriteColoredText($"{fileChild.Data.Name}", ConsoleColor.DarkGreen);
+                    result += $"\u001b[36m{fileChild.Data.Name}\u001b[0m";
                 }
                 else
                 {
-                    Console.Write(fileChild.Data.Name);
+                    result += fileChild.Data.Name;
                 }
 
-                Console.WriteLine();
+                result += "\n";
             }
+
+            return result;
         }
 
         public string Description(bool detail)

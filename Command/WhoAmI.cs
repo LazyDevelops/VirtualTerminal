@@ -2,9 +2,9 @@ namespace VirtualTerminal.Command
 {
     public class WhoAmICommand : VirtualTerminal.ICommand
     {
-        public void Execute(int argc, string[] argv, VirtualTerminal VT)
+        public string? Execute(int argc, string[] argv, VirtualTerminal VT)
         {
-            Console.WriteLine(VT.USER);
+            return VT.USER + "\n";
         }
 
         public string Description(bool detail)
