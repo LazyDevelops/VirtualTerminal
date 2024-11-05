@@ -1,4 +1,4 @@
-using VirtualTerminal.LCRSTree;
+using VirtualTerminal.Tree.General;
 using VirtualTerminal.Error;
 using VirtualTerminal.FileSystem;
 
@@ -6,15 +6,14 @@ namespace VirtualTerminal.Command
 {
     public class RmCommand : VirtualTerminal.ICommand
     {
-        public void Execute(int argc, string[] argv, VirtualTerminal VT)
+        public string? Execute(int argc, string[] argv, VirtualTerminal VT)
         {
             if (argc < 2)
             {
-                Console.WriteLine(ErrorMessage.ArgLack(argv[0]));
-                return;
+                return ErrorMessage.ArgLack(argv[0]);
             }
 
-            Tree<FileNode>? file;
+            Node<FileDataStruct>? file;
             string? absolutePath;
             bool[] permission;
 
@@ -36,32 +35,30 @@ namespace VirtualTerminal.Command
 
                 if (file == null)
                 {
-                    Console.WriteLine(ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(arg)));
-                    return;
+                    return ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(arg));
                 }
 
                 permission = FileSystem.FileSystem.CheckPermission(VT.USER, file, VT.Root);
 
                 if (!permission[0])
                 {
-                    Console.WriteLine(ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(arg)));
-                    return;
+                    return ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(arg));
                 }
 
                 if (!options["r"] && file.Data.FileType == FileType.D)
                 {
-                    Console.WriteLine(ErrorMessage.NotF(argv[0], ErrorMessage.DefaultErrorComment(arg)));
-                    return;
+                    return ErrorMessage.NotF(argv[0], ErrorMessage.DefaultErrorComment(arg));
                 }
 
                 if (options["r"])
                 {
                     VT.FileSystem.RemoveFile(absolutePath, VT.Root, 'r');
-                    return;
                 }
 
                 VT.FileSystem.RemoveFile(absolutePath, VT.Root, null);
             }
+
+            return null;
         }
 
         public string Description(bool detail)

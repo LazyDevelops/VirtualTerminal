@@ -1,4 +1,4 @@
-using VirtualTerminal.LCRSTree;
+using VirtualTerminal.Tree.General;
 using VirtualTerminal.Error;
 using VirtualTerminal.FileSystem;
 
@@ -6,53 +6,78 @@ namespace VirtualTerminal.Command
 {
     public class CpCommand : VirtualTerminal.ICommand
     {
-        public void Execute(int argc, string[] argv, VirtualTerminal VT)
+        public string? Execute(int argc, string[] argv, VirtualTerminal VT)
         {
             if (argc < 3)
             {
-                Console.WriteLine(ErrorMessage.ArgLack(argv[0]));
-                return;
+                return ErrorMessage.ArgLack(argv[0]);
             }
 
-            Tree<FileNode>?[] file = new Tree<FileNode>?[2];
-            List<Tree<FileNode>?> tempFile = [];
-            byte fileCounter = 0;
-            string?[] absolutePath = new string?[2];
+            List<Node<FileDataStruct>?> file;
+            Node<FileDataStruct>? parentFile;
             string? fileName;
+            string? absolutePath;
+            string? parentPath;
             bool[] permission;
+            
 
             Dictionary<string, bool> options = new() { { "r", false }, { "f", false } };
 
             VirtualTerminal.OptionCheck(ref options, in argv);
 
-            foreach (string arg in argv.Skip(1))
+            /*foreach (string arg in argv.Skip(1))
             {
-                if (arg.Contains('-') || arg.Contains("--"))
+                if (file.Count == 0)
                 {
-                    continue;
+                    absolutePath = FileSystem.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
+                    file.Add(VT.FileSystem.FindFile(absolutePath, VT.Root));
+
+                    if (file[0] == null)
+                    {
+                        Console.WriteLine(ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(arg)));
+                        return;
+                    }
+
+                    permission = FileSystem.FileSystem.CheckPermission(VT.USER, file[0], VT.Root);
+
+                    if (!permission[0] || !permission[2])
+                    {
+                        Console.WriteLine(ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(arg)));
+                        return;
+                    }
                 }
 
-                if (fileCounter + 1 > file.Length)
+                absolutePath = FileSystem.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
+                fileName = absolutePath.Split('/')[^1];
+                file[1] = VT.FileSystem.FindFile(absolutePath, VT.Root);
+
+                parentPath = absolutePath.Replace('/' + fileName, "");
+                parentFile = VT.FileSystem.FindFile(parentPath, VT.Root);
+
+                if (parentFile == null)
                 {
-                    Console.WriteLine(ErrorMessage.ArgLack(argv[0]));
+                    Console.WriteLine(ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(arg)));
                     return;
                 }
 
-                absolutePath[fileCounter] = FileSystem.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
+                permission = FileSystem.FileSystem.CheckPermission(VT.USER, parentFile, VT.Root);
 
-                if (fileCounter == 0)
+                if (!permission[0] || !permission[1] || !permission[2])
                 {
-                    file[fileCounter] = VT.FileSystem.FindFile(absolutePath[fileCounter], VT.Root);
-                }
-                else
-                {
-                    fileName = absolutePath[fileCounter]?.Split('/')[^1];
-                    absolutePath[fileCounter] = absolutePath[fileCounter]?.Replace('/' + fileName, "");
-                    file[fileCounter] = VT.FileSystem.FindFile(absolutePath[fileCounter], VT.Root);
+                    Console.WriteLine(ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(arg)));
+                    return;
                 }
 
-                fileCounter++;
-            }
+                if (parentFile.Data.FileType != FileType.D)
+                {
+                    Console.WriteLine(ErrorMessage.NotD(argv[0], ErrorMessage.DefaultErrorComment(arg)));
+                    return;
+                }
+
+                VT.FileSystem.CreateFile(parentPath, new FileDataStruct(fileName, file[0].Data.UID, file[0].Data.Permission, file[0].Data.FileType, file[0].Data.Content), VT.Root);
+            }*/
+
+            return null;
         }
 
         public string Description(bool detail)

@@ -4,7 +4,7 @@
     {
         public static string NotD(string command, string comment)
         {
-            return $"{command}:{comment}: 디렉터리가 아닙니다";
+            return $"{command}:{comment}: 디렉터리가 아닙니다\n";
         }
     }
 }

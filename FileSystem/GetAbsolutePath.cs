@@ -10,12 +10,6 @@
                 path = currentDirectory + "/" + path;
             }
 
-            if (path.StartsWith('~'))
-            {
-                // 홈 디렉터리(~)로 시작하는 경우
-                path = homeDirectory + path.Remove(0, 1);
-            }
-
             string[] parts = path.Split('/', StringSplitOptions.RemoveEmptyEntries);
             Stack<string> stack = new();
 
@@ -32,6 +26,17 @@
                             if (stack.Count > 0)
                             {
                                 stack.Pop();
+                            }
+
+                            break;
+                        }
+                    case "~":
+                        {
+                            stack.Clear();
+
+                            foreach (string s in homeDirectory.Split('/', StringSplitOptions.RemoveEmptyEntries))
+                            {
+                                stack.Push(s);
                             }
 
                             break;

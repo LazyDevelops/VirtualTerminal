@@ -1,4 +1,5 @@
-using VirtualTerminal.LCRSTree;
+using System.Text.RegularExpressions;
+using VirtualTerminal.Tree.General;
 using VirtualTerminal.Command;
 using VirtualTerminal.Error;
 using VirtualTerminal.FileSystem;
@@ -12,15 +13,16 @@ namespace VirtualTerminal
         internal readonly Dictionary<string, ICommand> CommandMap;
 
         internal FileSystem.FileSystem FileSystem = new();
+        internal Tree<FileDataStruct> FileTree;
 
         // private List<string> PWD;
         // private List<FileNode> PWD;
         internal string HOME;
-        internal Tree<FileNode>? HomeNode;
+        internal Node<FileDataStruct>? HomeNode;
 
         internal string PWD;
-        internal Tree<FileNode>? PwdNode;
-        internal Tree<FileNode> Root;
+        internal Node<FileDataStruct>? PwdNode;
+        internal Node<FileDataStruct> Root;
         internal string USER;
 
         public VirtualTerminal(string user)
@@ -29,15 +31,16 @@ namespace VirtualTerminal
             PWD = $"/home/{USER}";
             HOME = $"/home/{USER}";
 
-            Root = new Tree<FileNode>(new FileNode("/", "root", 0b111101, FileType.D));
-            FileSystem.CreateFile("/", new FileNode("home", "root", 0b111101, FileType.D), Root);
-            FileSystem.CreateFile("/", new FileNode("root", "root", 0b111000, FileType.D), Root);
+            FileTree = new Tree<FileDataStruct>(new Node<FileDataStruct>(new FileDataStruct("/", "root", 0b111101, FileType.D)));
+            Root = FileTree.Root;
 
-            HomeNode = FileSystem.CreateFile("/home", new FileNode(USER, USER, 0b111101, FileType.D), Root);
+            FileSystem.CreateFile("/", new FileDataStruct("home", "root", 0b111101, FileType.D), Root);
+            FileSystem.CreateFile("/", new FileDataStruct("root", "root", 0b111000, FileType.D), Root);
 
-            FileSystem.CreateFile(HOME, new FileNode("Item", "root", 0b111101, FileType.D), Root);
+            HomeNode = FileSystem.CreateFile("/home", new FileDataStruct(USER, USER, 0b111101, FileType.D), Root);
+
             FileSystem.CreateFile(HOME,
-                new FileNode($"Hello_{USER}.txt", "root", 0b111111, FileType.F, $"Hello, {USER}!"), Root);
+                new FileDataStruct($"Hello_{USER}.txt", "root", 0b111111, FileType.F, $"Hello, {USER}!"), Root);
 
             PwdNode = FileSystem.FindFile(PWD, Root);
 
@@ -46,7 +49,7 @@ namespace VirtualTerminal
             {
                 { "cat", new CatCommand() },
                 { "cd", new CdCommand() },
-                { "chmod", new ChModCommand() }, // 제작 전
+                { "chmod", new ChModCommand() },
                 { "clear", new ClearCommand() },
                 { "cp", new CpCommand() }, // 제작 전
                 { "date", new DateCommand() },
@@ -58,7 +61,7 @@ namespace VirtualTerminal
                 { "mkdir", new MkDirCommand() },
                 { "mv", new MvCommand() }, // 제작 전
                 { "pwd", new PwdCommand() },
-                { "rm", new RmCommand() }, // 제작 전
+                { "rm", new RmCommand() },
                 { "rmdir", new RmDirCommand() },
                 { "whoami", new WhoAmICommand() }
             };
@@ -82,10 +85,7 @@ namespace VirtualTerminal
 
         private void DisplayPrompt()
         {
-            WriteColoredText($"\x1b[1m{USER}\x1b[22m", ConsoleColor.Green);
-            WriteColoredText(":", Console.ForegroundColor);
-            WriteColoredText($"\x1b[1m{PWD}\x1b[22m", ConsoleColor.Blue);
-            WriteColoredText("$ ", Console.ForegroundColor);
+            Console.Write($"\u001b[32m{USER}\u001b[0m:\u001b[34;1m{PWD}\u001b[0m$ ");
         }
 
         private void ProcessCommand(string inputLine)
@@ -103,28 +103,42 @@ namespace VirtualTerminal
 
                 if (argv.Skip(1).Any(arg => arg == "--help"))
                 {
-                    CommandMap["man"].Execute(2, ["man", argv[0]], this);
+                    Console.Write(CommandMap["man"].Execute(2, ["man", argv[0]], this));
                     continue;
                 }
 
                 if (CommandMap.TryGetValue(argv[0], out ICommand? action))
                 {
-                    action.Execute(argv.Length, argv, this);
+                    Console.Write(action.Execute(argv.Length, argv, this));
                 }
                 else
                 {
-                    Console.WriteLine(ErrorMessage.CmdNotFound(argv[0]));
+                    Console.Write(ErrorMessage.CmdNotFound(argv[0]));
                 }
             }
+        }
+
+        internal static string RemoveAnsiCodes(string input)
+        {
+            // 정규식을 사용하여 ANSI 코드 제거
+            const string ansiEscapePattern = @"\u001b\[[0-9;]*m";
+            return Regex.Replace(input, ansiEscapePattern, string.Empty);
         }
 
         internal string ReadMultiLineInput()
         {
             string content = string.Empty;
-            string? line;
-            while ((line = Console.ReadLine()) != ".")
+
+            while (true)
             {
-                content += line + Environment.NewLine;
+                string? input = Console.ReadLine();
+
+                if (input == null)
+                {
+                    break;
+                }
+
+                content += input + "\n";
             }
 
             return content.TrimEnd('\n');
@@ -148,16 +162,9 @@ namespace VirtualTerminal
             }
         }
 
-        internal static void WriteColoredText(string text, ConsoleColor color)
-        {
-            Console.ForegroundColor = color;
-            Console.Write(text);
-            Console.ResetColor();
-        }
-
         internal interface ICommand
         {
-            void Execute(int argc, string[] argv, VirtualTerminal VT);
+            string? Execute(int argc, string[] argv, VirtualTerminal VT);
             string Description(bool detail);
         }
     }

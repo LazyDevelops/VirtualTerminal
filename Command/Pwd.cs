@@ -2,9 +2,9 @@
 {
     public class PwdCommand : VirtualTerminal.ICommand
     {
-        public void Execute(int argc, string[] argv, VirtualTerminal VT)
+        public string? Execute(int argc, string[] argv, VirtualTerminal VT)
         {
-            Console.WriteLine(VT.PWD);
+            return VT.PWD + "\n";
         }
 
         public string Description(bool detail)

@@ -2,14 +2,16 @@
 {
     public class EchoCommand : VirtualTerminal.ICommand
     {
-        public void Execute(int argc, string[] argv, VirtualTerminal VT)
+        public string? Execute(int argc, string[] argv, VirtualTerminal VT)
         {
+            string? result = null;
+
             foreach (string arg in argv.Skip(1))
             {
-                Console.Write(arg + " ");
+                result += arg + " ";
             }
 
-            Console.WriteLine();
+            return result + "\n";
         }
 
         public string Description(bool detail)

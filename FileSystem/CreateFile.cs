@@ -1,19 +1,19 @@
-﻿using VirtualTerminal.LCRSTree;
+﻿using VirtualTerminal.Tree.General;
 
 namespace VirtualTerminal.FileSystem
 {
     public partial class FileSystem
     {
-        public Tree<FileNode>? CreateFile(string path, FileNode entry, Tree<FileNode> root)
+        public Node<FileDataStruct>? CreateFile(string path, FileDataStruct entry, Node<FileDataStruct> root)
         {
-            Tree<FileNode>? current = FindFile(path, root);
-            Tree<FileNode> newFile = new(entry);
+            Node<FileDataStruct>? current = FindFile(path, root);
 
             if (current == null)
             {
                 return null;
             }
 
+            Node<FileDataStruct> newFile = new(entry);
             current.AppendChildNode(newFile);
 
             return newFile;

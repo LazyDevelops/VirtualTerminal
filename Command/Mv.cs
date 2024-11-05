@@ -1,4 +1,4 @@
-﻿using VirtualTerminal.LCRSTree;
+﻿using VirtualTerminal.Tree.General;
 using VirtualTerminal.Error;
 using VirtualTerminal.FileSystem;
 
@@ -6,15 +6,14 @@ namespace VirtualTerminal.Command
 {
     public class MvCommand : VirtualTerminal.ICommand
     {
-        public void Execute(int argc, string[] argv, VirtualTerminal VT)
+        public string? Execute(int argc, string[] argv, VirtualTerminal VT)
         {
             if (argc < 3)
             {
-                Console.WriteLine(ErrorMessage.ArgLack(argv[0]));
-                return;
+                return ErrorMessage.ArgLack(argv[0]);
             }
 
-            Tree<FileNode>?[] file = new Tree<FileNode>?[2];
+            Tree<FileDataStruct>?[] file = new Tree<FileDataStruct>?[2];
             byte fileCounter = 0;
             string?[] absolutePath = new string?[2];
             string? fileName;
@@ -33,8 +32,7 @@ namespace VirtualTerminal.Command
 
                 if (fileCounter + 1 > file.Length)
                 {
-                    Console.WriteLine(ErrorMessage.ArgLack(argv[0]));
-                    return;
+                    return ErrorMessage.ArgLack(argv[0]);
                 }
 
                 absolutePath[fileCounter] = FileSystem.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
@@ -45,6 +43,8 @@ namespace VirtualTerminal.Command
 
                 fileCounter++;
             }
+
+            return null;
         }
 
         public string Description(bool detail)

@@ -1,4 +1,4 @@
-using VirtualTerminal.LCRSTree;
+using VirtualTerminal.Tree.General;
 using VirtualTerminal.Error;
 using VirtualTerminal.FileSystem;
 
@@ -6,9 +6,9 @@ namespace VirtualTerminal.Command
 {
     public class ChModCommand : VirtualTerminal.ICommand
     {
-        public void Execute(int argc, string[] argv, VirtualTerminal VT)
+        public string? Execute(int argc, string[] argv, VirtualTerminal VT)
         {
-            Tree<FileNode>? file;
+            Node<FileDataStruct>? file;
             string? absolutePath;
             byte? inputPermission;
 
@@ -18,8 +18,7 @@ namespace VirtualTerminal.Command
             }
             else
             {
-                Console.WriteLine(ErrorMessage.InvalidMode(argv[0], ErrorMessage.DefaultErrorComment(argv[1])));
-                return;
+                return ErrorMessage.InvalidMode(argv[0], ErrorMessage.DefaultErrorComment(argv[1]));
             }
 
             foreach (string arg in argv.Skip(2))
@@ -34,18 +33,24 @@ namespace VirtualTerminal.Command
 
                 if (file == null)
                 {
-                    Console.WriteLine(ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(arg)));
-                    return;
+                    return ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(arg));
                 }
 
                 if (file.Data.UID != VT.USER)
                 {
-                    Console.WriteLine(ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(arg)));
-                    return;
+                    return ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(arg));
                 }
 
-                file.Data.Permission = inputPermission.Value;
+                // Error : 프로퍼티 'Data' 액세스는 임시값을 반환합니다. 액세스된 구조체가 변수로 분류되지 않는 경우 구조체 멤버를 수정할 수 없습니다
+                //file.Data.Permission = inputPermission.Value;
+
+                // 임시 코드
+                FileDataStruct temp = file.Data;
+                temp.Permission = inputPermission.Value;
+                file.Data = temp;
             }
+
+            return null;
         }
 
         public string Description(bool detail)

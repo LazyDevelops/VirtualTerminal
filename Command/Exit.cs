@@ -2,9 +2,10 @@
 {
     public class ExitCommand : VirtualTerminal.ICommand
     {
-        public void Execute(int argc, string[] argv, VirtualTerminal VT)
+        public string? Execute(int argc, string[] argv, VirtualTerminal VT)
         {
             Environment.Exit(0);
+            return null;
         }
 
         public string Description(bool detail)

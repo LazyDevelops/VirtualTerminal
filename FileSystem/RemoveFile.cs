@@ -1,13 +1,13 @@
-﻿using VirtualTerminal.LCRSTree;
+﻿using VirtualTerminal.Tree.General;
 
 namespace VirtualTerminal.FileSystem
 {
     public partial class FileSystem
     {
-        public int RemoveFile(string path, Tree<FileNode> root, char? option)
+        public int RemoveFile(string path, Node<FileDataStruct> root, char? option)
         {
-            Tree<FileNode>? currentNode = FindFile(path, root);
-            Tree<FileNode> parents;
+            Node<FileDataStruct>? currentNode = FindFile(path, root);
+            Node<FileDataStruct> parents;
 
             if (currentNode == null)
             {
@@ -21,17 +21,17 @@ namespace VirtualTerminal.FileSystem
 
             parents = currentNode.Parent;
 
-            if (option != 'r' && currentNode.LeftChild != null)
+            if (option != 'r' && currentNode.Children.Count != 0)
             {
                 return 3;
             }
 
-            if (currentNode.LeftChild != null)
+            if (currentNode.Children.Count != 0)
             {
                 RemoveAllChildren(currentNode);
             }
 
-            parents.RemoveChildNode(currentNode);
+            parents.RemoveChildWithNode(currentNode);
             return 0;
         }
     }

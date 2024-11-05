@@ -2,9 +2,10 @@
 {
     public class ClearCommand : VirtualTerminal.ICommand
     {
-        public void Execute(int argc, string[] argv, VirtualTerminal VT)
+        public string? Execute(int argc, string[] argv, VirtualTerminal VT)
         {
             Console.Clear();
+            return null;
         }
 
         public string Description(bool detail)
