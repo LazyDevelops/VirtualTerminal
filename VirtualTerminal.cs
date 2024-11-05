@@ -79,7 +79,7 @@ namespace VirtualTerminal
                     continue;
                 }
 
-                ProcessCommand(command);
+                ProcessCommand(command); 
             }
         }
 
