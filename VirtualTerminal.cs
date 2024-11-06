@@ -3,6 +3,7 @@ using VirtualTerminal.Tree.General;
 using VirtualTerminal.Command;
 using VirtualTerminal.Error;
 using VirtualTerminal.FileSystem;
+using System;
 
 // path stack이나 list로 수정 고려
 
@@ -101,20 +102,24 @@ namespace VirtualTerminal
                     continue;
                 }
 
-                if (argv.Skip(1).Any(arg => arg == "--help"))
-                {
-                    Console.Write(CommandMap["man"].Execute(2, ["man", argv[0]], this));
-                    continue;
-                }
+                string output = string.Empty;
 
-                if (CommandMap.TryGetValue(argv[0], out ICommand? action))
-                {
-                    Console.Write(action.Execute(argv.Length, argv, this));
+                if(CommandMap.TryGetValue(argv[0], out ICommand? action)){
+                    if (argv.Skip(1).Any(arg => arg == "--help"))
+                    {
+                        output = CommandMap["man"].Execute(2, ["man", argv[0]], this);
+                    }
+                    else
+                    {
+                        output = action.Execute(argv.Length, argv, this);
+                    }
                 }
                 else
                 {
-                    Console.Write(ErrorMessage.CmdNotFound(argv[0]));
+                    output = ErrorMessage.CmdNotFound(argv[0]);
                 }
+
+                Console.Write(output);
             }
         }
 
