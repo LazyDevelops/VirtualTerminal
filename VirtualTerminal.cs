@@ -101,7 +101,7 @@ namespace VirtualTerminal
                     continue;
                 }
 
-                string? output = string.Empty;
+                string? output;
 
                 if (CommandMap.TryGetValue(argv[0], out ICommand? action))
                 {
