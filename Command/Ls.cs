@@ -74,7 +74,7 @@ namespace VirtualTerminal.Command
                 }
                 else if (permission[2])
                 {
-                    result += $"\u001b[36m{fileChild.Data.Name}\u001b[0m";
+                    result += $"\u001b[32m{fileChild.Data.Name}\u001b[0m";
                 }
                 else
                 {

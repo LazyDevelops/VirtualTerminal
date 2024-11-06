@@ -85,7 +85,7 @@ namespace VirtualTerminal
 
         private void DisplayPrompt()
         {
-            Console.Write($"\u001b[32m{USER}\u001b[0m:\u001b[34;1m{PWD}\u001b[0m$ ");
+            Console.Write($"\u001b[32;1m{USER}\u001b[0m:\u001b[34;1m{PWD}\u001b[0m$ ");
         }
 
         private void ProcessCommand(string inputLine)
