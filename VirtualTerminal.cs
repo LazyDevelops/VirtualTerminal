@@ -210,7 +210,7 @@ namespace VirtualTerminal
                 content += input + "\n";
             }
 
-            return content;
+            return content.TrimEnd('\n');
         }
 
         internal static void OptionCheck(ref Dictionary<string, bool> option, in string[] argv)
