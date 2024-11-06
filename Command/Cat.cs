@@ -42,7 +42,7 @@ namespace VirtualTerminal.Command
                     return ErrorMessage.NotF(argv[0], ErrorMessage.DefaultErrorComment(arg));
                 }
 
-                return file.Data.Content;
+                return file.Data.Content + "\n";
             }
 
             return VT.ReadMultiLineInput();
