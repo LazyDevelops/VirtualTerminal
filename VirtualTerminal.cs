@@ -147,6 +147,11 @@ namespace VirtualTerminal
                     parentPath = absolutePath.Replace('/' + fileName, "");
                     parentFile = FileSystem.FindFile(parentPath, Root);
 
+                    if (parentFile == null)
+                    {
+                        Console.Write(ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(argv[index + 1])));
+                    }
+
                     permission = FileSystem.CheckPermission(USER, parentFile, Root);
 
                     if (!permission[0] || !permission[1] || !permission[2])
