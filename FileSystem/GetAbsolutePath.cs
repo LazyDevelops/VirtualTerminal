@@ -2,7 +2,7 @@
 {
     public partial class FileSystem
     {
-        public static string GetAbsolutePath(string path, string homeDirectory, string currentDirectory)
+        public string GetAbsolutePath(string path, string homeDirectory, string currentDirectory)
         {
             if (!path.StartsWith('/'))
             {

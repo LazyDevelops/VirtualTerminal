@@ -26,7 +26,7 @@ namespace VirtualTerminal.Command
                     continue;
                 }
 
-                absolutePath = FileSystem.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
+                absolutePath = VT.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
 
                 file = VT.FileSystem.FindFile(absolutePath, VT.Root);
 
@@ -35,7 +35,7 @@ namespace VirtualTerminal.Command
                     return "bash: " + ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(arg));
                 }
 
-                permission = FileSystem.FileSystem.CheckPermission(VT.USER, file, VT.Root);
+                permission = VT.FileSystem.CheckPermission(VT.USER, file, VT.Root);
 
                 if (!permission[0] || !permission[2])
                 {

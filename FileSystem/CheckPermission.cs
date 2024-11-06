@@ -4,7 +4,7 @@ namespace VirtualTerminal.FileSystem
 {
     public partial class FileSystem
     {
-        public static bool[] CheckPermission(string username, Node<FileDataStruct> file, Node<FileDataStruct> root)
+        public bool[] CheckPermission(string username, Node<FileDataStruct> file, Node<FileDataStruct> root)
         {
             Node<FileDataStruct>? curFile = file.Parent;
             bool[] permissions = [false, false, false, false, false, false];

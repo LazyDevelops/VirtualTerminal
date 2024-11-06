@@ -2,7 +2,7 @@
 {
     public partial class FileSystem
     {
-        public static string PermissionsToString(short permissions)
+        public string PermissionsToString(short permissions)
         {
             string result = string.Empty;
             result += (permissions & 040) != 0 ? "r" : "-";

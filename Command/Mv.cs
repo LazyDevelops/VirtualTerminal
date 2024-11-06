@@ -35,7 +35,7 @@ namespace VirtualTerminal.Command
                     return ErrorMessage.ArgLack(argv[0]);
                 }
 
-                absolutePath[fileCounter] = FileSystem.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
+                absolutePath[fileCounter] = VT.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
 
                 if (fileCounter == 0)
                 {
