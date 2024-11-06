@@ -1,8 +1,8 @@
 using System.Text.RegularExpressions;
-using VirtualTerminal.Tree.General;
 using VirtualTerminal.Command;
 using VirtualTerminal.Error;
 using VirtualTerminal.FileSystem;
+using VirtualTerminal.Tree.General;
 
 // path stack이나 list로 수정 고려
 
@@ -103,7 +103,8 @@ namespace VirtualTerminal
 
                 string? output = string.Empty;
 
-                if(CommandMap.TryGetValue(argv[0], out ICommand? action)){
+                if (CommandMap.TryGetValue(argv[0], out ICommand? action))
+                {
                     if (argv.Skip(1).Any(arg => arg == "--help"))
                     {
                         output = CommandMap["man"].Execute(2, ["man", argv[0]], this);
@@ -119,64 +120,62 @@ namespace VirtualTerminal
                     output = ErrorMessage.CmdNotFound(argv[0]);
                 }
 
-                if(argv.Skip(1).Any(arg => arg == ">>")){
+                if (argv.Skip(1).Any(arg => arg == ">>"))
+                {
                     // 파일에 출력
                     // 권한 검사 필요
                     int index = Array.IndexOf(argv, ">>");
 
-                    if(index == argv.Length - 1)
+                    if (index == argv.Length - 1)
                     {
                         Console.Write("bash: syntax error near unexpected token `newline'\n");
                         continue;
                     }
-                    else
+
+                    Node<FileDataStruct>? file;
+                    Node<FileDataStruct>? parentFile;
+                    string? absolutePath;
+                    string? parentPath;
+                    string? fileName;
+                    bool[] permission;
+
+                    absolutePath = FileSystem.GetAbsolutePath(argv[index + 1], HOME, PWD);
+                    fileName = absolutePath.Split('/')[^1];
+
+                    file = FileSystem.FindFile(absolutePath, Root);
+
+                    parentPath = absolutePath.Replace('/' + fileName, "");
+                    parentFile = FileSystem.FindFile(parentPath, Root);
+
+                    permission = FileSystem.CheckPermission(USER, parentFile, Root);
+
+                    if (!permission[0] || !permission[1] || !permission[2])
                     {
-                        Node<FileDataStruct>? file;
-                        Node<FileDataStruct>? parentFile;
-                        string? absolutePath;
-                        string? parentPath;
-                        string? fileName;
-                        bool[] permission;
+                        Console.Write(ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(argv[index + 1])));
+                        continue;
+                    }
 
-                        absolutePath = FileSystem.GetAbsolutePath(argv[index + 1], HOME, PWD);
-                        fileName = absolutePath.Split('/')[^1];
-
-                        file = FileSystem.FindFile(absolutePath, Root);
-
-                        parentPath = absolutePath.Replace('/' + fileName, "");
-                        parentFile = FileSystem.FindFile(parentPath, Root);
-
-                        permission = FileSystem.CheckPermission(USER, parentFile, Root);
+                    if (file != null)
+                    {
+                        permission = FileSystem.CheckPermission(USER, file, Root);
 
                         if (!permission[0] || !permission[1] || !permission[2])
                         {
                             Console.Write(ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(argv[index + 1])));
                             continue;
                         }
+                    }
 
-                        if(file != null)
-                        {
-                            permission = FileSystem.CheckPermission(USER, file, Root);
-
-                            if (!permission[0] || !permission[1] || !permission[2])
-                            {
-                                Console.Write(ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(argv[index + 1])));
-                                continue;
-                            }
-                            
-                        }
-
-                        if (parentFile.Data.FileType != FileType.D)
-                        {
-                            Console.Write(ErrorMessage.NotD(argv[0], ErrorMessage.DefaultErrorComment(argv[index + 1])));
-                            continue;
-                        }
-
-                        output = RemoveAnsiCodes(output);
-
-                        FileSystem.CreateFile(parentPath, new FileDataStruct(fileName, USER, 0b110100, FileType.F, output), Root);
+                    if (parentFile.Data.FileType != FileType.D)
+                    {
+                        Console.Write(ErrorMessage.NotD(argv[0], ErrorMessage.DefaultErrorComment(argv[index + 1])));
                         continue;
                     }
+
+                    output = RemoveAnsiCodes(output);
+
+                    FileSystem.CreateFile(parentPath, new FileDataStruct(fileName, USER, 0b110100, FileType.F, output), Root);
+                    continue;
                 }
 
                 Console.Write(output);

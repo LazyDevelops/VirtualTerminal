@@ -1,6 +1,6 @@
-using VirtualTerminal.Tree.General;
 using VirtualTerminal.Error;
 using VirtualTerminal.FileSystem;
+using VirtualTerminal.Tree.General;
 
 namespace VirtualTerminal.Command
 {
@@ -19,7 +19,7 @@ namespace VirtualTerminal.Command
             string? absolutePath;
             string? parentPath;
             bool[] permission;
-            
+
 
             Dictionary<string, bool> options = new() { { "r", false }, { "f", false } };
 
