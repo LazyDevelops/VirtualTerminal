@@ -13,7 +13,7 @@ namespace VirtualTerminal.Command
                 return ErrorMessage.ArgLack(argv[0]);
             }
 
-            Tree<FileDataStruct>?[] file = new Tree<FileDataStruct>?[2];
+            /*Tree<FileDataStruct>?[] file = new Tree<FileDataStruct>?[2];
             byte fileCounter = 0;
             string?[] absolutePath = new string?[2];
             string? fileName;
@@ -21,7 +21,7 @@ namespace VirtualTerminal.Command
 
             Dictionary<string, bool> options = new() { { "r", false }, { "f", false } };
 
-            VirtualTerminal.OptionCheck(ref options, in argv);
+            VirtualTerminal.OptionCheck(ref options, in argv);*/
 
             /*foreach (string arg in argv.Skip(1))
             {

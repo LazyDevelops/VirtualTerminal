@@ -13,7 +13,7 @@ namespace VirtualTerminal.Command
                 return ErrorMessage.ArgLack(argv[0]);
             }
 
-            List<Node<FileDataStruct>?> file;
+            /*List<Node<FileDataStruct>?> file;
             Node<FileDataStruct>? parentFile;
             string? fileName;
             string? absolutePath;
@@ -23,7 +23,7 @@ namespace VirtualTerminal.Command
 
             Dictionary<string, bool> options = new() { { "r", false }, { "f", false } };
 
-            VirtualTerminal.OptionCheck(ref options, in argv);
+            VirtualTerminal.OptionCheck(ref options, in argv);*/
 
             /*foreach (string arg in argv.Skip(1))
             {
