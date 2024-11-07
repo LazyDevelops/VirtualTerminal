@@ -45,7 +45,7 @@ namespace VirtualTerminal.Command
                     return ErrorMessage.NotD(argv[0], ErrorMessage.DefaultErrorComment(arg));
                 }
 
-                if (VT.FileSystem.RemoveFile(absolutePath, VT.Root, null) != 0)
+                if (VT.FileSystem.FileRemove(absolutePath, VT.Root, null) != 0)
                 {
                     return ErrorMessage.DNotEmpty(argv[0], ErrorMessage.DefaultErrorComment(arg));
                 }

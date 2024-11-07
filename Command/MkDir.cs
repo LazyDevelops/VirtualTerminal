@@ -54,7 +54,7 @@ namespace VirtualTerminal.Command
                     return ErrorMessage.FExists(argv[0], ErrorMessage.DefaultErrorComment(arg));
                 }
 
-                VT.FileSystem.CreateFile(parentPath, new FileDataStruct(fileName, VT.USER, 0b111101, FileType.D), VT.Root);
+                VT.FileSystem.FileCreate(parentPath, new FileDataStruct(fileName, VT.USER, 0b111101, FileType.D), VT.Root);
             }
 
             return null;

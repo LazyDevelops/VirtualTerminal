@@ -52,10 +52,10 @@ namespace VirtualTerminal.Command
 
                 if (options["r"])
                 {
-                    VT.FileSystem.RemoveFile(absolutePath, VT.Root, 'r');
+                    VT.FileSystem.FileRemove(absolutePath, VT.Root, 'r');
                 }
 
-                VT.FileSystem.RemoveFile(absolutePath, VT.Root, null);
+                VT.FileSystem.FileRemove(absolutePath, VT.Root, null);
             }
 
             return null;

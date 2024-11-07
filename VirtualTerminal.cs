@@ -34,12 +34,12 @@ namespace VirtualTerminal
             FileTree = new Tree<FileDataStruct>(new Node<FileDataStruct>(new FileDataStruct("/", "root", 0b111101, FileType.D)));
             Root = FileTree.Root;
 
-            FileSystem.CreateFile("/", new FileDataStruct("home", "root", 0b111101, FileType.D), Root);
-            FileSystem.CreateFile("/", new FileDataStruct("root", "root", 0b111000, FileType.D), Root);
+            FileSystem.FileCreate("/", new FileDataStruct("home", "root", 0b111101, FileType.D), Root);
+            FileSystem.FileCreate("/", new FileDataStruct("root", "root", 0b111000, FileType.D), Root);
 
-            HomeNode = FileSystem.CreateFile("/home", new FileDataStruct(USER, USER, 0b111101, FileType.D), Root);
+            HomeNode = FileSystem.FileCreate("/home", new FileDataStruct(USER, USER, 0b111101, FileType.D), Root);
 
-            FileSystem.CreateFile(HOME,
+            FileSystem.FileCreate(HOME,
                 new FileDataStruct($"Hello_{USER}.txt", "root", 0b111111, FileType.F, $"Hello, {USER}!"), Root);
 
             PwdNode = FileSystem.FindFile(PWD, Root);
@@ -179,7 +179,7 @@ namespace VirtualTerminal
 
                     output = RemoveAnsiCodes(output);
 
-                    FileSystem.CreateFile(parentPath, new FileDataStruct(fileName, USER, 0b110100, FileType.F, output), Root);
+                    FileSystem.FileCreate(parentPath, new FileDataStruct(fileName, USER, 0b110100, FileType.F, output), Root);
                     continue;
                 }
 

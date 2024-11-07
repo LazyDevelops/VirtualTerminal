@@ -4,7 +4,7 @@ namespace VirtualTerminal.FileSystem
 {
     public partial class FileSystem
     {
-        public Node<FileDataStruct>? CreateFile(string path, FileDataStruct entry, Node<FileDataStruct> root)
+        public Node<FileDataStruct>? FileCreate(string path, FileDataStruct entry, Node<FileDataStruct> root)
         {
             Node<FileDataStruct>? current = FindFile(path, root);
 
