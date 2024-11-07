@@ -26,7 +26,7 @@ namespace VirtualTerminal.Command
 
                 absolutePath = VT.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
 
-                file = VT.FileSystem.FindFile(arg, VT.Root);
+                file = VT.FileSystem.FileFind(arg, VT.Root);
 
                 if (file?.Parent == null)
                 {

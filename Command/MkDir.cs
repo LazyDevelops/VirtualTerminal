@@ -30,7 +30,7 @@ namespace VirtualTerminal.Command
                 fileName = absolutePath.Split('/')[^1];
                 parentPath = absolutePath.Replace('/' + fileName, "");
 
-                parentFile = VT.FileSystem.FindFile(parentPath, VT.Root);
+                parentFile = VT.FileSystem.FileFind(parentPath, VT.Root);
 
                 if (parentFile == null)
                 {
@@ -49,7 +49,7 @@ namespace VirtualTerminal.Command
                     return ErrorMessage.NotD(argv[0], ErrorMessage.DefaultErrorComment(arg));
                 }
 
-                if (VT.FileSystem.FindFile(absolutePath, VT.Root) != null)
+                if (VT.FileSystem.FileFind(absolutePath, VT.Root) != null)
                 {
                     return ErrorMessage.FExists(argv[0], ErrorMessage.DefaultErrorComment(arg));
                 }

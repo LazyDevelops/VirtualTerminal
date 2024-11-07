@@ -42,7 +42,7 @@ namespace VirtualTerminal
             FileSystem.FileCreate(HOME,
                 new FileDataStruct($"Hello_{USER}.txt", "root", 0b111111, FileType.F, $"Hello, {USER}!"), Root);
 
-            PwdNode = FileSystem.FindFile(PWD, Root);
+            PwdNode = FileSystem.FileFind(PWD, Root);
 
             // 명령어와 메서드를 매핑하는 사전 초기화
             CommandMap = new Dictionary<string, ICommand>
@@ -142,10 +142,10 @@ namespace VirtualTerminal
                     absolutePath = FileSystem.GetAbsolutePath(argv[index + 1], HOME, PWD);
                     fileName = absolutePath.Split('/')[^1];
 
-                    file = FileSystem.FindFile(absolutePath, Root);
+                    file = FileSystem.FileFind(absolutePath, Root);
 
                     parentPath = absolutePath.Replace('/' + fileName, "");
-                    parentFile = FileSystem.FindFile(parentPath, Root);
+                    parentFile = FileSystem.FileFind(parentPath, Root);
 
                     if (parentFile == null)
                     {
