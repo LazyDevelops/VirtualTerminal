@@ -150,6 +150,7 @@ namespace VirtualTerminal
                     if (parentFile == null)
                     {
                         Console.Write(ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(argv[index + 1])));
+                        continue;
                     }
 
                     permission = FileSystem.CheckPermission(USER, parentFile, Root);
