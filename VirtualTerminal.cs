@@ -170,7 +170,7 @@ namespace VirtualTerminal
                             continue;
                         }
 
-                        output = "\n" + RemoveAnsiCodes(output).TrimEnd('\n');
+                        output = "\n" + RemoveAnsiCodes(output)?.TrimEnd('\n');
 
                         file.Data.Content += output;
                         continue;
@@ -182,7 +182,7 @@ namespace VirtualTerminal
                         continue;
                     }
 
-                    output = RemoveAnsiCodes(output).TrimEnd('\n');
+                    output = RemoveAnsiCodes(output)?.TrimEnd('\n');
 
                     FileSystem.FileCreate(parentPath, new FileDataStruct(fileName, USER, 0b110100, FileType.F, output), Root);
                     continue;
@@ -192,9 +192,13 @@ namespace VirtualTerminal
             }
         }
 
-        internal static string RemoveAnsiCodes(string input)
+        internal static string? RemoveAnsiCodes(string? input)
         {
-            // 정규식을 사용하여 ANSI 코드 제거
+            if (input == null)
+            {
+                return null;
+            }
+
             const string ansiEscapePattern = @"\u001b\[[0-9;]*m";
             return Regex.Replace(input, ansiEscapePattern, string.Empty);
         }
