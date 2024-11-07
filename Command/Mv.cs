@@ -23,7 +23,7 @@ namespace VirtualTerminal.Command
 
             VirtualTerminal.OptionCheck(ref options, in argv);
 
-            foreach (string arg in argv.Skip(1))
+            /*foreach (string arg in argv.Skip(1))
             {
                 if (arg.Contains('-') || arg.Contains("--"))
                 {
@@ -42,7 +42,7 @@ namespace VirtualTerminal.Command
                 }
 
                 fileCounter++;
-            }
+            }*/
 
             return null;
         }
