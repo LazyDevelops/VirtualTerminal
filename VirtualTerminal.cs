@@ -164,11 +164,16 @@ namespace VirtualTerminal
                     {
                         permission = FileSystem.CheckPermission(USER, file, Root);
 
-                        if (!permission[0] || !permission[1] || !permission[2])
+                        if (!permission[0] || !permission[1])
                         {
                             Console.Write(ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(argv[index + 1])));
                             continue;
                         }
+
+                        output = "\n" + RemoveAnsiCodes(output).TrimEnd('\n');
+
+                        file.Data.Content += output;
+                        continue;
                     }
 
                     if (parentFile.Data.FileType != FileType.D)
@@ -177,7 +182,7 @@ namespace VirtualTerminal
                         continue;
                     }
 
-                    output = RemoveAnsiCodes(output);
+                    output = RemoveAnsiCodes(output).TrimEnd('\n');
 
                     FileSystem.FileCreate(parentPath, new FileDataStruct(fileName, USER, 0b110100, FileType.F, output), Root);
                     continue;
