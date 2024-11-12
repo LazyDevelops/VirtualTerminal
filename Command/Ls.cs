@@ -2,6 +2,8 @@ using VirtualTerminal.Error;
 using VirtualTerminal.FileSystem;
 using VirtualTerminal.Tree.General;
 
+// 수정 필요
+
 namespace VirtualTerminal.Command
 {
     public class LsCommand : VirtualTerminal.ICommand
