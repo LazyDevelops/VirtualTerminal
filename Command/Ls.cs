@@ -11,7 +11,8 @@ namespace VirtualTerminal.Command
         public string? Execute(int argc, string[] argv, VirtualTerminal VT)
         {
             Node<FileDataStruct>? file;
-            List<Node<FileDataStruct>>? fileChildren;
+            List<Node<FileDataStruct>> files = [];
+            List<string> inputFilesArg = [];
             string? absolutePath;
             bool[] permission;
 
@@ -19,7 +20,7 @@ namespace VirtualTerminal.Command
 
             VirtualTerminal.OptionCheck(ref options, in argv);
 
-            fileChildren = VT.PwdNode?.Children;
+            //fileChildren = VT.PwdNode?.Children;
 
             foreach (string arg in argv.Skip(1))
             {
@@ -49,42 +50,85 @@ namespace VirtualTerminal.Command
                     return arg;
                 }
 
-                fileChildren = file.Children;
+                //fileChildren = file.Children;
+                files.Add(file);
+                inputFilesArg.Add(arg);
             }
 
-            if (fileChildren == null)
+            if (files.Count == 0)
             {
-                return null;
+                if(VT.PwdNode == null){
+                    return null;
+                }
+                files.Add(VT.PwdNode);
             }
 
             string? result = null;
-
-            foreach (Node<FileDataStruct> fileChild in fileChildren)
+            
+            for(int i = 0; i < files.Count; i++)
             {
-                permission = VT.FileSystem.CheckPermission(VT.USER, fileChild, VT.Root);
-
-                if (options["l"])
+                if(files.Count > 1)
                 {
-                    string permissions = VT.FileSystem.PermissionsToString(fileChild.Data.Permission);
-                    result += $"{Convert.ToChar(fileChild.Data.FileType)}{permissions} {fileChild.Data.UID} ";
+                    result += $"{inputFilesArg[i]}:\n";
                 }
 
+                foreach (Node<FileDataStruct> fileChild in files[i].Children)
+                {
+                    permission = VT.FileSystem.CheckPermission(VT.USER, fileChild, VT.Root);
 
-                if (fileChild.Data.FileType == FileType.D)
-                {
-                    result += $"\u001b[34m{fileChild.Data.Name}\u001b[0m";
-                }
-                else if (permission[2])
-                {
-                    result += $"\u001b[32m{fileChild.Data.Name}\u001b[0m";
-                }
-                else
-                {
-                    result += fileChild.Data.Name;
+                    if (options["l"])
+                    {
+                        string permissions = VT.FileSystem.PermissionsToString(fileChild.Data.Permission);
+                        result += $"{Convert.ToChar(fileChild.Data.FileType)}{permissions} {fileChild.Data.UID} ";
+                    }
+
+
+                    if (fileChild.Data.FileType == FileType.D)
+                    {
+                        result += $"\u001b[34m{fileChild.Data.Name}\u001b[0m";
+                    }
+                    else if (permission[2])
+                    {
+                        result += $"\u001b[32m{fileChild.Data.Name}\u001b[0m";
+                    }
+                    else
+                    {
+                        result += fileChild.Data.Name;
+                    }
+
+                    result += "\n";
                 }
 
-                result += "\n";
+                if(i != files.Count - 1){
+                    result += "\n";
+                }
             }
+            // foreach (Node<FileDataStruct> fileChild in fileChildren)
+            // {
+            //     permission = VT.FileSystem.CheckPermission(VT.USER, fileChild, VT.Root);
+
+            //     if (options["l"])
+            //     {
+            //         string permissions = VT.FileSystem.PermissionsToString(fileChild.Data.Permission);
+            //         result += $"{Convert.ToChar(fileChild.Data.FileType)}{permissions} {fileChild.Data.UID} ";
+            //     }
+
+
+            //     if (fileChild.Data.FileType == FileType.D)
+            //     {
+            //         result += $"\u001b[34m{fileChild.Data.Name}\u001b[0m";
+            //     }
+            //     else if (permission[2])
+            //     {
+            //         result += $"\u001b[32m{fileChild.Data.Name}\u001b[0m";
+            //     }
+            //     else
+            //     {
+            //         result += fileChild.Data.Name;
+            //     }
+
+            //     result += "\n";
+            // }
 
             return result;
         }
