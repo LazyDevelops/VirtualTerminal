@@ -2,11 +2,6 @@ namespace VirtualTerminal.Tree.LCRS
 {
     public class Node<T>
     {
-        public T? Data { get; set; }
-        public Node<T>? Parent { get; set; }
-        public Node<T>? LeftChild { get; set; }
-        public Node<T>? RightSibling { get; set; }
-
         public Node(T? data)
         {
             Data = data;
@@ -14,6 +9,11 @@ namespace VirtualTerminal.Tree.LCRS
             LeftChild = null;
             RightSibling = null;
         }
+
+        public T? Data { get; set; }
+        public Node<T>? Parent { get; set; }
+        public Node<T>? LeftChild { get; set; }
+        public Node<T>? RightSibling { get; set; }
 
         public void AppendChildNode(Node<T> node)
         {

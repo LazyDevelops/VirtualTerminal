@@ -1,6 +1,6 @@
-using VirtualTerminal.Tree.General;
 using VirtualTerminal.Error;
 using VirtualTerminal.FileSystem;
+using VirtualTerminal.Tree.General;
 
 namespace VirtualTerminal.Command
 {
@@ -26,18 +26,18 @@ namespace VirtualTerminal.Command
                     continue;
                 }
 
-                absolutePath = FileSystem.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
+                absolutePath = VT.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
                 fileName = absolutePath.Split('/')[^1];
                 parentPath = absolutePath.Replace('/' + fileName, "");
 
-                parentFile = VT.FileSystem.FindFile(parentPath, VT.Root);
+                parentFile = VT.FileSystem.FileFind(parentPath, VT.Root);
 
                 if (parentFile == null)
                 {
                     return ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(arg));
                 }
 
-                permission = FileSystem.FileSystem.CheckPermission(VT.USER, parentFile, VT.Root);
+                permission = VT.FileSystem.CheckPermission(VT.USER, parentFile, VT.Root);
 
                 if (!permission[0] || !permission[1] || !permission[2])
                 {
@@ -49,12 +49,12 @@ namespace VirtualTerminal.Command
                     return ErrorMessage.NotD(argv[0], ErrorMessage.DefaultErrorComment(arg));
                 }
 
-                if (VT.FileSystem.FindFile(absolutePath, VT.Root) != null)
+                if (VT.FileSystem.FileFind(absolutePath, VT.Root) != null)
                 {
                     return ErrorMessage.FExists(argv[0], ErrorMessage.DefaultErrorComment(arg));
                 }
 
-                VT.FileSystem.CreateFile(parentPath, new FileDataStruct(fileName, VT.USER, 0b111101, FileType.D), VT.Root);
+                VT.FileSystem.FileCreate(parentPath, new FileDataStruct(fileName, VT.USER, 0b111101, FileType.D), VT.Root);
             }
 
             return null;

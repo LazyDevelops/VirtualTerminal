@@ -1,6 +1,6 @@
-using VirtualTerminal.Tree.General;
 using VirtualTerminal.Error;
 using VirtualTerminal.FileSystem;
+using VirtualTerminal.Tree.General;
 
 namespace VirtualTerminal.Command
 {
@@ -28,8 +28,8 @@ namespace VirtualTerminal.Command
                     continue;
                 }
 
-                absolutePath = FileSystem.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
-                file = VT.FileSystem.FindFile(absolutePath, VT.Root);
+                absolutePath = VT.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
+                file = VT.FileSystem.FileFind(absolutePath, VT.Root);
 
                 if (file == null)
                 {

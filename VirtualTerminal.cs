@@ -1,8 +1,8 @@
 using System.Text.RegularExpressions;
-using VirtualTerminal.Tree.General;
 using VirtualTerminal.Command;
 using VirtualTerminal.Error;
 using VirtualTerminal.FileSystem;
+using VirtualTerminal.Tree.General;
 
 // path stack이나 list로 수정 고려
 
@@ -34,15 +34,15 @@ namespace VirtualTerminal
             FileTree = new Tree<FileDataStruct>(new Node<FileDataStruct>(new FileDataStruct("/", "root", 0b111101, FileType.D)));
             Root = FileTree.Root;
 
-            FileSystem.CreateFile("/", new FileDataStruct("home", "root", 0b111101, FileType.D), Root);
-            FileSystem.CreateFile("/", new FileDataStruct("root", "root", 0b111000, FileType.D), Root);
+            FileSystem.FileCreate("/", new FileDataStruct("home", "root", 0b111101, FileType.D), Root);
+            FileSystem.FileCreate("/", new FileDataStruct("root", "root", 0b111000, FileType.D), Root);
 
-            HomeNode = FileSystem.CreateFile("/home", new FileDataStruct(USER, USER, 0b111101, FileType.D), Root);
+            HomeNode = FileSystem.FileCreate("/home", new FileDataStruct(USER, USER, 0b111101, FileType.D), Root);
 
-            FileSystem.CreateFile(HOME,
+            FileSystem.FileCreate(HOME,
                 new FileDataStruct($"Hello_{USER}.txt", "root", 0b111111, FileType.F, $"Hello, {USER}!"), Root);
 
-            PwdNode = FileSystem.FindFile(PWD, Root);
+            PwdNode = FileSystem.FileFind(PWD, Root);
 
             // 명령어와 메서드를 매핑하는 사전 초기화
             CommandMap = new Dictionary<string, ICommand>
@@ -85,10 +85,110 @@ namespace VirtualTerminal
 
         private void DisplayPrompt()
         {
-            Console.Write($"\u001b[32m{USER}\u001b[0m:\u001b[34;1m{PWD}\u001b[0m$ ");
+            Console.Write($"\u001b[32;1m{USER}\u001b[0m:\u001b[34;1m{PWD}\u001b[0m$ ");
         }
 
         private void ProcessCommand(string inputLine)
+        {
+            foreach (string command in inputLine.Split(';'))
+            {
+                string? output = ExecuteCommand(command);
+                HandleOutput(output, command.Split(' '));
+            }
+        }
+
+        private string? ExecuteCommand(string command)
+        {
+            string[] argv = command.Split(' ').Where(arg => !string.IsNullOrWhiteSpace(arg)).ToArray();
+
+            if (argv.Length == 0)
+            {
+                return null;
+            }
+
+            if (!CommandMap.TryGetValue(argv[0], out ICommand? action))
+            {
+                return ErrorMessage.CmdNotFound(argv[0]);
+            }
+
+            if (argv.Skip(1).Any(arg => arg == "--help"))
+            {
+                return CommandMap["man"].Execute(2, ["man", argv[0]], this);
+            }
+
+            string[] temp = argv.TakeWhile(x => x != ">>").ToArray();
+            return action.Execute(temp.Length, temp, this);
+        }
+
+        private void HandleOutput(string? output, string[] argv)
+        {
+            if (argv.Skip(1).Any(arg => arg == ">>"))
+            {
+                int index = Array.IndexOf(argv, ">>");
+                if (index == argv.Length - 1)
+                {
+                    Console.Write("bash: syntax error near unexpected token `newline'\n");
+                    return;
+                }
+                AppendToFile(output, argv[index + 1]);
+            }
+            else
+            {
+                Console.Write(output);
+            }
+        }
+
+        private void AppendToFile(string? output, string filePath)
+        {
+            string absolutePath = FileSystem.GetAbsolutePath(filePath, HOME, PWD);
+            string fileName = absolutePath.Split('/')[^1];
+            string parentPath = absolutePath.Replace('/' + fileName, "");
+            bool[] permission;
+
+            Node<FileDataStruct>? file = FileSystem.FileFind(absolutePath, Root);
+            Node<FileDataStruct>? parentFile = FileSystem.FileFind(parentPath, Root);
+
+            if (parentFile == null)
+            {
+                Console.Write(ErrorMessage.NoSuchForD(filePath, ErrorMessage.DefaultErrorComment(filePath)));
+                return;
+            }
+
+            permission = FileSystem.CheckPermission(USER, parentFile, Root);
+
+            if (!permission[0] || !permission[1] || !permission[2])
+            {
+                Console.Write(ErrorMessage.PermissionDenied(filePath, ErrorMessage.DefaultErrorComment(filePath)));
+                return;
+            }
+
+            if (file != null)
+            {
+                permission = FileSystem.CheckPermission(USER, file, Root);
+
+                if (!permission[0] || !permission[1])
+                {
+                    Console.Write(ErrorMessage.PermissionDenied(filePath, ErrorMessage.DefaultErrorComment(filePath)));
+                    return;
+                }
+
+                output = "\n" + RemoveAnsiCodes(output)?.TrimEnd('\n');
+                file.Data.Content += output;
+            }
+            else
+            {
+                if (parentFile.Data.FileType != FileType.D)
+                {
+                    Console.Write(ErrorMessage.NotD(filePath, ErrorMessage.DefaultErrorComment(filePath)));
+                    return;
+                }
+
+                output = RemoveAnsiCodes(output)?.TrimEnd('\n');
+                FileSystem.FileCreate(parentPath, new FileDataStruct(fileName, USER, 0b110100, FileType.F, output), Root);
+            }
+        }
+
+        /*private void ProcessCommand(string inputLine)
         {
             string[] commands = inputLine.Split(';');
 
@@ -101,26 +201,105 @@ namespace VirtualTerminal
                     continue;
                 }
 
-                if (argv.Skip(1).Any(arg => arg == "--help"))
-                {
-                    Console.Write(CommandMap["man"].Execute(2, ["man", argv[0]], this));
-                    continue;
-                }
+                string? output;
 
                 if (CommandMap.TryGetValue(argv[0], out ICommand? action))
                 {
-                    Console.Write(action.Execute(argv.Length, argv, this));
+                    if (argv.Skip(1).Any(arg => arg == "--help"))
+                    {
+                        output = CommandMap["man"].Execute(2, ["man", argv[0]], this);
+                    }
+                    else
+                    {
+                        string[] temp = argv.TakeWhile(x => x != ">>").ToArray();
+                        output = action.Execute(temp.Length, temp, this);
+                    }
                 }
                 else
                 {
-                    Console.Write(ErrorMessage.CmdNotFound(argv[0]));
+                    output = ErrorMessage.CmdNotFound(argv[0]);
                 }
-            }
-        }
 
-        internal static string RemoveAnsiCodes(string input)
+                if (argv.Skip(1).Any(arg => arg == ">>"))
+                {
+                    // 파일에 출력
+                    // 권한 검사 필요
+                    int index = Array.IndexOf(argv, ">>");
+
+                    if (index == argv.Length - 1)
+                    {
+                        Console.Write("bash: syntax error near unexpected token `newline'\n");
+                        continue;
+                    }
+
+                    Node<FileDataStruct>? file;
+                    Node<FileDataStruct>? parentFile;
+                    string? absolutePath;
+                    string? parentPath;
+                    string? fileName;
+                    bool[] permission;
+
+                    absolutePath = FileSystem.GetAbsolutePath(argv[index + 1], HOME, PWD);
+                    fileName = absolutePath.Split('/')[^1];
+
+                    file = FileSystem.FileFind(absolutePath, Root);
+
+                    parentPath = absolutePath.Replace('/' + fileName, "");
+                    parentFile = FileSystem.FileFind(parentPath, Root);
+
+                    if (parentFile == null)
+                    {
+                        Console.Write(ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(argv[index + 1])));
+                        continue;
+                    }
+
+                    permission = FileSystem.CheckPermission(USER, parentFile, Root);
+
+                    if (!permission[0] || !permission[1] || !permission[2])
+                    {
+                        Console.Write(ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(argv[index + 1])));
+                        continue;
+                    }
+
+                    if (file != null)
+                    {
+                        permission = FileSystem.CheckPermission(USER, file, Root);
+
+                        if (!permission[0] || !permission[1])
+                        {
+                            Console.Write(ErrorMessage.PermissionDenied(argv[0], ErrorMessage.DefaultErrorComment(argv[index + 1])));
+                            continue;
+                        }
+
+                        output = "\n" + RemoveAnsiCodes(output)?.TrimEnd('\n');
+
+                        file.Data.Content += output;
+                        continue;
+                    }
+
+                    if (parentFile.Data.FileType != FileType.D)
+                    {
+                        Console.Write(ErrorMessage.NotD(argv[0], ErrorMessage.DefaultErrorComment(argv[index + 1])));
+                        continue;
+                    }
+
+                    output = RemoveAnsiCodes(output)?.TrimEnd('\n');
+
+                    FileSystem.FileCreate(parentPath, new FileDataStruct(fileName, USER, 0b110100, FileType.F, output), Root);
+                    continue;
+                }
+
+                Console.Write(output);
+            }
+        }*/
+
+        internal static string? RemoveAnsiCodes(string? input)
         {
-            // 정규식을 사용하여 ANSI 코드 제거
+            if (input == null)
+            {
+                return null;
+            }
+
             const string ansiEscapePattern = @"\u001b\[[0-9;]*m";
             return Regex.Replace(input, ansiEscapePattern, string.Empty);
         }

@@ -4,9 +4,9 @@ namespace VirtualTerminal.FileSystem
 {
     public partial class FileSystem
     {
-        public int RemoveFile(string path, Node<FileDataStruct> root, char? option)
+        public int FileRemove(string path, Node<FileDataStruct> root, char? option)
         {
-            Node<FileDataStruct>? currentNode = FindFile(path, root);
+            Node<FileDataStruct>? currentNode = FileFind(path, root);
             Node<FileDataStruct> parents;
 
             if (currentNode == null)

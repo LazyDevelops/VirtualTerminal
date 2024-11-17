@@ -1,6 +1,8 @@
-using VirtualTerminal.Tree.General;
 using VirtualTerminal.Error;
 using VirtualTerminal.FileSystem;
+using VirtualTerminal.Tree.General;
+
+// 수정 필요
 
 namespace VirtualTerminal.Command
 {
@@ -9,15 +11,14 @@ namespace VirtualTerminal.Command
         public string? Execute(int argc, string[] argv, VirtualTerminal VT)
         {
             Node<FileDataStruct>? file;
-            List<Node<FileDataStruct>>? fileChildren;
+            List<Node<FileDataStruct>> files = [];
+            List<string> inputFilesArg = [];
             string? absolutePath;
             bool[] permission;
 
             Dictionary<string, bool> options = new() { { "l", false } };
 
             VirtualTerminal.OptionCheck(ref options, in argv);
-
-            fileChildren = VT.PwdNode?.Children;
 
             foreach (string arg in argv.Skip(1))
             {
@@ -26,16 +27,16 @@ namespace VirtualTerminal.Command
                     continue;
                 }
 
-                absolutePath = FileSystem.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
+                absolutePath = VT.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
 
-                file = VT.FileSystem.FindFile(absolutePath, VT.Root);
+                file = VT.FileSystem.FileFind(absolutePath, VT.Root);
 
                 if (file == null)
                 {
                     return ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(arg));
                 }
 
-                permission = FileSystem.FileSystem.CheckPermission(VT.USER, file, VT.Root);
+                permission = VT.FileSystem.CheckPermission(VT.USER, file, VT.Root);
 
                 if (!permission[0])
                 {
@@ -46,42 +47,67 @@ namespace VirtualTerminal.Command
                 {
                     return arg;
                 }
-
-                fileChildren = file.Children;
+                
+                files.Add(file);
+                inputFilesArg.Add(arg);
             }
 
-            if (fileChildren == null)
+            if (files.Count == 0)
             {
-                return null;
+                if(VT.PwdNode == null){
+                    return null;
+                }
+                files.Add(VT.PwdNode);
             }
 
             string? result = null;
-
-            foreach (Node<FileDataStruct> fileChild in fileChildren)
+            
+            for(int i = 0; i < files.Count; i++)
             {
-                permission = FileSystem.FileSystem.CheckPermission(VT.USER, fileChild, VT.Root);
-
-                if (options["l"])
+                if(files.Count > 1)
                 {
-                    string permissions = FileSystem.FileSystem.PermissionsToString(fileChild.Data.Permission);
-                    result += $"{Convert.ToChar(fileChild.Data.FileType)}{permissions} {fileChild.Data.UID} ";
+                    result += $"{inputFilesArg[i]}:\n";
                 }
 
+                foreach (Node<FileDataStruct> fileChild in files[i].Children)
+                {
+                    permission = VT.FileSystem.CheckPermission(VT.USER, fileChild, VT.Root);
 
-                if (fileChild.Data.FileType == FileType.D)
-                {
-                    result += $"\u001b[34m{fileChild.Data.Name}\u001b[0m";
-                }
-                else if (permission[2])
-                {
-                    result += $"\u001b[36m{fileChild.Data.Name}\u001b[0m";
-                }
-                else
-                {
-                    result += fileChild.Data.Name;
+                    if (options["l"])
+                    {
+                        string permissions = VT.FileSystem.PermissionsToString(fileChild.Data.Permission);
+                        /*DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(fileChild.Data.LastTouchTime);
+
+                        int year = dateTimeOffset.Year;
+                        int month = dateTimeOffset.Month;
+                        int day = dateTimeOffset.Day;
+                        int hour = dateTimeOffset.Hour;
+                        int minute = dateTimeOffset.Minute;
+
+                        string time;*/
+                        result += $"{Convert.ToChar(fileChild.Data.FileType)}{permissions} {fileChild.Data.UID}";
+                    }
+
+
+                    if (fileChild.Data.FileType == FileType.D)
+                    {
+                        result += $"\u001b[34m{fileChild.Data.Name}\u001b[0m";
+                    }
+                    else if (permission[2])
+                    {
+                        result += $"\u001b[32m{fileChild.Data.Name}\u001b[0m";
+                    }
+                    else
+                    {
+                        result += fileChild.Data.Name;
+                    }
+
+                    result += "\n";
                 }
 
-                result += "\n";
+                if(i != files.Count - 1){
+                    result += "\n";
+                }
             }
 
             return result;

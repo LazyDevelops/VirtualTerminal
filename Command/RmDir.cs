@@ -1,6 +1,6 @@
-using VirtualTerminal.Tree.General;
 using VirtualTerminal.Error;
 using VirtualTerminal.FileSystem;
+using VirtualTerminal.Tree.General;
 
 namespace VirtualTerminal.Command
 {
@@ -24,16 +24,16 @@ namespace VirtualTerminal.Command
                     continue;
                 }
 
-                absolutePath = FileSystem.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
+                absolutePath = VT.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
 
-                file = VT.FileSystem.FindFile(arg, VT.Root);
+                file = VT.FileSystem.FileFind(arg, VT.Root);
 
                 if (file?.Parent == null)
                 {
                     return ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(arg));
                 }
 
-                permission = FileSystem.FileSystem.CheckPermission(VT.USER, file.Parent, VT.Root);
+                permission = VT.FileSystem.CheckPermission(VT.USER, file.Parent, VT.Root);
 
                 if (permission[0] || !permission[1] || !permission[2])
                 {
@@ -45,7 +45,7 @@ namespace VirtualTerminal.Command
                     return ErrorMessage.NotD(argv[0], ErrorMessage.DefaultErrorComment(arg));
                 }
 
-                if (VT.FileSystem.RemoveFile(absolutePath, VT.Root, null) != 0)
+                if (VT.FileSystem.FileRemove(absolutePath, VT.Root, null) != 0)
                 {
                     return ErrorMessage.DNotEmpty(argv[0], ErrorMessage.DefaultErrorComment(arg));
                 }

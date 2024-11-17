@@ -1,6 +1,6 @@
-using VirtualTerminal.Tree.General;
 using VirtualTerminal.Error;
 using VirtualTerminal.FileSystem;
+using VirtualTerminal.Tree.General;
 
 namespace VirtualTerminal.Command
 {
@@ -13,23 +13,23 @@ namespace VirtualTerminal.Command
                 return ErrorMessage.ArgLack(argv[0]);
             }
 
-            List<Node<FileDataStruct>?> file;
+            /*List<Node<FileDataStruct>?> file;
             Node<FileDataStruct>? parentFile;
             string? fileName;
             string? absolutePath;
             string? parentPath;
             bool[] permission;
-            
+
 
             Dictionary<string, bool> options = new() { { "r", false }, { "f", false } };
 
-            VirtualTerminal.OptionCheck(ref options, in argv);
+            VirtualTerminal.OptionCheck(ref options, in argv);*/
 
             /*foreach (string arg in argv.Skip(1))
             {
                 if (file.Count == 0)
                 {
-                    absolutePath = FileSystem.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
+                    absolutePath = VT.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
                     file.Add(VT.FileSystem.FindFile(absolutePath, VT.Root));
 
                     if (file[0] == null)
@@ -38,7 +38,7 @@ namespace VirtualTerminal.Command
                         return;
                     }
 
-                    permission = FileSystem.FileSystem.CheckPermission(VT.USER, file[0], VT.Root);
+                    permission = VT.FileSystem.CheckPermission(VT.USER, file[0], VT.Root);
 
                     if (!permission[0] || !permission[2])
                     {
@@ -47,7 +47,7 @@ namespace VirtualTerminal.Command
                     }
                 }
 
-                absolutePath = FileSystem.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
+                absolutePath = VT.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
                 fileName = absolutePath.Split('/')[^1];
                 file[1] = VT.FileSystem.FindFile(absolutePath, VT.Root);
 
@@ -60,7 +60,7 @@ namespace VirtualTerminal.Command
                     return;
                 }
 
-                permission = FileSystem.FileSystem.CheckPermission(VT.USER, parentFile, VT.Root);
+                permission = VT.FileSystem.CheckPermission(VT.USER, parentFile, VT.Root);
 
                 if (!permission[0] || !permission[1] || !permission[2])
                 {

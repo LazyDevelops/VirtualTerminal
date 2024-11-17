@@ -1,6 +1,6 @@
-using VirtualTerminal.Tree.General;
 using VirtualTerminal.Error;
 using VirtualTerminal.FileSystem;
+using VirtualTerminal.Tree.General;
 
 // 문제 있음
 
@@ -11,10 +11,7 @@ namespace VirtualTerminal.Command
         public string? Execute(int argc, string[] argv, VirtualTerminal VT)
         {
             Node<FileDataStruct>? file;
-            Node<FileDataStruct>? parentFile;
             string? absolutePath;
-            string? parentPath;
-            string? fileName;
             bool[] permission;
 
             foreach (string arg in argv.Skip(1))
@@ -24,43 +21,16 @@ namespace VirtualTerminal.Command
                     continue;
                 }
 
-                absolutePath = FileSystem.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
-                fileName = absolutePath.Split('/')[^1];
+                absolutePath = VT.FileSystem.GetAbsolutePath(arg, VT.HOME, VT.PWD);
 
-                file = VT.FileSystem.FindFile(absolutePath, VT.Root);
+                file = VT.FileSystem.FileFind(absolutePath, VT.Root);
 
                 if (file == null)
                 {
-                    parentPath = absolutePath.Replace('/' + fileName, "");
-                    parentFile = VT.FileSystem.FindFile(parentPath, VT.Root);
-
-                    if (parentFile == null)
-                    {
-                        return ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(arg));
-                    }
-
-                    permission = FileSystem.FileSystem.CheckPermission(VT.USER, parentFile, VT.Root);
-
-                    if (!permission[0] || !permission[1] || !permission[2])
-                    {
-                        return ErrorMessage.PermissionDenied(argv[0],
-                            ErrorMessage.DefaultErrorComment(arg));
-                    }
-
-                    if (parentFile.Data.FileType != FileType.D)
-                    {
-                        return ErrorMessage.NotD(argv[0], ErrorMessage.DefaultErrorComment(arg));
-                    }
-
-                    Console.WriteLine($"파일 찾기 실패: {fileName}. 새로운 파일 만들기. 내용을 입력해주십시오. (점(.)만 찍고 엔터 치면 입력 종료):");
-                    string content = VT.ReadMultiLineInput();
-                    VT.FileSystem.CreateFile(parentPath, new FileDataStruct(fileName, VT.USER, 0b110100, FileType.F, content),
-                        VT.Root);
-
-                    return content;
+                    return ErrorMessage.NoSuchForD(argv[0], ErrorMessage.DefaultErrorComment(arg));
                 }
 
-                permission = FileSystem.FileSystem.CheckPermission(VT.USER, file, VT.Root);
+                permission = VT.FileSystem.CheckPermission(VT.USER, file, VT.Root);
 
                 if (!permission[0])
                 {
@@ -72,16 +42,10 @@ namespace VirtualTerminal.Command
                     return ErrorMessage.NotF(argv[0], ErrorMessage.DefaultErrorComment(arg));
                 }
 
-                return file.Data.Content;
+                return file.Data.Content + "\n";
             }
 
-            string? line;
-            while ((line = Console.ReadLine()) != ".")
-            {
-                return line;
-            }
-
-            return null;
+            return VT.ReadMultiLineInput();
         }
 
         public string Description(bool detail)
