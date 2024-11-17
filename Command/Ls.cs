@@ -20,8 +20,6 @@ namespace VirtualTerminal.Command
 
             VirtualTerminal.OptionCheck(ref options, in argv);
 
-            //fileChildren = VT.PwdNode?.Children;
-
             foreach (string arg in argv.Skip(1))
             {
                 if (arg.Contains('-') || arg.Contains("--"))
@@ -49,8 +47,7 @@ namespace VirtualTerminal.Command
                 {
                     return arg;
                 }
-
-                //fileChildren = file.Children;
+                
                 files.Add(file);
                 inputFilesArg.Add(arg);
             }
@@ -79,7 +76,7 @@ namespace VirtualTerminal.Command
                     if (options["l"])
                     {
                         string permissions = VT.FileSystem.PermissionsToString(fileChild.Data.Permission);
-                        DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(fileChild.Data.LastTouchTime);
+                        /*DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(fileChild.Data.LastTouchTime);
 
                         int year = dateTimeOffset.Year;
                         int month = dateTimeOffset.Month;
@@ -87,8 +84,8 @@ namespace VirtualTerminal.Command
                         int hour = dateTimeOffset.Hour;
                         int minute = dateTimeOffset.Minute;
 
-                        string time;
-                        result += $"{Convert.ToChar(fileChild.Data.FileType)}{permissions} {fileChild.Data.UID} {}";
+                        string time;*/
+                        result += $"{Convert.ToChar(fileChild.Data.FileType)}{permissions} {fileChild.Data.UID}";
                     }
 
 
@@ -112,32 +109,6 @@ namespace VirtualTerminal.Command
                     result += "\n";
                 }
             }
-            // foreach (Node<FileDataStruct> fileChild in fileChildren)
-            // {
-            //     permission = VT.FileSystem.CheckPermission(VT.USER, fileChild, VT.Root);
-
-            //     if (options["l"])
-            //     {
-            //         string permissions = VT.FileSystem.PermissionsToString(fileChild.Data.Permission);
-            //         result += $"{Convert.ToChar(fileChild.Data.FileType)}{permissions} {fileChild.Data.UID} ";
-            //     }
-
-
-            //     if (fileChild.Data.FileType == FileType.D)
-            //     {
-            //         result += $"\u001b[34m{fileChild.Data.Name}\u001b[0m";
-            //     }
-            //     else if (permission[2])
-            //     {
-            //         result += $"\u001b[32m{fileChild.Data.Name}\u001b[0m";
-            //     }
-            //     else
-            //     {
-            //         result += fileChild.Data.Name;
-            //     }
-
-            //     result += "\n";
-            // }
 
             return result;
         }
