@@ -79,7 +79,16 @@ namespace VirtualTerminal.Command
                     if (options["l"])
                     {
                         string permissions = VT.FileSystem.PermissionsToString(fileChild.Data.Permission);
-                        result += $"{Convert.ToChar(fileChild.Data.FileType)}{permissions} {fileChild.Data.UID} ";
+                        DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(fileChild.Data.LastTouchTime);
+
+                        int year = dateTimeOffset.Year;
+                        int month = dateTimeOffset.Month;
+                        int day = dateTimeOffset.Day;
+                        int hour = dateTimeOffset.Hour;
+                        int minute = dateTimeOffset.Minute;
+
+                        string time;
+                        result += $"{Convert.ToChar(fileChild.Data.FileType)}{permissions} {fileChild.Data.UID} {}";
                     }
 
 

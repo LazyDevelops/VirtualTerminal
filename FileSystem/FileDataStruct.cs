@@ -7,6 +7,7 @@
         public byte Permission { get; set; } = permission;
         public string UID { get; set; } = UID;
         public FileType FileType { get; set; } = fileType;
+        public long LastTouchTime { get; set; } = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         public string? Content { get; set; } = content;
 
         public override string ToString()
