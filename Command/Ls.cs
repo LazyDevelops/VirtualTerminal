@@ -85,7 +85,7 @@ namespace VirtualTerminal.Command
                         int minute = dateTimeOffset.Minute;
 
                         string time;*/
-                        result += $"{Convert.ToChar(fileChild.Data.FileType)}{permissions} {fileChild.Data.UID}";
+                        result += $"{Convert.ToChar(fileChild.Data.FileType)}{permissions} {fileChild.Data.UID} ";
                     }
 
 
