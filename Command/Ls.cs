@@ -76,7 +76,7 @@ namespace VirtualTerminal.Command
                     if (options["l"])
                     {
                         string permissions = VT.FileSystem.PermissionsToString(fileChild.Data.Permission);
-                        /*DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(fileChild.Data.LastTouchTime);
+                        DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(fileChild.Data.LastTouchTime);
 
                         int year = dateTimeOffset.Year;
                         int month = dateTimeOffset.Month;
@@ -84,8 +84,8 @@ namespace VirtualTerminal.Command
                         int hour = dateTimeOffset.Hour;
                         int minute = dateTimeOffset.Minute;
 
-                        string time;*/
-                        result += $"{Convert.ToChar(fileChild.Data.FileType)}{permissions} {fileChild.Data.UID} ";
+                        string time = $"{year}년 {month}월 {day} {hour}:{minute}";
+                        result += $"{Convert.ToChar(fileChild.Data.FileType)}{permissions} {fileChild.Data.UID} {time} ";
                     }
 
 

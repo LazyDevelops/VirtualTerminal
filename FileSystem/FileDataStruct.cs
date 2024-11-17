@@ -1,13 +1,24 @@
 ﻿namespace VirtualTerminal.FileSystem
 {
-    public struct FileDataStruct(string name, string UID, byte permission, FileType fileType, string? content = null)
+    public struct FileDataStruct
     {
-        public string Name { get; set; } = name;
-        public byte Permission { get; set; } = permission;
-        public string UID { get; set; } = UID;
-        public FileType FileType { get; set; } = fileType;
-        //public long LastTouchTime { get; set; } = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-        public string? Content { get; set; } = content;
+        public string Name;
+        public byte Permission;
+        public string UID;
+        public FileType FileType;
+        public long LastTouchTime;
+        public string? Content;
+
+        public FileDataStruct(string _name, string _UID, byte _permission, FileType _fileType, string? _content = null, long? _lastTouchTime = null)
+        {
+            Name = _name;
+            Permission = _permission;
+            UID = _UID;
+            FileType = _fileType;
+            _lastTouchTime ??= DateTimeOffset.UtcNow.AddHours(9).ToUnixTimeSeconds();
+            LastTouchTime = _lastTouchTime.Value;
+            Content = _content;
+        }
 
         public override string ToString()
         {
