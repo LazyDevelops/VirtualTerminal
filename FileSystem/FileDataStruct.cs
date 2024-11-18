@@ -7,7 +7,16 @@
         public string UID;
         public FileType FileType;
         public long LastTouchTime;
-        public string? Content;
+        private string? _content;
+        public string? Content
+        {
+            get => _content;
+            set
+            {
+                _content = value;
+                LastTouchTime = DateTimeOffset.UtcNow.AddHours(9).ToUnixTimeSeconds();
+            }
+        }
 
         public FileDataStruct(string _name, string _UID, byte _permission, FileType _fileType, string? _content = null, long? _lastTouchTime = null)
         {
