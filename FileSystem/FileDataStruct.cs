@@ -8,6 +8,7 @@
         public FileType FileType;
         public long LastTouchTime;
         private string? _content;
+        
         public string? Content
         {
             get => _content;
@@ -18,15 +19,15 @@
             }
         }
 
-        public FileDataStruct(string _name, string _UID, byte _permission, FileType _fileType, string? _content = null, long? _lastTouchTime = null)
+        public FileDataStruct(string name, string uid, byte permission, FileType fileType, string? content = null, long? lastTouchTime = null)
         {
-            Name = _name;
-            Permission = _permission;
-            UID = _UID;
-            FileType = _fileType;
-            _lastTouchTime ??= DateTimeOffset.UtcNow.AddHours(9).ToUnixTimeSeconds();
-            LastTouchTime = _lastTouchTime.Value;
-            Content = _content;
+            Name = name;
+            Permission = permission;
+            UID = uid;
+            FileType = fileType;
+            lastTouchTime ??= DateTimeOffset.UtcNow.AddHours(9).ToUnixTimeSeconds();
+            LastTouchTime = lastTouchTime.Value;
+            Content = content;
         }
 
         public override string ToString()
