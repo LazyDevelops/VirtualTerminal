@@ -27,7 +27,7 @@
             FileType = fileType;
             lastTouchTime ??= DateTimeOffset.UtcNow.AddHours(9).ToUnixTimeSeconds();
             LastTouchTime = lastTouchTime.Value;
-            Content = content;
+            _content = content;
         }
 
         public override string ToString()
