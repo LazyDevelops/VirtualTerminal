@@ -206,8 +206,8 @@ namespace VirtualTerminal
             while (true)
             {
                 string? input = Console.ReadLine();
-
-                if (input == null)
+                
+                if (input == null || input[0] == 4)
                 {
                     break;
                 }
