@@ -92,7 +92,7 @@ namespace VirtualTerminal
                     continue;
                 }
 
-                ProcessCommand(command); 
+                ProcessCommand(command);
             }
         }
 
@@ -143,6 +143,7 @@ namespace VirtualTerminal
                     Console.Write("bash: syntax error near unexpected token `newline'\n");
                     return;
                 }
+
                 AppendToFile(output, argv[index + 1]);
             }
             else
@@ -219,7 +220,7 @@ namespace VirtualTerminal
             while (true)
             {
                 string? input = Console.ReadLine();
-                
+
                 if (input == null || input[0] == 4)
                 {
                     break;
@@ -230,7 +231,7 @@ namespace VirtualTerminal
 
             return content.TrimEnd('\n');
         }
-        
+
         internal static void OptionCheck(ref Dictionary<string, bool> option, in string[] argv)
         {
             foreach (string arg in argv)

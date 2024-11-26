@@ -47,24 +47,26 @@ namespace VirtualTerminal.Command
                 {
                     return arg;
                 }
-                
+
                 files.Add(file);
                 inputFilesArg.Add(arg);
             }
 
             if (files.Count == 0)
             {
-                if(VT.PwdNode == null){
+                if (VT.PwdNode == null)
+                {
                     return null;
                 }
+
                 files.Add(VT.PwdNode);
             }
 
             string? result = null;
-            
-            for(int i = 0; i < files.Count; i++)
+
+            for (int i = 0; i < files.Count; i++)
             {
-                if(files.Count > 1)
+                if (files.Count > 1)
                 {
                     result += $"{inputFilesArg[i]}:\n";
                 }
@@ -83,7 +85,7 @@ namespace VirtualTerminal.Command
                         string permissions = VT.FileSystem.PermissionsToString(fileChild.Data.Permission);
                         string time = string.Empty;
                         DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(fileChild.Data.LastTouchTime);
-                        
+
                         if (dateTimeOffset.Year != DateTime.Now.Year)
                         {
                             time += $"{dateTimeOffset.Year} ";
@@ -110,7 +112,8 @@ namespace VirtualTerminal.Command
                     result += "\n";
                 }
 
-                if(i != files.Count - 1){
+                if (i != files.Count - 1)
+                {
                     result += "\n";
                 }
             }

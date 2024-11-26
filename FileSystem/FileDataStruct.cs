@@ -8,7 +8,7 @@
         public FileType FileType;
         public long LastTouchTime;
         private string? _content;
-        
+
         public string? Content
         {
             get => _content;

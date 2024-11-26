@@ -8,19 +8,20 @@
     "net8.0": []
   },
   "packageFolders": {
-    "/home/code/.nuget/packages/": {}
+    "C:\\Users\\CheeseSand\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/code/VirtualTerminal/VirtualTerminal.csproj",
+      "projectUniqueName": "C:\\Users\\CheeseSand\\Desktop\\Project\\VirtualTerminal\\VirtualTerminal.csproj",
       "projectName": "VirtualTerminal",
-      "projectPath": "/home/code/VirtualTerminal/VirtualTerminal.csproj",
-      "packagesPath": "/home/code/.nuget/packages/",
-      "outputPath": "/home/code/VirtualTerminal/obj/",
+      "projectPath": "C:\\Users\\CheeseSand\\Desktop\\Project\\VirtualTerminal\\VirtualTerminal.csproj",
+      "packagesPath": "C:\\Users\\CheeseSand\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\CheeseSand\\Desktop\\Project\\VirtualTerminal\\obj\\",
       "projectStyle": "PackageReference",
+      "UsingMicrosoftNETSdk": false,
       "configFilePaths": [
-        "/home/code/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\CheeseSand\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -38,6 +39,11 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "all"
       }
     },
     "frameworks": {
@@ -59,7 +65,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.110/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Users\\CheeseSand\\.dotnet\\sdk\\9.0.100/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
