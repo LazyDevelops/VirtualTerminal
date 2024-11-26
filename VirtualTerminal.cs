@@ -36,6 +36,19 @@ namespace VirtualTerminal
 
             FileSystem.FileCreate("/", new FileDataStruct("home", "root", 0b111101, FileType.D), Root);
             FileSystem.FileCreate("/", new FileDataStruct("root", "root", 0b111000, FileType.D), Root);
+            FileSystem.FileCreate("/", new FileDataStruct("boot", "root", 0b111101, FileType.D), Root);
+            FileSystem.FileCreate("/", new FileDataStruct("dev", "root", 0b111101, FileType.D), Root);
+            FileSystem.FileCreate("/", new FileDataStruct("etc", "root", 0b111101, FileType.D), Root);
+            FileSystem.FileCreate("/", new FileDataStruct("lost+found", "nobody", 0b111000, FileType.D), Root);
+            FileSystem.FileCreate("/", new FileDataStruct("media", "root", 0b111101, FileType.D), Root);
+            FileSystem.FileCreate("/", new FileDataStruct("mnt", "root", 0b111101, FileType.D), Root);
+            FileSystem.FileCreate("/", new FileDataStruct("opt", "root", 0b111101, FileType.D), Root);
+            FileSystem.FileCreate("/", new FileDataStruct("proc", "nobody", 0b101101, FileType.D), Root);
+            FileSystem.FileCreate("/", new FileDataStruct("run", "root", 0b111101, FileType.D), Root);
+            FileSystem.FileCreate("/", new FileDataStruct("srv", "root", 0b111101, FileType.D), Root);
+            FileSystem.FileCreate("/", new FileDataStruct("sys", "nobody", 0b101101, FileType.D), Root);
+            FileSystem.FileCreate("/", new FileDataStruct("usr", "root", 0b111101, FileType.D), Root);
+            FileSystem.FileCreate("/", new FileDataStruct("var", "root", 0b111101, FileType.D), Root);
 
             HomeNode = FileSystem.FileCreate("/home", new FileDataStruct(USER, USER, 0b111101, FileType.D), Root);
 

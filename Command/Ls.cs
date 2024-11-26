@@ -69,6 +69,11 @@ namespace VirtualTerminal.Command
                     result += $"{inputFilesArg[i]}:\n";
                 }
 
+                if (options["l"])
+                {
+                    result += $"total {files[i].Children.Count}\n";
+                }
+
                 foreach (Node<FileDataStruct> fileChild in files[i].Children)
                 {
                     permission = VT.FileSystem.CheckPermission(VT.USER, fileChild, VT.Root);
