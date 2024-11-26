@@ -84,7 +84,7 @@ namespace VirtualTerminal.Command
                         string time = string.Empty;
                         DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(fileChild.Data.LastTouchTime);
                         
-                        if (dateTimeOffset.Year == DateTime.Now.Year)
+                        if (dateTimeOffset.Year != DateTime.Now.Year)
                         {
                             time += $"{dateTimeOffset.Year} ";
                         }
