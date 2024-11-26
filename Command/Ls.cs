@@ -81,15 +81,15 @@ namespace VirtualTerminal.Command
                     if (options["l"])
                     {
                         string permissions = VT.FileSystem.PermissionsToString(fileChild.Data.Permission);
+                        string time = string.Empty;
                         DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(fileChild.Data.LastTouchTime);
+                        
+                        if (dateTimeOffset.Year == DateTime.Now.Year)
+                        {
+                            time += $"{dateTimeOffset.Year} ";
+                        }
 
-                        int year = dateTimeOffset.Year;
-                        int month = dateTimeOffset.Month;
-                        int day = dateTimeOffset.Day;
-                        int hour = dateTimeOffset.Hour;
-                        int minute = dateTimeOffset.Minute;
-
-                        string time = $"{year}년 {month}월 {day} {hour}:{minute}";
+                        time += $"{dateTimeOffset.Month}월 {dateTimeOffset.Day} {dateTimeOffset.Hour}:{dateTimeOffset.Minute}";
                         result += $"{Convert.ToChar(fileChild.Data.FileType)}{permissions} {fileChild.Data.UID} {time} ";
                     }
 
